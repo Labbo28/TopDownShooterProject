@@ -3,14 +3,38 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamageable
 {
+    [SerializeField] private float _health = 100f;
+    [SerializeField] private float _maxHealth = 100f;
     public Transform weapon;
     public float offset;
     public Transform shotPoint;
     public GameObject projectile;
     public float timeBetweenShots;
     float nextShotTime;
+
+    public float Health => _health;
+    public float MaxHealth => _maxHealth;
+    public bool isAlive => _health > 0;
+
+    public void TakeDamage(int damage)
+    {
+        _health -= damage;
+        if (_health <= 0)
+        {
+            _health = 0;
+            Die();
+        }
+    }
+
+    public void Die()
+    {
+        Debug.Log("Player has died.");
+        Destroy(gameObject);
+        // Add additional logic for player death if necessary
+    }
+    
     [SerializeField] private float movementSpeed = 5f;
    
     private Vector2 _movementDirection;
@@ -32,7 +56,6 @@ public class Player : MonoBehaviour
         {
             HandleDash();
         }
-        // Rotazione Arma
         Vector3 displacement = weapon.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
         float angle = Mathf.Atan2(displacement.y, displacement.x) * Mathf.Rad2Deg;
         weapon.rotation = Quaternion.Euler(0f, 0f, angle + offset);
