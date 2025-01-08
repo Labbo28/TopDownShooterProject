@@ -33,7 +33,7 @@ public class Enemy : MonoBehaviour, IDamageable
         }
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         Health -= damage;
         if (Health <= 0)
@@ -44,6 +44,12 @@ public class Enemy : MonoBehaviour, IDamageable
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (other.CompareTag("Projectile"))
+        { 
+            TakeDamage(other.GetComponent<Projectile>().Damage);
+            Destroy(other.gameObject);
+            
+        }
         if (other.CompareTag("Player"))
         {
             Debug.Log("Player in range");

@@ -5,6 +5,20 @@ using UnityEngine;
 
 public class Player : MonoBehaviour, IDamageable
 {
+    //Singleton
+    public static Player Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
     [SerializeField] private float _health = 100f;
     [SerializeField] private float _maxHealth = 100f;
     public Transform weapon;
@@ -18,7 +32,7 @@ public class Player : MonoBehaviour, IDamageable
     public float MaxHealth => _maxHealth;
     public bool isAlive => _health > 0;
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         _health -= damage;
         if (_health <= 0)
@@ -80,7 +94,7 @@ public class Player : MonoBehaviour, IDamageable
     if (Input.GetKeyDown(KeyCode.LeftShift))
     {
         Vector3 dashDirection = new Vector3(_movementDirection.x, _movementDirection.y).normalized;
-        float dashDistance = 6f; // Example dash distance
+        float dashDistance = 3f; // Example dash distance
         Vector3 dashTarget = transform.position + dashDirection * dashDistance;
         StartCoroutine(DashMovement(dashTarget, 0.2f)); // Example duration of 0.2 seconds
     }
