@@ -6,7 +6,7 @@ public class Enemy : MonoBehaviour
     public float speed;
     Transform player;
     void Start (){
-     player = FindObjectOfType<PlayerController>().transform;
+     player = FindObjectOfType<Player>().transform;
     }
     void Update(){
         transform.position = Vector2.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
