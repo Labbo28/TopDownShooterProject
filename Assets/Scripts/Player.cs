@@ -18,6 +18,7 @@ public class Player : MonoBehaviour, IDamageable
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        dashTimer = new CountdownTimer(dashCooldown);
     }
     [SerializeField] private float _health = 100f;
     [SerializeField] private float _maxHealth = 100f;
@@ -26,7 +27,13 @@ public class Player : MonoBehaviour, IDamageable
     public Transform shotPoint;
     public GameObject projectile;
     public float timeBetweenShots;
+    
     float nextShotTime;
+    //timer per gestire il cooldown del dash 
+    CountdownTimer dashTimer;
+    [SerializeField] float dashCooldown = 3f;
+    
+    
 
     public float Health => _health;
     public float MaxHealth => _maxHealth;
@@ -46,7 +53,7 @@ public class Player : MonoBehaviour, IDamageable
     {
         Debug.Log("Player has died.");
         Destroy(gameObject);
-        // Add additional logic for player death if necessary
+        
     }
     
     [SerializeField] private float movementSpeed = 5f;
@@ -58,13 +65,21 @@ public class Player : MonoBehaviour, IDamageable
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+       dashTimer.OnTimerStop+= OnTimerStop;
         
     }
+
+    private void OnTimerStop()
+    {
+        dashTimer.Reset();
+    }
+
 
     // Update is called once per frame
     void Update()
     {
+       Debug.Log(dashTimer.GetTime());
+       dashTimer.Tick(Time.deltaTime);
         HandleMovement();
         if (PlayerCanDash())
         {
@@ -85,9 +100,18 @@ public class Player : MonoBehaviour, IDamageable
     //metodo da implementare
     private bool PlayerCanDash()
     {
-        return true ;
+        if (dashTimer.IsRunning)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
        
     }
+
+    
 
     private void HandleDash()
 {
@@ -97,6 +121,7 @@ public class Player : MonoBehaviour, IDamageable
         float dashDistance = 3f; // Example dash distance
         Vector3 dashTarget = transform.position + dashDirection * dashDistance;
         StartCoroutine(DashMovement(dashTarget, 0.2f)); // Example duration of 0.2 seconds
+        dashTimer.Start();
     }
 }
 

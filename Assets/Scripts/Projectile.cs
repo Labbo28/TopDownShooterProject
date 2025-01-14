@@ -5,7 +5,7 @@ public class Projectile : MonoBehaviour
     [SerializeField] float speed = 20;
 
     [SerializeField] private float damage = 20;
-    [SerializeField] private float ttl;  
+    [SerializeField] private float ttl;  //time to live
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
