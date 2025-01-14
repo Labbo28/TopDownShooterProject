@@ -1,12 +1,33 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 
 public class Player : MonoBehaviour, IDamageable
 {
-    //Singleton
+    // Singleton
     public static Player Instance { get; private set; }
+
+    // Costanti
+    private const float DashDistance = 3f;
+    private const float DashDuration = 0.2f;
+
+    // Campi private
+    [SerializeField] private float _currentHealth = 100f;
+    [SerializeField] private float _maxHealth = 100f;
+    [SerializeField] private float _movementSpeed = 5f;
+    [SerializeField] private float _dashCooldown = 3f;
+    [SerializeField] private float _timeBetweenShots;
+    [SerializeField] private Weapon _weapon;
+
+    
+
+    private CountdownTimer _dashTimer;
+    private float _nextShotTime;
+    private Vector2 _movementDirection;
+
+    public float Health => _currentHealth;
+    public float MaxHealth => _maxHealth;
+    public bool isAlive { get; }
+    public bool IsAlive => _currentHealth > 0;
 
     private void Awake()
     {
@@ -18,33 +39,39 @@ public class Player : MonoBehaviour, IDamageable
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        dashTimer = new CountdownTimer(dashCooldown);
-    }
-    [SerializeField] private float _health = 100f;
-    [SerializeField] private float _maxHealth = 100f;
-    public Transform weapon;
-    public float offset;
-    public Transform shotPoint;
-    public GameObject projectile;
-    public float timeBetweenShots;
-    
-    float nextShotTime;
-    //timer per gestire il cooldown del dash 
-    CountdownTimer dashTimer;
-    [SerializeField] float dashCooldown = 3f;
-    
-    
 
-    public float Health => _health;
-    public float MaxHealth => _maxHealth;
-    public bool isAlive => _health > 0;
+        _dashTimer = new CountdownTimer(_dashCooldown);
+    }
+
+    private void Start()
+    {
+        if (_dashTimer != null)
+        {
+            _dashTimer.OnTimerStop += ResetDashTimer;
+        }
+    }
+
+    private void Update()
+    {
+        // Tick del timer e movimento
+        _dashTimer?.Tick(Time.deltaTime);
+        HandleMovement();
+
+        // Controllo Dash
+        if (CanDash())
+        {
+            HandleDash();
+        }
+
+       
+    }
 
     public void TakeDamage(float damage)
     {
-        _health -= damage;
-        if (_health <= 0)
+        _currentHealth -= damage;
+        if (_currentHealth <= 0)
         {
-            _health = 0;
+            _currentHealth = 0;
             Die();
         }
     }
@@ -53,98 +80,50 @@ public class Player : MonoBehaviour, IDamageable
     {
         Debug.Log("Player has died.");
         Destroy(gameObject);
-        
     }
-    
-    [SerializeField] private float movementSpeed = 5f;
-   
-    private Vector2 _movementDirection;
-    
-    
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void HandleMovement()
     {
-       dashTimer.OnTimerStop+= OnTimerStop;
-        
+        _movementDirection = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        transform.Translate(_movementDirection * (Time.deltaTime * _movementSpeed));
     }
-
-    private void OnTimerStop()
-    {
-        dashTimer.Reset();
-    }
-
-
-    // Update is called once per frame
-    void Update()
-    {
-       Debug.Log(dashTimer.GetTime());
-       dashTimer.Tick(Time.deltaTime);
-        HandleMovement();
-        if (PlayerCanDash())
-        {
-            HandleDash();
-        }
-        Vector3 displacement = weapon.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        float angle = Mathf.Atan2(displacement.y, displacement.x) * Mathf.Rad2Deg;
-        weapon.rotation = Quaternion.Euler(0f, 0f, angle + offset);
-
-        //Spara Peppino, SPARAAAAAA!!!!!
-        if (Input.GetMouseButtonDown(0)){
-            if (Time.time > nextShotTime){
-                nextShotTime= Time.time + timeBetweenShots;
-                Instantiate(projectile, shotPoint.position, shotPoint.rotation);
-            }
-        }
-    }
-    //metodo da implementare
-    private bool PlayerCanDash()
-    {
-        if (dashTimer.IsRunning)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-       
-    }
-
-    
 
     private void HandleDash()
-{
-    if (Input.GetKeyDown(KeyCode.LeftShift))
     {
-        Vector3 dashDirection = new Vector3(_movementDirection.x, _movementDirection.y).normalized;
-        float dashDistance = 3f; // Example dash distance
-        Vector3 dashTarget = transform.position + dashDirection * dashDistance;
-        StartCoroutine(DashMovement(dashTarget, 0.2f)); // Example duration of 0.2 seconds
-        dashTimer.Start();
-    }
-}
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            Vector3 dashDirection = new Vector3(_movementDirection.x, _movementDirection.y).normalized;
+            Vector3 dashTarget = transform.position + dashDirection * DashDistance;
 
-private IEnumerator DashMovement(Vector3 targetPosition, float duration)
-{
-    Vector3 startPosition = transform.position;
-    float elapsedTime = 0f;
-
-    while (elapsedTime < duration)
-    {
-        transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / duration);
-        elapsedTime += Time.deltaTime;
-        yield return null;
+            StartCoroutine(DashMovement(dashTarget, DashDuration));
+            _dashTimer?.Start();
+        }
     }
 
-    transform.position = targetPosition;
-}
-   
-private void HandleMovement()
-{
-  
-    _movementDirection = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-    transform.Translate(_movementDirection * (Time.deltaTime * movementSpeed));
-}
+    private IEnumerator DashMovement(Vector3 targetPosition, float duration)
+    {
+        Vector3 startPosition = transform.position;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = targetPosition;
+    }
+
     
+
+    private bool CanDash()
+    {
+        return _dashTimer != null && !_dashTimer.IsRunning;
+    }
+
+    private void ResetDashTimer()
+    {
+        _dashTimer?.Reset();
+    }
 }

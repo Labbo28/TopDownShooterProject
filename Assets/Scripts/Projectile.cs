@@ -2,21 +2,17 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    [SerializeField] float speed = 20;
-
-    [SerializeField] private float damage = 20;
-    [SerializeField] private float ttl;  //time to live
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField] ProjectileSO projectileSO;
     void Start()
     {
         //il proiettile viene distrutto quando il time to live arriva a zero
-        Destroy(gameObject, ttl);
+        Destroy(gameObject,projectileSO.lifeTime );
     }
-    public float Damage { get => damage; }
+    public float Damage { get => projectileSO.damage; }
 
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(Vector3.up * (speed * Time.deltaTime));
+        transform.Translate(Vector3.up * (projectileSO.speed * Time.deltaTime));
     }
 }
