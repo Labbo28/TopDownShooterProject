@@ -1,66 +1,89 @@
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 
 public class RangedEnemy : MonoBehaviour
 {
-    [SerializeField] float speed;
-    [SerializeFIeld] float stoppingDistance;
-    [SerializeField] float retreatDistance;
-    public float rangedEnemyHealth;
+    [SerializeField] private float speed;
+    [SerializeField] private float stoppingDistance;
+    [SerializeField] private float retreatDistance;
+    [SerializeField] private float rangedEnemyHealth;
 
-    float timeBetweenShots;
-    [SerializeField] float startTimeBetweenShots;
-    [SerializeField] GameObject projectile;
+    [SerializeField] private float startTimeBetweenShots;
+    [SerializeField] private GameObject projectile;
 
+    private float timeBetweenShots;
     private Transform target;
 
     void Start()
     {
-        target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
-
+        target = GameObject.FindGameObjectWithTag("Player")?.transform;
         timeBetweenShots = startTimeBetweenShots;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if(target != null){
-            if(Vector2.Distance(transform.position, target.transform.position) > stoppingDistance)
-            {
-                transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
-            }
-            else if(Vector2.Distance(transform.position, target.transform.position) < stoppingDistance && Vector2.Distance(transform.position, target.transform.position) > retreatDistance)
-            {
-                transform.position = this.transform.position;
-            }
-            else if(Vector2.Distance(transform.position, target.transform.position) < retreatDistance)
-            {
-                transform.position = Vector2.MoveTowards(transform.position, target.position, -speed * Time.deltaTime);
-            }
-
-            if(timeBtwShots <= 0 )
-            {
-                Instantiate(projectile, transform.position, Quaternion.identity);
-                timeBtwShots = startTimeBtwShots;
-            }
-            else
-            {
-                timeBtwShots -= Time.deltaTime;
-            }
-        }
-        else{
-           transform.position = this.transform.position;
+        if (target != null)
+        {
+            HandleMovement();
+            HandleShooting();
+            AimAtPlayer();
         }
         Die();
     }
 
-    void Die()
+    private void HandleMovement()
+    {
+        float distanceToTarget = Vector2.Distance(transform.position, target.position);
+
+        if (distanceToTarget > stoppingDistance)
+        {
+            transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+        }
+        else if (distanceToTarget < stoppingDistance && distanceToTarget > retreatDistance)
+        {
+            transform.position = transform.position;
+        }
+        else if (distanceToTarget < retreatDistance)
+        {
+            transform.position = Vector2.MoveTowards(transform.position, target.position, -speed * Time.deltaTime);
+        }
+    }
+
+    private void HandleShooting()
+    {
+        if (timeBetweenShots <= 0)
+        {
+            Shoot();
+            timeBetweenShots = startTimeBetweenShots;
+        }
+        else
+        {
+            timeBetweenShots -= Time.deltaTime;
+        }
+    }
+
+    private void Shoot()
+    {
+            Vector2 direction = target.position - transform.position;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            Instantiate(projectile, transform.position, Quaternion.Euler(new Vector3(0, 0, angle - 90f)));
+        }
+
+    
+
+    private void AimAtPlayer()
+    {
+        Vector2 direction = target.position - transform.position;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+    }
+
+    private void Die()
     {
         if (rangedEnemyHealth <= 0)
         {
             Destroy(gameObject);
-            Debug.Log("enemy is dead");
+            Debug.Log("Enemy is dead");
         }
     }
 }
+
