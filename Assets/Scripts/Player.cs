@@ -17,6 +17,7 @@ public class Player : MonoBehaviour, IDamageable
     [SerializeField] private float _dashCooldown = 3f;
     [SerializeField] private float _timeBetweenShots;
     [SerializeField] private Weapon _weapon;
+    [SerializeField] private float rotationSpeed = 3f;
 
     
 
@@ -65,6 +66,7 @@ public class Player : MonoBehaviour, IDamageable
 
        
     }
+    
 
     public void TakeDamage(float damage)
     {
