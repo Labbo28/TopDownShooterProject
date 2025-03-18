@@ -1,89 +1,70 @@
 using UnityEngine;
 
-public class RangedEnemy : MonoBehaviour
+public class RangedEnemy : EnemyBase
 {
-    [SerializeField] private float speed;
-    [SerializeField] private float stoppingDistance;
-    [SerializeField] private float retreatDistance;
-    [SerializeField] private float rangedEnemyHealth;
-
-    [SerializeField] private float startTimeBetweenShots;
-    [SerializeField] private GameObject projectile;
-
-    private float timeBetweenShots;
-    private Transform target;
-
-    void Start()
+    [SerializeField] private float minDistance = 3f;  // Distanza minima dal giocatore
+    [SerializeField] private float maxDistance = 7f;  // Distanza massima dal giocatore
+    [SerializeField] private float shootingRange = 10f;  // Raggio di tiro
+    [SerializeField] private GameObject projectilePrefab;  // Prefab del proiettile
+    
+    protected override void HandleBehavior()
     {
-        target = GameObject.FindGameObjectWithTag("Player")?.transform;
-        timeBetweenShots = startTimeBetweenShots;
-    }
-
-    void Update()
-    {
-        if (target != null)
+        float distanceToPlayer = DistanceToPlayer();
+        
+        // Gestione del movimento basato sulla distanza
+        if (distanceToPlayer > maxDistance)
         {
-            HandleMovement();
-            HandleShooting();
-            AimAtPlayer();
+            // Avviciniamoci al giocatore
+            Move(player.position, speed);
         }
-        Die();
-    }
-
-    private void HandleMovement()
-    {
-        float distanceToTarget = Vector2.Distance(transform.position, target.position);
-
-        if (distanceToTarget > stoppingDistance)
+        else if (distanceToPlayer < minDistance)
         {
-            transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
-        }
-        else if (distanceToTarget < stoppingDistance && distanceToTarget > retreatDistance)
-        {
-            transform.position = transform.position;
-        }
-        else if (distanceToTarget < retreatDistance)
-        {
-            transform.position = Vector2.MoveTowards(transform.position, target.position, -speed * Time.deltaTime);
-        }
-    }
-
-    private void HandleShooting()
-    {
-        if (timeBetweenShots <= 0)
-        {
-            Shoot();
-            timeBetweenShots = startTimeBetweenShots;
+            // Allontaniamoci dal giocatore
+            Vector2 directionFromPlayer = (transform.position - player.position).normalized;
+            Vector2 retreatPosition = (Vector2)transform.position + directionFromPlayer * speed;
+            Move(retreatPosition, speed);
         }
         else
         {
-            timeBetweenShots -= Time.deltaTime;
+            // Siamo alla distanza ideale, fermiamoci
+            StopMoving();
         }
-    }
-
-    private void Shoot()
-    {
-            Vector2 direction = target.position - transform.position;
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            Instantiate(projectile, transform.position, Quaternion.Euler(new Vector3(0, 0, angle - 90f)));
-        }
-
-    
-
-    private void AimAtPlayer()
-    {
-        Vector2 direction = target.position - transform.position;
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
-    }
-
-    private void Die()
-    {
-        if (rangedEnemyHealth <= 0)
+        
+        // Orientamento verso il giocatore
+        LookAtPlayer();
+        
+        // Tentativo di sparare se siamo in raggio
+        if (distanceToPlayer <= shootingRange && Time.time >= lastAttackTime + attackCooldown)
         {
-            Destroy(gameObject);
-            Debug.Log("Enemy is dead");
+            ShootAtPlayer();
         }
+    }
+    
+    protected virtual void ShootAtPlayer()
+    {
+        // Resettiamo il timer di attacco
+        lastAttackTime = Time.time;
+        
+        // Emettiamo l'evento di attacco
+       RaiseAttackEvent();
+        
+        // Calcoliamo la direzione verso il giocatore
+        Vector2 direction = (player.position - transform.position).normalized;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        
+        // Creiamo e configuriamo il proiettile
+        GameObject projectile = Instantiate(
+            projectilePrefab, 
+            transform.position, 
+            Quaternion.Euler(0, 0, angle - 90f)
+        );
+        
+        // Ricordiamo di cancellare lo stato di attacco dopo un breve periodo
+        Invoke(nameof(ResetAttackState), 0.2f);
+    }
+    
+    private void ResetAttackState()
+    {
+        isAttacking = false;
     }
 }
-

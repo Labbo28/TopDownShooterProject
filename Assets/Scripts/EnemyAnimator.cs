@@ -4,7 +4,7 @@ using UnityEngine;
 public class EnemyAnimator : MonoBehaviour
 {
     private Animator _enemyAnimator;
-    [SerializeField] private Enemy enemy;
+    [SerializeField] private EnemyBase enemy;
 
     private void Awake()
     {
