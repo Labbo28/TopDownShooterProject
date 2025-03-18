@@ -31,7 +31,7 @@ public class RangedEnemy : EnemyBase
         }
         
         // Orientamento verso il giocatore
-        LookAtPlayer();
+        //LookAtPlayer();
         
         // Tentativo di sparare se siamo in raggio
         if (distanceToPlayer <= shootingRange && Time.time >= lastAttackTime + attackCooldown)

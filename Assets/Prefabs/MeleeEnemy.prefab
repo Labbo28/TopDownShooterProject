@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 6020913500450426487}
   - component: {fileID: 4022199802507677181}
   m_Layer: 6
-  m_Name: Enemy
+  m_Name: MeleeEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -81,7 +81,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1337084205146215169, guid: 3908d28e9ed59614ca406776a4afc3ab, type: 3}
+  m_Sprite: {fileID: 613658156, guid: 1bc6097228993f045852159e71f81d5b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -168,10 +168,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
-  player: {fileID: 0}
   damage: 5
+  health: 100
+  maxHealth: 100
+  attackCooldown: 1
+  detectRadius: 10
   actionRadius: 0.5
-  avoidRadius: 1
+  chaseRange: 7
+  attackRange: 1
 --- !u!95 &6020913500450426487
 Animator:
   serializedVersion: 7
@@ -182,7 +186,7 @@ Animator:
   m_GameObject: {fileID: 2372909403197453248}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: e10c61dba95bd4945bb6a2f7a7f3a8a9, type: 2}
+  m_Controller: {fileID: 9100000, guid: f2855d618fc8d9c499189d3f39b9cbbc, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

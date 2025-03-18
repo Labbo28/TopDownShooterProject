@@ -69,6 +69,7 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
         if (!isMoving)
         {
             isMoving = true;
+            spriteRenderer.flipX = direction.x < 0;
             OnEnemyMoving?.Invoke(this, EventArgs.Empty);
         }
     }
@@ -84,6 +85,9 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
     }
 
     // Metodo per guardare verso il giocatore
+    //lo commento perchè non mi convince molto
+
+    /*
     protected virtual void LookAtPlayer()
     {
         if (player != null)
@@ -94,6 +98,8 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle - offset));
         }
     }
+
+    */
 
     // Metodo per attaccare
     protected virtual void Attack()

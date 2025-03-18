@@ -28,7 +28,7 @@ public class MeleeEnemy : EnemyBase
         else if (distanceToPlayer <= chaseRange)
         {
             Move(player.position, speed);
-            LookAtPlayer();
+            // LookAtPlayer();
         }
         else
         {
@@ -47,6 +47,9 @@ public class MeleeEnemy : EnemyBase
         {
             spriteRenderer.color = Color.red;
             // Potremmo anche aggiungere un'animazione di attacco
+        }
+        else{
+            spriteRenderer.color = Color.blue;
         }
     }
     
