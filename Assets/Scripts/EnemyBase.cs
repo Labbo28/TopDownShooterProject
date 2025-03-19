@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public abstract class EnemyBase : MonoBehaviour, IDamageable
+public abstract class EnemyBase : MonoBehaviour
 {
     // Eventi per le animazioni
     public event EventHandler OnEnemyMoving;
@@ -11,8 +11,6 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
     // Variabili di base per tutti i nemici
     [SerializeField] protected float speed = 3f;
     [SerializeField] protected float damage = 5f;
-    [SerializeField] protected float health = 100f;
-    [SerializeField] protected float maxHealth = 100f;
     [SerializeField] protected float attackCooldown = 1f;
     [SerializeField] protected float detectRadius = 10f;
     [SerializeField] protected float actionRadius = 0.5f;
@@ -21,6 +19,7 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
     protected Transform player;
     protected SpriteRenderer spriteRenderer;
     protected Rigidbody2D rb;
+    protected HealthSystem healthSystem;
     
     // Stato del nemico
     protected bool isMoving;
@@ -28,16 +27,23 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
     protected bool playerInRange = false;
     protected float lastAttackTime;
 
-    // Proprietà dell'interfaccia IDamageable
-    public float Health { get => health; protected set => health = value; }
-    public float MaxHealth { get => maxHealth; }
-    public bool isAlive => Health > 0;
+    // Proprietà per accesso rapido alla salute
+    public bool IsAlive => healthSystem != null && healthSystem.GetHealthPercentage() > 0;
 
     // Inizializzazione dei componenti
     protected virtual void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
+        gameObject.AddComponent<HealthSystem>();
+        healthSystem = GetComponent<HealthSystem>();
+        
+        // Configurare gli eventi del sistema di salute
+        if (healthSystem != null)
+        {
+            healthSystem.onDamaged.AddListener(OnDamaged);
+            healthSystem.onDeath.AddListener(Die);
+        }
     }
 
     // Inizializzazione dei riferimento al Player
@@ -50,7 +56,7 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
     // Logica di aggiornamento principale
     protected virtual void Update()
     {
-        if (!isAlive || player == null) return;
+        if (!IsAlive || player == null) return;
         
         HandleBehavior();
     }
@@ -61,7 +67,7 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
     // Metodo per gestire il movimento
     protected virtual void Move(Vector2 targetPosition, float moveSpeed)
     {
-        if (!isAlive) return;
+        if (!IsAlive) return;
 
         Vector2 direction = ((Vector2)targetPosition - (Vector2)transform.position).normalized;
         transform.position = Vector2.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
@@ -84,23 +90,6 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
         }
     }
 
-    // Metodo per guardare verso il giocatore
-    //lo commento perchè non mi convince molto
-
-    /*
-    protected virtual void LookAtPlayer()
-    {
-        if (player != null)
-        {
-            Vector3 direction = player.position - transform.position;
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            float offset = 90f;
-            transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle - offset));
-        }
-    }
-
-    */
-
     // Metodo per attaccare
     protected virtual void Attack()
     {
@@ -119,17 +108,11 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
         return Vector2.Distance(transform.position, player.position);
     }
 
-    // Implementazione dell'interfaccia IDamageable
-    public virtual void TakeDamage(float damageAmount)
+    // Metodo chiamato quando il nemico subisce danni
+    protected virtual void OnDamaged()
     {
-        Health -= damageAmount;
-        // Feedback visivo (opzionale)
+        // Feedback visivo
         StartCoroutine(FlashColor(Color.red, 0.1f));
-        
-        if (Health <= 0)
-        {
-            Die();
-        }
     }
 
     // Metodo per far lampeggiare il nemico quando subisce danni
@@ -151,9 +134,13 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
     // Metodo per infliggere danni al giocatore
     protected virtual void DamagePlayer(float damageAmount)
     {
-        if (player != null && player.TryGetComponent<IDamageable>(out var damageablePlayer))
+        if (player != null)
         {
-            damageablePlayer.TakeDamage(damageAmount);
+            HealthSystem playerHealth = player.GetComponent<HealthSystem>();
+            if (playerHealth != null)
+            {
+                playerHealth.TakeDamage(damageAmount);
+            }
         }
     }
 
@@ -168,20 +155,21 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
         //per fare in modo che i nemici non si massacrino tra loro
         else if (other.CompareTag("Projectile"))
         {
-            if (other.TryGetComponent<Projectile>(out var projectile))
+            if (other.TryGetComponent<Projectile>(out var projectile) && healthSystem != null)
             {
-                TakeDamage(projectile.Damage);
+                // Convertire il danno float in int per il HealthSystem
+                int damage = Mathf.RoundToInt(projectile.Damage);
+                healthSystem.TakeDamage(damage);
                 Destroy(other.gameObject);
             }
         }
     }
 
-  
-protected virtual void RaiseAttackEvent()
-{
-    isAttacking = true;
-    OnEnemyAttacking?.Invoke(this, EventArgs.Empty);
-}
+    protected virtual void RaiseAttackEvent()
+    {
+        isAttacking = true;
+        OnEnemyAttacking?.Invoke(this, EventArgs.Empty);
+    }
 
     protected virtual void OnTriggerExit2D(Collider2D other)
     {
@@ -189,7 +177,5 @@ protected virtual void RaiseAttackEvent()
         {
             playerInRange = false;
         }
-
-        
     }
 }

@@ -11,24 +11,22 @@ public class Player : MonoBehaviour, IDamageable
     private const float DashDuration = 0.2f;
 
     // Campi private
-    [SerializeField] private float _currentHealth = 100f;
-    [SerializeField] private float _maxHealth = 100f;
+    
     [SerializeField] private float _movementSpeed = 5f;
     [SerializeField] private float _dashCooldown = 3f;
     [SerializeField] private float _timeBetweenShots;
     [SerializeField] private Weapon _weapon;
     [SerializeField] private float rotationSpeed = 3f;
-
-    
-
+ 
+    private HealthSystem healthSystem;
     private CountdownTimer _dashTimer;
     private float _nextShotTime;
     private Vector2 _movementDirection;
 
-    public float Health => _currentHealth;
-    public float MaxHealth => _maxHealth;
+    public float Health => healthSystem.getCurrentHealth();
+    public float MaxHealth => healthSystem.getMaxHealth();
     public bool isAlive { get; }
-    public bool IsAlive => _currentHealth > 0;
+    public bool IsAlive => Health > 0;
 
     private void Awake()
     {
@@ -42,6 +40,8 @@ public class Player : MonoBehaviour, IDamageable
         DontDestroyOnLoad(gameObject);
 
         _dashTimer = new CountdownTimer(_dashCooldown);
+        gameObject.AddComponent<HealthSystem>();
+        healthSystem = GetComponent<HealthSystem>();
     }
 
     private void Start()
@@ -70,12 +70,9 @@ public class Player : MonoBehaviour, IDamageable
 
     public void TakeDamage(float damage)
     {
-        _currentHealth -= damage;
-        if (_currentHealth <= 0)
-        {
-            _currentHealth = 0;
+        healthSystem.TakeDamage(damage);
+        if (!IsAlive)
             Die();
-        }
     }
 
     public void Die()

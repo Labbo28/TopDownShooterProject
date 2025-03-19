@@ -3,8 +3,8 @@ using UnityEngine.Events;
 
 public class HealthSystem : MonoBehaviour
 {
-    [SerializeField] private int maxHealth = 100; // Numero da impostare
-    [SerializeField] private int currentHealth;
+    [SerializeField] private float maxHealth = 100; // Numero da impostare
+     private float currentHealth {get;set;}
     
     public UnityEvent onDamaged;
     public UnityEvent onHealed;
@@ -15,7 +15,7 @@ public class HealthSystem : MonoBehaviour
         currentHealth = maxHealth;
     }
     
-    public void TakeDamage(int damageAmount)
+    public void TakeDamage(float damageAmount)
     {
         currentHealth -= damageAmount;
         currentHealth = Mathf.Max(currentHealth, 0); // Non deve scendere sotto
@@ -46,5 +46,14 @@ public class HealthSystem : MonoBehaviour
     public float GetHealthPercentage()
     {
         return (float)currentHealth / maxHealth;
+    }
+
+    public float getCurrentHealth()
+    {
+        return currentHealth;
+    }
+    public float getMaxHealth() 
+    {
+        return maxHealth;
     }
 }
