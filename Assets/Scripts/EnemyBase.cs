@@ -1,5 +1,7 @@
 using System;
+using UnityEngine.UI;
 using UnityEngine;
+using System.Collections;
 
 public abstract class EnemyBase : MonoBehaviour
 {
@@ -14,6 +16,12 @@ public abstract class EnemyBase : MonoBehaviour
     [SerializeField] protected float attackCooldown = 1f;
     [SerializeField] protected float detectRadius = 10f;
     [SerializeField] protected float actionRadius = 0.5f;
+    [SerializeField] protected Image HealthBar;
+
+    [SerializeField] protected Image backgroundHealthBar;
+    
+    // Durata in secondi in cui la healthbar rimane visibile dopo aver subito danni
+    [SerializeField] protected float healthBarDisplayDuration = 2f;
 
     // Common components
     protected Transform player;
@@ -26,6 +34,9 @@ public abstract class EnemyBase : MonoBehaviour
     protected bool isAttacking;  
     protected bool playerInRange = false;
     protected float lastAttackTime;
+    
+    // Coroutine reference per gestire il timer della healthbar
+    private Coroutine hideHealthBarCoroutine;
 
     // Quick access to health status
     public bool IsAlive => healthSystem != null && healthSystem.IsAlive;
@@ -46,9 +57,14 @@ public abstract class EnemyBase : MonoBehaviour
         // Setup health events
         healthSystem.onDamaged.AddListener(OnDamaged);
         healthSystem.onDeath.AddListener(Die);
+
+        // Initialize health bar
+        HealthBar.fillAmount = healthSystem.GetHealthPercentage();
+        // Disabilita la healthbar di default
+        HealthBar.gameObject.SetActive(false);
+        backgroundHealthBar.gameObject.SetActive(false);
     }
 
-  
     protected virtual void Start()
     {
         player = FindObjectOfType<Player>()?.transform;
@@ -80,7 +96,6 @@ public abstract class EnemyBase : MonoBehaviour
             OnEnemyMoving?.Invoke(this, EventArgs.Empty);
         }
     }
-
    
     protected virtual void StopMoving()
     {
@@ -90,7 +105,6 @@ public abstract class EnemyBase : MonoBehaviour
             OnEnemyStopMoving?.Invoke(this, EventArgs.Empty);
         }
     }
-
    
     protected virtual void Attack()
     {
@@ -112,12 +126,33 @@ public abstract class EnemyBase : MonoBehaviour
     // Method called when enemy takes damage
     protected virtual void OnDamaged()
     {
-        // Visual feedback
+        // Visual feedback: flash del colore
         StartCoroutine(FlashColor(Color.red, 0.1f));
+        // Aggiorna la healthbar
+        HealthBar.fillAmount = healthSystem.GetHealthPercentage();
+        // Rendi visibile la healthbar
+        HealthBar.gameObject.SetActive(true);
+        backgroundHealthBar.gameObject.SetActive(true);
+
+        // Se esiste già una coroutine per nascondere la healthbar, fermala
+        if (hideHealthBarCoroutine != null)
+        {
+            StopCoroutine(hideHealthBarCoroutine);
+        }
+        // Avvia la coroutine per nascondere la healthbar dopo alcuni secondi
+        hideHealthBarCoroutine = StartCoroutine(ShowHealthBarCoroutine());
+    }
+
+    // Coroutine per nascondere la healthbar dopo un certo tempo
+    protected IEnumerator ShowHealthBarCoroutine()
+    {
+        yield return new WaitForSeconds(healthBarDisplayDuration);
+        HealthBar.gameObject.SetActive(false);
+        backgroundHealthBar.gameObject.SetActive(false);
     }
 
     // Visual damage feedback
-    protected System.Collections.IEnumerator FlashColor(Color color, float duration)
+    protected IEnumerator FlashColor(Color color, float duration)
     {
         Color originalColor = spriteRenderer.color;
         spriteRenderer.color = color;
