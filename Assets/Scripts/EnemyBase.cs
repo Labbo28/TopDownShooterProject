@@ -3,57 +3,58 @@ using UnityEngine;
 
 public abstract class EnemyBase : MonoBehaviour
 {
-    // Eventi per le animazioni
+    // Events for animations
     public event EventHandler OnEnemyMoving;
     public event EventHandler OnEnemyStopMoving;
     public event EventHandler OnEnemyAttacking;
     
-    // Variabili di base per tutti i nemici
+    // Base variables for all enemies
     [SerializeField] protected float speed = 3f;
     [SerializeField] protected float damage = 5f;
     [SerializeField] protected float attackCooldown = 1f;
     [SerializeField] protected float detectRadius = 10f;
     [SerializeField] protected float actionRadius = 0.5f;
 
-    // Componenti comuni
+    // Common components
     protected Transform player;
     protected SpriteRenderer spriteRenderer;
     protected Rigidbody2D rb;
     protected HealthSystem healthSystem;
     
-    // Stato del nemico
+    // Enemy state
     protected bool isMoving;
     protected bool isAttacking;  
     protected bool playerInRange = false;
     protected float lastAttackTime;
 
-    // Proprietà per accesso rapido alla salute
-    public bool IsAlive => healthSystem != null && healthSystem.GetHealthPercentage() > 0;
+    // Quick access to health status
+    public bool IsAlive => healthSystem != null && healthSystem.IsAlive;
 
-    // Inizializzazione dei componenti
+    // Component initialization
     protected virtual void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
-        gameObject.AddComponent<HealthSystem>();
-        healthSystem = GetComponent<HealthSystem>();
         
-        // Configurare gli eventi del sistema di salute
-        if (healthSystem != null)
+        // Get or add HealthSystem component
+        healthSystem = GetComponent<HealthSystem>();
+        if (healthSystem == null)
         {
-            healthSystem.onDamaged.AddListener(OnDamaged);
-            healthSystem.onDeath.AddListener(Die);
+            healthSystem = gameObject.AddComponent<HealthSystem>();
         }
+        
+        // Setup health events
+        healthSystem.onDamaged.AddListener(OnDamaged);
+        healthSystem.onDeath.AddListener(Die);
     }
 
-    // Inizializzazione dei riferimento al Player
+  
     protected virtual void Start()
     {
         player = FindObjectOfType<Player>()?.transform;
-        lastAttackTime = -attackCooldown; // Permette di attaccare subito
+        lastAttackTime = -attackCooldown; // Allow attacking immediately
     }
 
-    // Logica di aggiornamento principale
     protected virtual void Update()
     {
         if (!IsAlive || player == null) return;
@@ -61,10 +62,10 @@ public abstract class EnemyBase : MonoBehaviour
         HandleBehavior();
     }
 
-    // Comportamento base del nemico - da sovrascrivere nelle classi derivate
+    // comportamento da implementare nelle classi derivate
     protected abstract void HandleBehavior();
 
-    // Metodo per gestire il movimento
+    // Movement handling
     protected virtual void Move(Vector2 targetPosition, float moveSpeed)
     {
         if (!IsAlive) return;
@@ -80,7 +81,7 @@ public abstract class EnemyBase : MonoBehaviour
         }
     }
 
-    // Metodo per fermare il movimento
+   
     protected virtual void StopMoving()
     {
         if (isMoving)
@@ -90,7 +91,7 @@ public abstract class EnemyBase : MonoBehaviour
         }
     }
 
-    // Metodo per attaccare
+   
     protected virtual void Attack()
     {
         if (Time.time >= lastAttackTime + attackCooldown)
@@ -101,21 +102,21 @@ public abstract class EnemyBase : MonoBehaviour
         }
     }
 
-    // Metodo per calcolare la distanza dal giocatore
+    // Distance to player calculation
     protected float DistanceToPlayer()
     {
         if (player == null) return float.MaxValue;
         return Vector2.Distance(transform.position, player.position);
     }
 
-    // Metodo chiamato quando il nemico subisce danni
+    // Method called when enemy takes damage
     protected virtual void OnDamaged()
     {
-        // Feedback visivo
+        // Visual feedback
         StartCoroutine(FlashColor(Color.red, 0.1f));
     }
 
-    // Metodo per far lampeggiare il nemico quando subisce danni
+    // Visual damage feedback
     protected System.Collections.IEnumerator FlashColor(Color color, float duration)
     {
         Color originalColor = spriteRenderer.color;
@@ -124,19 +125,19 @@ public abstract class EnemyBase : MonoBehaviour
         spriteRenderer.color = originalColor;
     }
 
-    // Metodo per la morte del nemico
+    // Enemy death method
     public virtual void Die()
     {
         GameManager.Instance?.EnemyKilled();
         Destroy(gameObject);
     }
 
-    // Metodo per infliggere danni al giocatore
+    // Deal damage to player
     protected virtual void DamagePlayer(float damageAmount)
     {
         if (player != null)
         {
-            HealthSystem playerHealth = player.GetComponent<HealthSystem>();
+            IDamageable playerHealth = player.GetComponent<IDamageable>();
             if (playerHealth != null)
             {
                 playerHealth.TakeDamage(damageAmount);
@@ -144,22 +145,18 @@ public abstract class EnemyBase : MonoBehaviour
         }
     }
 
-    // Metodi per gestire le collisioni
+    // Collision handling
     protected virtual void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
             playerInRange = true;
         }
-        //qui andrebbero filtrati i proiettili di altri nemici
-        //per fare in modo che i nemici non si massacrino tra loro
         else if (other.CompareTag("Projectile"))
         {
             if (other.TryGetComponent<Projectile>(out var projectile) && healthSystem != null)
             {
-                // Convertire il danno float in int per il HealthSystem
-                int damage = Mathf.RoundToInt(projectile.Damage);
-                healthSystem.TakeDamage(damage);
+                healthSystem.TakeDamage(projectile.Damage);
                 Destroy(other.gameObject);
             }
         }

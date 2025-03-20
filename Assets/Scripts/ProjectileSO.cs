@@ -5,5 +5,5 @@ public class ProjectileSO : ScriptableObject
     public float speed;
     public float damage;
     public float lifeTime;
-    public Transform projectilePrefab;
+    public GameObject projectilePrefab;
 }
