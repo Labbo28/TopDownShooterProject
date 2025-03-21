@@ -76,6 +76,7 @@ public abstract class EnemyBase : MonoBehaviour
         if (!IsAlive || player == null) return;
         
         HandleBehavior();
+        
     }
 
     // comportamento da implementare nelle classi derivate
@@ -88,11 +89,12 @@ public abstract class EnemyBase : MonoBehaviour
 
         Vector2 direction = ((Vector2)targetPosition - (Vector2)transform.position).normalized;
         transform.position = Vector2.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+        spriteRenderer.flipX = direction.x < 0;
         
         if (!isMoving)
         {
             isMoving = true;
-            spriteRenderer.flipX = direction.x < 0;
+            
            
         }
     }

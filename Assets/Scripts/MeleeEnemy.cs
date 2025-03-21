@@ -41,23 +41,11 @@ public class MeleeEnemy : EnemyBase
     {
         base.Attack();
         
-        // Implementazione specifica del nemico corpo a corpo
-        // Ad esempio, potremmo voler cambiare temporaneamente il colore
-        if (isAttacking)
-        {
-            spriteRenderer.color = Color.red;
-            // Potremmo anche aggiungere un'animazione di attacco
-        }
-        else{
-            spriteRenderer.color = Color.blue;
-        }
     }
     
     // Override del metodo di OnTriggerEnter2D per gestire logica specifica
     protected override void OnTriggerEnter2D(Collider2D other)
     {
         base.OnTriggerEnter2D(other);
-        
-        // Logica specifica aggiuntiva per questo tipo di nemico
     }
 }

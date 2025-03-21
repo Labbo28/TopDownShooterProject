@@ -1,7 +1,11 @@
+using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
+    public event EventHandler OnEnemyKilled;
+    public event EventHandler OnGameTimeChanged;
     public static GameManager Instance { get; private set; }
 
     [SerializeField] private float gameTime = 0f;
@@ -54,6 +58,11 @@ public class GameManager : MonoBehaviour
     {
         enemiesKilled++;
         // Logica aggiuntiva per quando un nemico viene ucciso
+    }
+
+    public int getEnemiesKilled()
+    {
+        return enemiesKilled;
     }
 
     public void GameOver()
