@@ -6,9 +6,9 @@ using System.Collections;
 public abstract class EnemyBase : MonoBehaviour
 {
     // Events for animations
-    public event EventHandler OnEnemyMoving;
-    public event EventHandler OnEnemyStopMoving;
-    public event EventHandler OnEnemyAttacking;
+    public event EventHandler OnEnemyhit;
+    public event EventHandler OnEnemyDead;
+   
     
     // Base variables for all enemies
     [SerializeField] protected float speed = 3f;
@@ -93,7 +93,7 @@ public abstract class EnemyBase : MonoBehaviour
         {
             isMoving = true;
             spriteRenderer.flipX = direction.x < 0;
-            OnEnemyMoving?.Invoke(this, EventArgs.Empty);
+           
         }
     }
    
@@ -102,7 +102,7 @@ public abstract class EnemyBase : MonoBehaviour
         if (isMoving)
         {
             isMoving = false;
-            OnEnemyStopMoving?.Invoke(this, EventArgs.Empty);
+           
         }
     }
    
@@ -111,7 +111,6 @@ public abstract class EnemyBase : MonoBehaviour
         if (Time.time >= lastAttackTime + attackCooldown)
         {
             isAttacking = true;
-            OnEnemyAttacking?.Invoke(this, EventArgs.Empty);
             lastAttackTime = Time.time;
         }
     }
@@ -127,7 +126,7 @@ public abstract class EnemyBase : MonoBehaviour
     protected virtual void OnDamaged()
     {
         // Visual feedback: flash del colore
-        StartCoroutine(FlashColor(Color.red, 0.1f));
+        OnEnemyhit?.Invoke(this, EventArgs.Empty);
         // Aggiorna la healthbar
         HealthBar.fillAmount = healthSystem.GetHealthPercentage();
         // Rendi visibile la healthbar
@@ -151,20 +150,14 @@ public abstract class EnemyBase : MonoBehaviour
         backgroundHealthBar.gameObject.SetActive(false);
     }
 
-    // Visual damage feedback
-    protected IEnumerator FlashColor(Color color, float duration)
-    {
-        Color originalColor = spriteRenderer.color;
-        spriteRenderer.color = color;
-        yield return new WaitForSeconds(duration);
-        spriteRenderer.color = originalColor;
-    }
+    
 
     // Enemy death method
     public virtual void Die()
     {
         GameManager.Instance?.EnemyKilled();
-        Destroy(gameObject);
+        OnEnemyDead?.Invoke(this, EventArgs.Empty);
+        
     }
 
     // Deal damage to player
@@ -200,7 +193,7 @@ public abstract class EnemyBase : MonoBehaviour
     protected virtual void RaiseAttackEvent()
     {
         isAttacking = true;
-        OnEnemyAttacking?.Invoke(this, EventArgs.Empty);
+        
     }
 
     protected virtual void OnTriggerExit2D(Collider2D other)

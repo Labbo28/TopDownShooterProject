@@ -20,32 +20,19 @@ public class EnemyAnimator : MonoBehaviour
 
     private void Start()
     {
-        enemy.OnEnemyMoving += EnemyOnOnEnemyMoving;
-        enemy.OnEnemyStopMoving += EnemyOnOnEnemyStopMoving;
-        enemy.OnEnemyAttacking += EnemyOnOnEnemyAttacking;
+        enemy.OnEnemyhit += OnEnemyHit;
+        enemy.OnEnemyDead += OnEnemyDead;
+      
     }
 
-    private void EnemyOnOnEnemyMoving(object sender, EventArgs e)
+    private void OnEnemyHit(object sender, EventArgs e)
     {
-        if (_enemyAnimator != null)
-        {
-            _enemyAnimator.SetBool("IsWalking", true);
-        }
+        _enemyAnimator.SetTrigger("Hit");
+    }
+    private void OnEnemyDead(object sender, EventArgs e)
+    {
+        _enemyAnimator.SetBool("Dead", true);
     }
 
-    private void EnemyOnOnEnemyStopMoving(object sender, EventArgs e)
-    {
-        if (_enemyAnimator != null)
-        {
-            _enemyAnimator.SetBool("IsWalking", false);
-        }
-    }
-
-    private void EnemyOnOnEnemyAttacking(object sender, EventArgs e)
-    {
-        if (_enemyAnimator != null)
-        {
-            _enemyAnimator.SetTrigger("Attack"); 
-        }
-    }
+   
 }

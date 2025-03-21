@@ -1,9 +1,14 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    // Singleton
+    //Eventi per la gestione delle animazioni
+    public event EventHandler OnPlayerMoving;
+    public event EventHandler OnPlayerStopMoving;
+    public event EventHandler OnPlayerDead;
+      // Singleton
     public static Player Instance { get; private set; }
 
     // Constants
@@ -71,13 +76,23 @@ public class Player : MonoBehaviour
     private void OnPlayerDeath()
     {
         Debug.Log("Player has died.");
+        OnPlayerDead?.Invoke(this, EventArgs.Empty);
         // Handle player death (e.g., game over screen, respawn, etc.)
-        Destroy(gameObject);
+        
     }
 
     private void HandleMovement()
     {
         _movementDirection = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        if (_movementDirection.magnitude > 0)
+        {
+            OnPlayerMoving?.Invoke(this, EventArgs.Empty);
+        }
+        else
+        {
+            OnPlayerStopMoving?.Invoke(this, EventArgs.Empty);
+        }
+
         transform.Translate(_movementDirection * (Time.deltaTime * _movementSpeed));
     }
 
