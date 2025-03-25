@@ -4,14 +4,21 @@ using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
+    
+   
     public event EventHandler OnEnemyKilled;
     public event EventHandler OnGameTimeChanged;
     public static GameManager Instance { get; private set; }
+
+    private GameTimeDisplay gameTimeDisplay;
 
     [SerializeField] private float gameTime = 0f;
     [SerializeField] private int currentWave = 0;
     [SerializeField] private int enemiesKilled = 0;
     [SerializeField] private int score = 0;
+    
+    private float previousGameTime = 0f;
+    private string formattedTime = "00:00";
 
     public event System.Action<int> OnWaveChanged;
     public event System.Action<int> OnScoreChanged;
@@ -27,11 +34,18 @@ public class GameManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        gameTimeDisplay = gameObject.AddComponent<GameTimeDisplay>();
     }
 
     private void Update()
     {
         gameTime += Time.deltaTime;
+        if(Mathf.FloorToInt(gameTime) != Mathf.FloorToInt(previousGameTime))
+        {
+            formattedTime = GameTimeDisplay.FormatGameTime(gameTime);
+            OnGameTimeChanged?.Invoke(this, EventArgs.Empty);
+        }
+        
         CheckWaveProgression();
     }
 
@@ -57,6 +71,7 @@ public class GameManager : MonoBehaviour
     public void EnemyKilled()
     {
         enemiesKilled++;
+        OnEnemyKilled?.Invoke(this, EventArgs.Empty);
         // Logica aggiuntiva per quando un nemico viene ucciso
     }
 
@@ -69,5 +84,14 @@ public class GameManager : MonoBehaviour
     {
         OnGameOver?.Invoke();
         // Logica per gestire la fine del gioco
+    }
+
+   public float GetGameTime()
+    {
+        return gameTime;
+    }
+    public string getFormattedGameTime()
+    {
+        return formattedTime;
     }
 }

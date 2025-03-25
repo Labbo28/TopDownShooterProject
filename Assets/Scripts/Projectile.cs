@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    [SerializeField] ProjectileSO projectileSO;
+    [SerializeField] public ProjectileSO projectileSO;
     void Start()
     {
         //il proiettile viene distrutto quando il time to live arriva a zero

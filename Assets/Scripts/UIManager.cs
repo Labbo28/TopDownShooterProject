@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -48,11 +49,11 @@ public class UIManager : MonoBehaviour
 
     private void OnGameTimeChanged(object sender, EventArgs e)
     {
-        
+        TextTime.GetComponent<Text>().text = gameManager.getFormattedGameTime();
     }
 
     private void OnEnemyKilled(object sender, EventArgs e)
     {
-       TextKill.GetComponent<Text>().text = gameManager.getEnemiesKilled().ToString();
+       TextKill.GetComponent<Text>().text = gameManager.getEnemiesKilled().ToString();   
     }
 }

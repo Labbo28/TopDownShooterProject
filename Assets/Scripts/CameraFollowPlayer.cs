@@ -27,6 +27,6 @@ using UnityEngine;
 
             _targetPos = target.position + _offset;
             transform.position = Vector3.Lerp(transform.position, _targetPos, lerpSpeed * Time.deltaTime);
-        }
+          }
 
     }

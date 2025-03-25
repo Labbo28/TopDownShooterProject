@@ -119,6 +119,54 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &22042732
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 22042734}
+  - component: {fileID: 22042733}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &22042733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 22042732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fcf3bf30fdfab44fa73dd5d1c92d8a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameTime: 0
+  currentWave: 0
+  enemiesKilled: 0
+  score: 0
+--- !u!4 &22042734
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 22042732}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.6621146, y: -0.67051375, z: 0.09311947}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &120904755
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -131,6 +179,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UI Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 1627495530296630764, guid: 09f724a1baf4c704db76d277de087064,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2367624303108983685, guid: 09f724a1baf4c704db76d277de087064,
+        type: 3}
+      propertyPath: m_Text
+      value: 00:00
       objectReference: {fileID: 0}
     - target: {fileID: 6592734942948576410, guid: 09f724a1baf4c704db76d277de087064,
         type: 3}
@@ -241,6 +299,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7124054703887630459, guid: 09f724a1baf4c704db76d277de087064,
+        type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 22042733}
+    - target: {fileID: 8473172535340164032, guid: 09f724a1baf4c704db76d277de087064,
+        type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -397,7 +465,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be4d089d2c006534abe82bfbf96b63c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
+  target: {fileID: 1484795760}
   lerpSpeed: 1
 --- !u!1001 &615170422
 PrefabInstance:
@@ -561,7 +629,7 @@ GameObject:
   m_Component:
   - component: {fileID: 652087110}
   - component: {fileID: 652087109}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -589,7 +657,7 @@ Transform:
   m_GameObject: {fileID: 652087108}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.1}
+  m_LocalPosition: {x: 0, y: 0, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -740,6 +808,12 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!4 &1484795760 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4654683942288321607, guid: 3b6a366fe4a6fb243a5f71328e0e732f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1773268823}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1676204410
 GameObject:
   m_ObjectHideFlags: 0
@@ -751,7 +825,7 @@ GameObject:
   - component: {fileID: 1676204411}
   - component: {fileID: 1676204413}
   - component: {fileID: 1676204412}
-  m_Layer: 20
+  m_Layer: 1
   m_Name: Tilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3272,3 +3346,4 @@ SceneRoots:
   - {fileID: 886117147}
   - {fileID: 120904755}
   - {fileID: 652087110}
+  - {fileID: 22042734}
