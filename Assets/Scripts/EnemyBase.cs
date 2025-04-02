@@ -3,11 +3,35 @@ using UnityEngine.UI;
 using UnityEngine;
 using System.Collections;
 
+public enum EnemyType
+{
+    Melee,
+    Ranged,
+    Sniper,
+    Boss,
+    // altri tipi di nemici
+}
 public abstract class EnemyBase : MonoBehaviour
 {
     // Events for animations
     public event EventHandler OnEnemyhit;
     public event EventHandler OnEnemyDead;
+
+
+    public class EnemyDeadEventArgs : EventArgs
+    {
+        public EnemyType EnemyType { get; }
+
+        private Vector3 position;
+        public Vector3 Position => position;
+
+        public EnemyDeadEventArgs(EnemyType enemyType, Vector3 position)
+        {
+            EnemyType = enemyType;
+            this.position = position;
+        }
+    }
+
    
     
     // Base variables for all enemies
@@ -78,6 +102,8 @@ public abstract class EnemyBase : MonoBehaviour
         HandleBehavior();
         
     }
+
+    protected abstract EnemyType GetEnemyType();
 
     // comportamento da implementare nelle classi derivate
     protected abstract void HandleBehavior();
@@ -158,7 +184,7 @@ public abstract class EnemyBase : MonoBehaviour
     public virtual void Die()
     {
         GameManager.Instance?.EnemyKilled();
-        OnEnemyDead?.Invoke(this, EventArgs.Empty);
+        OnEnemyDead?.Invoke(this, new EnemyDeadEventArgs(GetEnemyType(),this.transform.position));
         
     }
 

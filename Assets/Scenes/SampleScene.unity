@@ -664,6 +664,63 @@ Transform:
   - {fileID: 1676204411}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &836013275
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 836013277}
+  - component: {fileID: 836013276}
+  m_Layer: 0
+  m_Name: DropManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &836013276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 836013275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca2687b0bcad6c747b24b16b9f7fd0df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  XPDrops:
+  - {fileID: 7511834963911293722, guid: a358dbc5e2d67d04e9b71e0fbdd4fcdc, type: 3}
+  - {fileID: 7511834963911293722, guid: a45cdde397ff0094a850872447bc4e5f, type: 3}
+  - {fileID: 7511834963911293722, guid: 4f0ab4d0151d53c4d822d661ab57f807, type: 3}
+  enemyDropConfigs:
+  - enemyType: 0
+    dropChance: 0.605
+    minDrops: 1
+    maxDrops: 3
+  - enemyType: 1
+    dropChance: 0.728
+    minDrops: 1
+    maxDrops: 3
+--- !u!4 &836013277
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 836013275}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.258591, y: 0.18502367, z: 0.05161242}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &886117145
 GameObject:
   m_ObjectHideFlags: 0
@@ -3347,3 +3404,4 @@ SceneRoots:
   - {fileID: 120904755}
   - {fileID: 652087110}
   - {fileID: 22042734}
+  - {fileID: 836013277}

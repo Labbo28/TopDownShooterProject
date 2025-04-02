@@ -210,4 +210,9 @@ public class SniperEnemy : EnemyBase
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, idealDistance);
     }
+
+    protected override EnemyType GetEnemyType()
+    {
+        return EnemyType.Sniper;
+    }
 }

@@ -48,4 +48,10 @@ public class MeleeEnemy : EnemyBase
     {
         base.OnTriggerEnter2D(other);
     }
+
+    // Sovrascriviamo il metodo per ottenere il tipo di nemico
+    protected override EnemyType GetEnemyType()
+    {
+        return EnemyType.Melee;
+    }
 }

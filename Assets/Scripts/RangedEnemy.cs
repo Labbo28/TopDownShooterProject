@@ -6,7 +6,12 @@ public class RangedEnemy : EnemyBase
     [SerializeField] private float maxDistance = 7f;  // Distanza massima dal giocatore
     [SerializeField] private float shootingRange = 10f;  // Raggio di tiro
     [SerializeField] private GameObject projectilePrefab;  // Prefab del proiettile
-    
+
+    protected override EnemyType GetEnemyType()
+    {
+       return EnemyType.Ranged;
+    }
+
     protected override void HandleBehavior()
     {
         float distanceToPlayer = DistanceToPlayer();
