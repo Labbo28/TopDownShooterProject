@@ -32,6 +32,9 @@ public class EnemyAnimator : MonoBehaviour
     private void OnEnemyDead(object sender, EventArgs e)
     {
         _enemyAnimator.SetBool("Dead", true);
+        enemy.OnEnemyhit -= OnEnemyHit;
+        enemy.OnEnemyDead -= OnEnemyDead;
+        
     }
 
    

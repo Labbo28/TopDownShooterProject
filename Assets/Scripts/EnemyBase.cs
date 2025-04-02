@@ -2,6 +2,7 @@ using System;
 using UnityEngine.UI;
 using UnityEngine;
 using System.Collections;
+using System.Runtime.CompilerServices;
 
 public enum EnemyType
 {
@@ -178,6 +179,12 @@ public abstract class EnemyBase : MonoBehaviour
         backgroundHealthBar.gameObject.SetActive(false);
     }
 
+    private void DisableHealthBar()
+    {
+        HealthBar.gameObject.SetActive(false);
+        backgroundHealthBar.gameObject.SetActive(false);
+    }
+
     
 
     // Enemy death method
@@ -185,7 +192,17 @@ public abstract class EnemyBase : MonoBehaviour
     {
         GameManager.Instance?.EnemyKilled();
         OnEnemyDead?.Invoke(this, new EnemyDeadEventArgs(GetEnemyType(),this.transform.position));
-        
+        StartCoroutine(HandleDeath());
+        DisableHealthBar();
+    }
+
+    private IEnumerator HandleDeath()
+    {
+        GetComponent<Collider2D>().enabled = false;
+         yield return new WaitForSeconds(1f);
+        spriteRenderer.enabled = false; 
+        Destroy(gameObject);
+       
     }
 
     // Deal damage to player
