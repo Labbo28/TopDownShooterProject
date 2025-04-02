@@ -45,8 +45,19 @@ public class UIManager : MonoBehaviour
     {
          gameManager.OnEnemyKilled += OnEnemyKilled;
          gameManager.OnGameTimeChanged += OnGameTimeChanged;
+         gameManager.OnXPChanged += OnXPChanged;
+         gameManager.OnPlayerLevelUp += OnPlayerLevelUp;
     }
 
+    private void OnPlayerLevelUp(int level)
+    {
+        TextLevel.GetComponent<Text>().text = level.ToString();
+    }
+
+    private void OnXPChanged(float xp)
+    {
+        SliderXP.GetComponent<Slider>().value = xp/gameManager.GetXPToLevelUp();
+    }
     private void OnGameTimeChanged(object sender, EventArgs e)
     {
         TextTime.GetComponent<Text>().text = gameManager.getFormattedGameTime();

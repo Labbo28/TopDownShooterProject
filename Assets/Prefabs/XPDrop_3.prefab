@@ -101,7 +101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a67a103f3b9f2754597e7b60471f892a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xpValue: 0
+  xpValue: 9
   attractSpeed: 5
   attractRadius: 3
 --- !u!58 &-6554578018598017897

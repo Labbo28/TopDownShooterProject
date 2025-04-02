@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -15,14 +16,18 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float gameTime = 0f;
     [SerializeField] private int currentWave = 0;
     [SerializeField] private int enemiesKilled = 0;
-    [SerializeField] private int score = 0;
+    [SerializeField] private float XP = 0;
+
+    private int  PlayerLevel = 1;
+    private float xpNeededToLevelUp = 10;
     
     private float previousGameTime = 0f;
     private string formattedTime = "00:00";
 
     public event System.Action<int> OnWaveChanged;
-    public event System.Action<int> OnScoreChanged;
+    public event System.Action<float> OnXPChanged;
     public event System.Action OnGameOver;
+    public event System.Action<int> OnPlayerLevelUp;
 
     private void Awake()
     {
@@ -62,10 +67,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void AddScore(int points)
+
+    public void AddXP(float xp)
     {
-        score += points;
-        OnScoreChanged?.Invoke(score);
+        XP += xp;
+        if (XP >= xpNeededToLevelUp)
+        {
+            PlayerLevel++;
+            OnPlayerLevelUp.Invoke(PlayerLevel);
+            XP -= xpNeededToLevelUp;
+            xpNeededToLevelUp *= 1.5f;
+        }
+        OnXPChanged?.Invoke(XP);
     }
 
     public void EnemyKilled()
@@ -93,5 +106,10 @@ public class GameManager : MonoBehaviour
     public string getFormattedGameTime()
     {
         return formattedTime;
+    }
+
+    public float GetXPToLevelUp()
+    {
+        return xpNeededToLevelUp;
     }
 }

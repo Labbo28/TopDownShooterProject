@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class XPDrop : MonoBehaviour
 {
-    [SerializeField] private int xpValue;
+    [SerializeField] private float xpValue;
     [SerializeField] private float attractSpeed = 5f;
-    [SerializeField] private float attractRadius = 3f;
+    [SerializeField] private float attractRadius = 1.5f;
     
     private Transform player;
     private bool isAttracting = false;
@@ -36,11 +36,7 @@ public class XPDrop : MonoBehaviour
         Debug.Log("Collisione con " + other.name);
         if (other.CompareTag("Player"))
         {
-             // da implementare 
-             // Aggiungi XP al giocatore
-             // other.GetComponent<PlayerStats>().AddExperience(xpValue);            
-             // Instantiate(collectEffect, transform.position, Quaternion.identity);
-            
+            GameManager.Instance.AddXP(xpValue);
             Destroy(gameObject);
         }
     }

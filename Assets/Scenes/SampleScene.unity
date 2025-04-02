@@ -151,7 +151,7 @@ MonoBehaviour:
   gameTime: 0
   currentWave: 0
   enemiesKilled: 0
-  score: 0
+  XP: 0
 --- !u!4 &22042734
 Transform:
   m_ObjectHideFlags: 0
@@ -189,6 +189,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Text
       value: 00:00
+      objectReference: {fileID: 0}
+    - target: {fileID: 4191843198467488423, guid: 09f724a1baf4c704db76d277de087064,
+        type: 3}
+      propertyPath: m_Value
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6592734942948576410, guid: 09f724a1baf4c704db76d277de087064,
         type: 3}
@@ -700,8 +705,8 @@ MonoBehaviour:
   enemyDropConfigs:
   - enemyType: 0
     dropChance: 0.605
-    minDrops: 1
-    maxDrops: 3
+    minDrops: 5
+    maxDrops: 6
   - enemyType: 1
     dropChance: 0.728
     minDrops: 1
@@ -753,7 +758,7 @@ MonoBehaviour:
   gameTime: 0
   currentWave: 0
   enemiesKilled: 0
-  score: 0
+  XP: 0
 --- !u!4 &886117147
 Transform:
   m_ObjectHideFlags: 0
