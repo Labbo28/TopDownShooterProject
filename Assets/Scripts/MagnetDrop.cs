@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class MagnetDrop : MonoBehaviour
 {
-    private float attractRadiusMultiplier = 10f;
-    private float attractSpeedMultiplier = 10f;
+    private float attractRadiusMultiplier = 2f;
+    private float attractSpeedMultiplier = 2f;
     private Transform player;
 
     public float AttractRadiusMultiplier

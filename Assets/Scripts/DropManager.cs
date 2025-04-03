@@ -1,34 +1,50 @@
 using UnityEngine;
-
 using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 
+public enum DropType
+{
+    XP,
+    Medikit,
+    Magnet
+}
 
 public class DropManager : MonoBehaviour
 {  
     public static DropManager Instance { get; private set; }
+    
     [System.Serializable]
-
-
     public class EnemyDropConfig
     {
         public EnemyType enemyType;
+        [Header("XP Drop Settings")]
         [Range(0f, 1f)]
-        public float dropChance = 1f;
-        public int minDrops = 1;
-        public int maxDrops = 3;
+        public float xpDropChance = 1f;
+        public int minXPDrops = 1;
+        public int maxXPDrops = 3;
+        
+        [Header("Special Drop Settings")]
+        [Range(0f, 1f)]
+        public float specialDropChance = 0.1f;
+        [Range(0f, 1f)]
+        public float medikitWeight = 0.5f;
+        [Range(0f, 1f)]
+        public float magnetWeight = 0.5f;
+    }
+    
+    [System.Serializable]
+    public class DropTypeConfig
+    {
+        public DropType dropType;
+        public GameObject[] dropPrefabs;
     }
 
-    // Contiene i 3 tipi di XP drop
-    [SerializeField] private GameObject[] XPDrops;
+    // Configurazione dei drop prefabs per ogni tipo di drop
+    [SerializeField] private List<DropTypeConfig> dropConfigs;
     
     // Configurazione dei drop per tipo di nemico
     [SerializeField] private List<EnemyDropConfig> enemyDropConfigs;
-
-
-   
-  
 
     private void Awake()
     {
@@ -40,6 +56,7 @@ public class DropManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
+
     private void Start()
     {
         // Trova tutti i nemici presenti nella scena all'avvio
@@ -57,7 +74,6 @@ public class DropManager : MonoBehaviour
     }
 
     // Metodo per registrare un singolo nemico (utile per nemici spawnati dopo l'avvio)
-    //se dimentichiamo di registrare un nemico siamo cucinati
     public void RegisterEnemy(EnemyBase enemy)
     {
         // Rimuovo il listener se già presente per evitare duplicati
@@ -77,36 +93,90 @@ public class DropManager : MonoBehaviour
             // Trova la configurazione per questo tipo di nemico
             EnemyDropConfig config = enemyDropConfigs.Find(c => c.enemyType == enemyType);
             
-            // Se non c'è una configurazione specifica, usa valori predefiniti o esci
+            // Se non c'è una configurazione specifica, esci
             if (config == null) return;
             
-            // Determina se deve droppare qualcosa
-            if (UnityEngine.Random.value <= config.dropChance)
+            // Genera un drop speciale (medikit o magnete) con una piccola probabilità
+            if (UnityEngine.Random.value <= config.specialDropChance)
             {
-                // Determina quanti drop generare
-                int numDrops = UnityEngine.Random.Range(config.minDrops, config.maxDrops + 1);
+                // Decidi quale tipo di drop speciale generare
+                DropType specialDropType = DetermineSpecialDropType(config);
                 
-                for (int i = 0; i < numDrops; i++)
+                // Genera il drop speciale
+                GenerateDrop(specialDropType, enemyType, dropPosition);
+            }
+            
+            // Genera i normali drop di XP (indipendentemente dal drop speciale)
+            if (UnityEngine.Random.value <= config.xpDropChance)
+            {
+                // Determina quanti XP drop generare
+                int numXPDrops = UnityEngine.Random.Range(config.minXPDrops, config.maxXPDrops + 1);
+                
+                for (int i = 0; i < numXPDrops; i++)
                 {
-                    // Scegli un tipo di XP drop in base al tipo di nemico
-                    int dropIndex = GetDropIndexForEnemyType(enemyType);
-                    
-                    // Aggiungi una leggera variazione alla posizione per evitare sovrapposizioni
-                    Vector3 offset = new Vector3(
-                        UnityEngine.Random.Range(-0.5f, 0.5f),
-                        UnityEngine.Random.Range(-0.5f, 0.5f),
-                        0f
-                    );
-                    
-                    // Crea il drop
-                    Instantiate(XPDrops[dropIndex], dropPosition + offset, Quaternion.identity);
+                    GenerateDrop(DropType.XP, enemyType, dropPosition);
                 }
             }
         }
     }
 
+    // Genera un singolo drop
+    private void GenerateDrop(DropType dropType, EnemyType enemyType, Vector3 position)
+    {
+        // Ottieni la configurazione per questo tipo di drop
+        DropTypeConfig dropConfig = dropConfigs.Find(c => c.dropType == dropType);
+        if (dropConfig == null || dropConfig.dropPrefabs.Length == 0) return;
+        
+        // Scegli il prefab specifico da utilizzare
+        int prefabIndex = GetPrefabIndexForDropType(dropType, enemyType);
+        if (prefabIndex >= dropConfig.dropPrefabs.Length) prefabIndex = 0;
+        
+        // Aggiungi una leggera variazione alla posizione per evitare sovrapposizioni
+        Vector3 offset = new Vector3(
+            UnityEngine.Random.Range(-0.5f, 0.5f),
+            UnityEngine.Random.Range(-0.5f, 0.5f),
+            0f
+        );
+        
+        // Crea il drop
+        Instantiate(dropConfig.dropPrefabs[prefabIndex], position + offset, Quaternion.identity);
+    }
+
+    // Determina quale tipo di drop speciale generare in base alle probabilità configurate
+    private DropType DetermineSpecialDropType(EnemyDropConfig config)
+    {
+        float totalWeight = config.medikitWeight + config.magnetWeight;
+        float normalizedMedikitWeight = config.medikitWeight / totalWeight;
+        
+        // Determina il tipo di drop speciale
+        if (UnityEngine.Random.value <= normalizedMedikitWeight)
+        {
+            return DropType.Medikit;
+        }
+        else
+        {
+            return DropType.Magnet;
+        }
+    }
+
+    // Determina quale prefab specifico usare per il tipo di drop e il tipo di nemico
+    private int GetPrefabIndexForDropType(DropType dropType, EnemyType enemyType)
+    {
+        switch (dropType)
+        {
+            case DropType.XP:
+                return GetXPDropIndexForEnemyType(enemyType);
+            case DropType.Medikit:
+                return 0; // Per ora c'è solo un tipo di medikit
+            case DropType.Magnet:
+                return 0; // Per ora c'è solo un tipo di magnete
+            default:
+                return 0;
+        }
+    }
+
     // Determina quale tipo di XP drop usare in base al tipo di nemico
-    private int GetDropIndexForEnemyType(EnemyType enemyType)
+    private int GetXPDropIndexForEnemyType(EnemyType enemyType)
     {
         // Logica per decidere quale XP drop usare in base al tipo di nemico
         switch (enemyType)

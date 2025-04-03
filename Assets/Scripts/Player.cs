@@ -59,7 +59,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(healthSystem.Health);
+      
         // Skip updates if player is dead
         if (healthSystem != null && !healthSystem.IsAlive) return;
                
