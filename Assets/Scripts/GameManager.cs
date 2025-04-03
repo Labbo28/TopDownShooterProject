@@ -18,6 +18,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int enemiesKilled = 0;
     [SerializeField] private float XP = 0;
 
+   //attrtributi della classe MagnetDrop
+    private float attractRadius =1.5f;
+    private float attractSpeed=2f;
+
+//Attributi della classe Medikit_drop
+private float healAmount = 0.3f; //valore percentuale della vita ripristinata
+
     private int  PlayerLevel = 1;
     private float xpNeededToLevelUp = 10;
     
@@ -111,5 +118,33 @@ public class GameManager : MonoBehaviour
     public float GetXPToLevelUp()
     {
         return xpNeededToLevelUp;
+    }
+
+      public float GetAttractSpeed()
+    {
+        return attractSpeed;
+    }
+    public float GetAttractRadius()
+    {
+        return attractRadius;
+    }
+
+    
+    public void SetAttractSpeed(float speed)
+    {
+        attractSpeed = speed;
+    }
+    public void SetAttractRadius(float radius)
+    {
+        attractRadius = radius;
+    }
+
+    public void SetHealAmount(float amount)
+    {
+        healAmount = amount;
+    }
+    public float GetHealAmount()
+    {
+        return healAmount;
     }
 }

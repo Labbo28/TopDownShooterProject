@@ -51,7 +51,7 @@ public class UIManager : MonoBehaviour
 
     private void OnPlayerLevelUp(int level)
     {
-        TextLevel.GetComponent<Text>().text = level.ToString();
+        TextLevel.GetComponent<Text>().text = "Lv." + level.ToString();
     }
 
     private void OnXPChanged(float xp)

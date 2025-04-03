@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class XPDrop : MonoBehaviour
 {
+
+
     [SerializeField] private float xpValue;
-    [SerializeField] private float attractSpeed = 5f;
-    [SerializeField] private float attractRadius = 1.5f;
     
     private Transform player;
     private bool isAttracting = false;
@@ -19,7 +19,11 @@ public class XPDrop : MonoBehaviour
         // Attrazione verso il giocatore quando è vicino
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
         
-        if (distanceToPlayer <= attractRadius)
+        if (distanceToPlayer <= GameManager.Instance.GetAttractRadius())
+        {
+            isAttracting = true;
+        }
+        else if (distanceToPlayer > GameManager.Instance.GetAttractRadius())
         {
             isAttracting = true;
         }
@@ -27,7 +31,7 @@ public class XPDrop : MonoBehaviour
         if (isAttracting)
         {
             transform.position = Vector3.MoveTowards(transform.position, 
-                player.position, attractSpeed * Time.deltaTime);
+                player.position, GameManager.Instance.GetAttractSpeed() * Time.deltaTime);
         }
     }
     
@@ -40,4 +44,15 @@ public class XPDrop : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+
+    public void SetXPValue(float value)
+    {
+        xpValue = value;
+    }
+    public float GetXPValue()
+    {
+        return xpValue;
+    }
+  
 }
