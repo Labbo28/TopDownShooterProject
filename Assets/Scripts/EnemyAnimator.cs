@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class EnemyAnimator : MonoBehaviour
 {
@@ -20,22 +21,28 @@ public class EnemyAnimator : MonoBehaviour
 
     private void Start()
     {
-        enemy.OnEnemyhit += OnEnemyHit;
-        enemy.OnEnemyDead += OnEnemyDead;
-      
+        enemy.OnEnemyhit.AddListener(OnEnemyHit);
+        enemy.OnEnemyDead.AddListener(OnEnemyDead);
     }
 
-    private void OnEnemyHit(object sender, EventArgs e)
+    private void OnEnemyHit()
     {
         _enemyAnimator.SetTrigger("Hit");
     }
-    private void OnEnemyDead(object sender, EventArgs e)
+
+    private void OnEnemyDead(EnemyType enemyType, Vector3 position)
     {
         _enemyAnimator.SetBool("Dead", true);
-        enemy.OnEnemyhit -= OnEnemyHit;
-        enemy.OnEnemyDead -= OnEnemyDead;
-        
+        enemy.OnEnemyhit.RemoveListener(OnEnemyHit);
+        enemy.OnEnemyDead.RemoveListener(OnEnemyDead);
     }
 
-   
+    private void OnDestroy()
+    {
+        if (enemy != null)
+        {
+            enemy.OnEnemyhit.RemoveListener(OnEnemyHit);
+            enemy.OnEnemyDead.RemoveListener(OnEnemyDead);
+        }
+    }
 }

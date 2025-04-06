@@ -460,6 +460,74 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09f724a1baf4c704db76d277de087064, type: 3}
+--- !u!1001 &157283271
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4173612509588736923, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -33.068886
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173612509588736923, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 16.56497
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173612509588736923, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.09311947
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173612509588736923, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173612509588736923, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173612509588736923, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173612509588736923, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173612509588736923, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173612509588736923, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173612509588736923, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7511834963911293722, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5,
+        type: 3}
+      propertyPath: m_Name
+      value: Medikit_drop (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5, type: 3}
 --- !u!1 &246759936
 GameObject:
   m_ObjectHideFlags: 0
@@ -10516,6 +10584,142 @@ Transform:
   - {fileID: 1676204411}
   m_Father: {fileID: 2014037030}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &753555967
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4173612509588736923, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -36.28133
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173612509588736923, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 18.433432
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173612509588736923, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.09311947
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173612509588736923, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173612509588736923, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173612509588736923, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173612509588736923, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173612509588736923, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173612509588736923, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173612509588736923, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7511834963911293722, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5,
+        type: 3}
+      propertyPath: m_Name
+      value: Medikit_drop (2)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5, type: 3}
+--- !u!1001 &771088172
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4173612509588736923, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -31.265984
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173612509588736923, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 15.647129
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173612509588736923, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.09311947
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173612509588736923, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173612509588736923, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173612509588736923, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173612509588736923, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173612509588736923, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173612509588736923, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173612509588736923, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7511834963911293722, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5,
+        type: 3}
+      propertyPath: m_Name
+      value: Medikit_drop
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5, type: 3}
 --- !u!1 &792828796
 GameObject:
   m_ObjectHideFlags: 0
@@ -10590,19 +10794,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca2687b0bcad6c747b24b16b9f7fd0df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  XPDrops:
-  - {fileID: 7511834963911293722, guid: a358dbc5e2d67d04e9b71e0fbdd4fcdc, type: 3}
-  - {fileID: 7511834963911293722, guid: a45cdde397ff0094a850872447bc4e5f, type: 3}
-  - {fileID: 7511834963911293722, guid: 4f0ab4d0151d53c4d822d661ab57f807, type: 3}
+  dropConfigs:
+  - dropType: 0
+    dropPrefabs:
+    - {fileID: 7511834963911293722, guid: a358dbc5e2d67d04e9b71e0fbdd4fcdc, type: 3}
+    - {fileID: 7511834963911293722, guid: a45cdde397ff0094a850872447bc4e5f, type: 3}
+    - {fileID: 7511834963911293722, guid: 4f0ab4d0151d53c4d822d661ab57f807, type: 3}
+  - dropType: 1
+    dropPrefabs:
+    - {fileID: 7511834963911293722, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5, type: 3}
+  - dropType: 2
+    dropPrefabs:
+    - {fileID: 7511834963911293722, guid: 2704bbc430750b94fbfa28b5f4d20b87, type: 3}
   enemyDropConfigs:
   - enemyType: 0
-    dropChance: 0.605
-    minDrops: 5
-    maxDrops: 6
+    xpDropChance: 1
+    minXPDrops: 1
+    maxXPDrops: 3
+    specialDropChance: 0.1
+    medikitWeight: 0.5
+    magnetWeight: 0.5
   - enemyType: 1
-    dropChance: 0.728
-    minDrops: 1
-    maxDrops: 3
+    xpDropChance: 1
+    minXPDrops: 1
+    maxXPDrops: 3
+    specialDropChance: 0.1
+    medikitWeight: 0.5
+    magnetWeight: 0.5
 --- !u!4 &836013277
 Transform:
   m_ObjectHideFlags: 0
@@ -39798,3 +40016,6 @@ SceneRoots:
   - {fileID: 365802081}
   - {fileID: 462849551}
   - {fileID: 854073805}
+  - {fileID: 771088172}
+  - {fileID: 157283271}
+  - {fileID: 753555967}

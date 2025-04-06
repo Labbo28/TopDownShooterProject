@@ -77,45 +77,38 @@ public class DropManager : MonoBehaviour
     public void RegisterEnemy(EnemyBase enemy)
     {
         // Rimuovo il listener se già presente per evitare duplicati
-        enemy.OnEnemyDead -= HandleEnemyDeath; 
-        enemy.OnEnemyDead += HandleEnemyDeath; 
+        enemy.OnEnemyDead.RemoveListener(HandleEnemyDeath); 
+        enemy.OnEnemyDead.AddListener(HandleEnemyDeath); 
     }
 
     // Gestisce l'evento di morte del nemico
-    private void HandleEnemyDeath(object sender, EventArgs e)
+    private void HandleEnemyDeath(EnemyType enemyType, Vector3 position)
     {
-        // Cast degli EventArgs al tipo specifico
-        if (e is EnemyBase.EnemyDeadEventArgs args)
+        // Trova la configurazione per questo tipo di nemico
+        EnemyDropConfig config = enemyDropConfigs.Find(c => c.enemyType == enemyType);
+        
+        // Se non c'è una configurazione specifica, esci
+        if (config == null) return;
+        
+        // Genera un drop speciale (medikit o magnete) con una piccola probabilità
+        if (UnityEngine.Random.value <= config.specialDropChance)
         {
-            EnemyType enemyType = args.EnemyType;
-            Vector3 dropPosition = args.Position;
+            // Decidi quale tipo di drop speciale generare
+            DropType specialDropType = DetermineSpecialDropType(config);
             
-            // Trova la configurazione per questo tipo di nemico
-            EnemyDropConfig config = enemyDropConfigs.Find(c => c.enemyType == enemyType);
+            // Genera il drop speciale
+            GenerateDrop(specialDropType, enemyType, position);
+        }
+        
+        // Genera i normali drop di XP (indipendentemente dal drop speciale)
+        if (UnityEngine.Random.value <= config.xpDropChance)
+        {
+            // Determina quanti XP drop generare
+            int numXPDrops = UnityEngine.Random.Range(config.minXPDrops, config.maxXPDrops + 1);
             
-            // Se non c'è una configurazione specifica, esci
-            if (config == null) return;
-            
-            // Genera un drop speciale (medikit o magnete) con una piccola probabilità
-            if (UnityEngine.Random.value <= config.specialDropChance)
+            for (int i = 0; i < numXPDrops; i++)
             {
-                // Decidi quale tipo di drop speciale generare
-                DropType specialDropType = DetermineSpecialDropType(config);
-                
-                // Genera il drop speciale
-                GenerateDrop(specialDropType, enemyType, dropPosition);
-            }
-            
-            // Genera i normali drop di XP (indipendentemente dal drop speciale)
-            if (UnityEngine.Random.value <= config.xpDropChance)
-            {
-                // Determina quanti XP drop generare
-                int numXPDrops = UnityEngine.Random.Range(config.minXPDrops, config.maxXPDrops + 1);
-                
-                for (int i = 0; i < numXPDrops; i++)
-                {
-                    GenerateDrop(DropType.XP, enemyType, dropPosition);
-                }
+                GenerateDrop(DropType.XP, enemyType, position);
             }
         }
     }
@@ -200,7 +193,7 @@ public class DropManager : MonoBehaviour
         EnemyBase[] enemies = FindObjectsOfType<EnemyBase>();
         foreach (EnemyBase enemy in enemies)
         {
-            enemy.OnEnemyDead -= HandleEnemyDeath;
+            enemy.OnEnemyDead.RemoveListener(HandleEnemyDeath);
         }
     }
 }

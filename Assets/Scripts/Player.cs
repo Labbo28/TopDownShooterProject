@@ -1,14 +1,16 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Player : MonoBehaviour
 {
     //Eventi per la gestione delle animazioni
-    public event EventHandler OnPlayerMoving;
-    public event EventHandler OnPlayerStopMoving;
-    public event EventHandler OnPlayerDead;
-      // Singleton
+    public UnityEvent OnPlayerMoving;
+    public UnityEvent OnPlayerStopMoving;
+    public UnityEvent OnPlayerDead;
+    
+    // Singleton
     public static Player Instance { get; private set; }
 
     // Constants
@@ -59,12 +61,12 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-      
         // Skip updates if player is dead
         if (healthSystem != null && !healthSystem.IsAlive) return;
                
         // Tick the timer and handle movement
-        _dashTimer?.Tick(Time.deltaTime);
+        _dashTimer?.Tick(Time.deltaTime);  
+        
         HandleMovement();
 
         // Check for dash
@@ -77,9 +79,7 @@ public class Player : MonoBehaviour
     private void OnPlayerDeath()
     {
         Debug.Log("Player has died.");
-        OnPlayerDead?.Invoke(this, EventArgs.Empty);
-        // Handle player death (e.g., game over screen, respawn, etc.)
-        
+        OnPlayerDead?.Invoke();
     }
 
     private void HandleMovement()
@@ -87,11 +87,11 @@ public class Player : MonoBehaviour
         _movementDirection = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         if (_movementDirection.magnitude > 0)
         {
-            OnPlayerMoving?.Invoke(this, EventArgs.Empty);
+            OnPlayerMoving?.Invoke();
         }
         else
         {
-            OnPlayerStopMoving?.Invoke(this, EventArgs.Empty);
+            OnPlayerStopMoving?.Invoke();
         }
 
         transform.Translate(_movementDirection * (Time.deltaTime * _movementSpeed));

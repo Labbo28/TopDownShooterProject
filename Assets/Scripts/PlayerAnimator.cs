@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerAnimator : MonoBehaviour
 {
@@ -15,34 +16,39 @@ public class PlayerAnimator : MonoBehaviour
         {
             Debug.LogWarning("Nessun Animator presente in PlayerPrefab");
         }
-    
-    
-    }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        player.OnPlayerMoving += OnPlayerMoving;
-        player.OnPlayerStopMoving += OnPlayerStopMoving;
-        player.OnPlayerDead += OnPlayerDead;
     }
 
-        private void OnPlayerMoving(object sender, System.EventArgs e)
+    private void Start()
+    {
+        player.OnPlayerMoving.AddListener(OnPlayerMoving);
+        player.OnPlayerStopMoving.AddListener(OnPlayerStopMoving);
+        player.OnPlayerDead.AddListener(OnPlayerDead);
+    }
+
+    private void OnPlayerMoving()
+    {
+        playerAnimator.SetBool("isRunning", true);  
+    }
+
+    private void OnPlayerStopMoving()
+    {
+        playerAnimator.SetBool("isRunning", false); 
+    }
+
+    private void OnPlayerDead()
+    {
+        playerAnimator.SetBool("isDead", true);
+    }
+
+    private void OnDestroy()
+    {
+        if (player != null)
         {
-            playerAnimator.SetBool("isRunning", true);  
-           
+            player.OnPlayerMoving.RemoveListener(OnPlayerMoving);
+            player.OnPlayerStopMoving.RemoveListener(OnPlayerStopMoving);
+            player.OnPlayerDead.RemoveListener(OnPlayerDead);
         }
-    
-        private void OnPlayerStopMoving(object sender, System.EventArgs e)
-        {
-             playerAnimator.SetBool("isRunning", false); 
-           
-        }
-    
-        private void OnPlayerDead(object sender, System.EventArgs e)
-        {
-            playerAnimator.SetBool("isDead", true);
-           
-        }
+    }
 
     // Update is called once per frame
     void Update()

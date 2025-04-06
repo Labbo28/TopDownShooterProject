@@ -5,10 +5,8 @@ using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
-    
-   
-    public event EventHandler OnEnemyKilled;
-    public event EventHandler OnGameTimeChanged;
+    public UnityEvent OnEnemyKilled;
+    public UnityEvent OnGameTimeChanged;
     public static GameManager Instance { get; private set; }
 
     private GameTimeDisplay gameTimeDisplay;
@@ -18,23 +16,23 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int enemiesKilled = 0;
     [SerializeField] private float XP = 0;
 
-   //attrtributi della classe MagnetDrop
-    private float attractRadius =1.5f;
-    private float attractSpeed=2f;
+    //attrtributi della classe MagnetDrop
+    private float attractRadius = 1.5f;
+    private float attractSpeed = 2f;
 
-//Attributi della classe Medikit_drop
-private float healAmount = 0.3f; //valore percentuale della vita ripristinata
+    //Attributi della classe Medikit_drop
+    private float healAmount = 0.3f; //valore percentuale della vita ripristinata
 
-    private int  PlayerLevel = 1;
+    private int PlayerLevel = 1;
     private float xpNeededToLevelUp = 10;
     
     private float previousGameTime = 0f;
     private string formattedTime = "00:00";
 
-    public event System.Action<int> OnWaveChanged;
-    public event System.Action<float> OnXPChanged;
-    public event System.Action OnGameOver;
-    public event System.Action<int> OnPlayerLevelUp;
+    public UnityEvent<int> OnWaveChanged;
+    public UnityEvent<float> OnXPChanged;
+    public UnityEvent OnGameOver;
+    public UnityEvent<int> OnPlayerLevelUp;
 
     private void Awake()
     {
@@ -47,6 +45,14 @@ private float healAmount = 0.3f; //valore percentuale della vita ripristinata
         Instance = this;
         DontDestroyOnLoad(gameObject);
         gameTimeDisplay = gameObject.AddComponent<GameTimeDisplay>();
+
+        // Initialize events
+        OnEnemyKilled = new UnityEvent();
+        OnGameTimeChanged = new UnityEvent();
+        OnWaveChanged = new UnityEvent<int>();
+        OnXPChanged = new UnityEvent<float>();
+        OnGameOver = new UnityEvent();
+        OnPlayerLevelUp = new UnityEvent<int>();
     }
 
     private void Update()
@@ -55,7 +61,7 @@ private float healAmount = 0.3f; //valore percentuale della vita ripristinata
         if(Mathf.FloorToInt(gameTime) != Mathf.FloorToInt(previousGameTime))
         {
             formattedTime = GameTimeDisplay.FormatGameTime(gameTime);
-            OnGameTimeChanged?.Invoke(this, EventArgs.Empty);
+            OnGameTimeChanged?.Invoke();
         }
         
         CheckWaveProgression();
@@ -64,7 +70,6 @@ private float healAmount = 0.3f; //valore percentuale della vita ripristinata
     private void CheckWaveProgression()
     {
         // Logica per cambiare le ondate basata sul tempo
-        //anche se forse sarebbe meglio una logica basata su eventi/obiettivi
         int newWave = Mathf.FloorToInt(gameTime / 60f) + 1;
         
         if (newWave != currentWave)
@@ -74,14 +79,13 @@ private float healAmount = 0.3f; //valore percentuale della vita ripristinata
         }
     }
 
-
     public void AddXP(float xp)
     {
         XP += xp;
         if (XP >= xpNeededToLevelUp)
         {
             PlayerLevel++;
-            OnPlayerLevelUp.Invoke(PlayerLevel);
+            OnPlayerLevelUp?.Invoke(PlayerLevel);
             XP -= xpNeededToLevelUp;
             xpNeededToLevelUp *= 1.5f;
         }
@@ -91,8 +95,7 @@ private float healAmount = 0.3f; //valore percentuale della vita ripristinata
     public void EnemyKilled()
     {
         enemiesKilled++;
-        OnEnemyKilled?.Invoke(this, EventArgs.Empty);
-        // Logica aggiuntiva per quando un nemico viene ucciso
+        OnEnemyKilled?.Invoke();
     }
 
     public int getEnemiesKilled()
@@ -103,13 +106,13 @@ private float healAmount = 0.3f; //valore percentuale della vita ripristinata
     public void GameOver()
     {
         OnGameOver?.Invoke();
-        // Logica per gestire la fine del gioco
     }
 
-   public float GetGameTime()
+    public float GetGameTime()
     {
         return gameTime;
     }
+
     public string getFormattedGameTime()
     {
         return formattedTime;
@@ -120,20 +123,21 @@ private float healAmount = 0.3f; //valore percentuale della vita ripristinata
         return xpNeededToLevelUp;
     }
 
-      public float GetAttractSpeed()
+    public float GetAttractSpeed()
     {
         return attractSpeed;
     }
+
     public float GetAttractRadius()
     {
         return attractRadius;
     }
-
     
     public void SetAttractSpeed(float speed)
     {
         attractSpeed = speed;
     }
+
     public void SetAttractRadius(float radius)
     {
         attractRadius = radius;
@@ -143,6 +147,7 @@ private float healAmount = 0.3f; //valore percentuale della vita ripristinata
     {
         healAmount = amount;
     }
+
     public float GetHealAmount()
     {
         return healAmount;

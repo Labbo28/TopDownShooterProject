@@ -5,21 +5,19 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
- [SerializeField] GameManager gameManager;
- [SerializeField] Canvas canvas;
- [SerializeField] GameObject TextKill;
- [SerializeField] GameObject TextTime;
- [SerializeField] GameObject TextLevel;
- [SerializeField] GameObject SliderXP;
+    [SerializeField] GameManager gameManager;
+    [SerializeField] Canvas canvas;
+    [SerializeField] GameObject TextKill;
+    [SerializeField] GameObject TextTime;
+    [SerializeField] GameObject TextLevel;
+    [SerializeField] GameObject SliderXP;
 
-
-   private void Awake()
+    private void Awake()
     {
-      
-       if (gameManager == null)
-       Debug.LogWarning("GameManager non assegnato");
+        if (gameManager == null)
+            Debug.LogWarning("GameManager non assegnato");
 
-             if (canvas == null)
+        if (canvas == null)
         {
             Debug.LogWarning("Canvas non assegnato");
         }
@@ -39,14 +37,14 @@ public class UIManager : MonoBehaviour
         {
             Debug.LogWarning("SliderXP non assegnato");
         }
-       
     }
+
     private void Start()
     {
-         gameManager.OnEnemyKilled += OnEnemyKilled;
-         gameManager.OnGameTimeChanged += OnGameTimeChanged;
-         gameManager.OnXPChanged += OnXPChanged;
-         gameManager.OnPlayerLevelUp += OnPlayerLevelUp;
+        gameManager.OnEnemyKilled.AddListener(OnEnemyKilled);
+        gameManager.OnGameTimeChanged.AddListener(OnGameTimeChanged);
+        gameManager.OnXPChanged.AddListener(OnXPChanged);
+        gameManager.OnPlayerLevelUp.AddListener(OnPlayerLevelUp);
     }
 
     private void OnPlayerLevelUp(int level)
@@ -58,13 +56,25 @@ public class UIManager : MonoBehaviour
     {
         SliderXP.GetComponent<Slider>().value = xp/gameManager.GetXPToLevelUp();
     }
-    private void OnGameTimeChanged(object sender, EventArgs e)
+
+    private void OnGameTimeChanged()
     {
         TextTime.GetComponent<Text>().text = gameManager.getFormattedGameTime();
     }
 
-    private void OnEnemyKilled(object sender, EventArgs e)
+    private void OnEnemyKilled()
     {
-       TextKill.GetComponent<Text>().text = gameManager.getEnemiesKilled().ToString();   
+        TextKill.GetComponent<Text>().text = gameManager.getEnemiesKilled().ToString();   
+    }
+
+    private void OnDestroy()
+    {
+        if (gameManager != null)
+        {
+            gameManager.OnEnemyKilled.RemoveListener(OnEnemyKilled);
+            gameManager.OnGameTimeChanged.RemoveListener(OnGameTimeChanged);
+            gameManager.OnXPChanged.RemoveListener(OnXPChanged);
+            gameManager.OnPlayerLevelUp.RemoveListener(OnPlayerLevelUp);
+        }
     }
 }

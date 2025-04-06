@@ -1,6 +1,7 @@
 using System;
 using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.Events;
 using System.Collections;
 using System.Runtime.CompilerServices;
 
@@ -12,12 +13,14 @@ public enum EnemyType
     Boss,
     // altri tipi di nemici
 }
+
+public class EnemyDeadEvent : UnityEvent<EnemyType, Vector3> { }
+
 public abstract class EnemyBase : MonoBehaviour
 {
     // Events for animations
-    public event EventHandler OnEnemyhit;
-    public event EventHandler OnEnemyDead;
-
+    public UnityEvent OnEnemyhit;
+    public EnemyDeadEvent OnEnemyDead;
 
     public class EnemyDeadEventArgs : EventArgs
     {
@@ -33,8 +36,6 @@ public abstract class EnemyBase : MonoBehaviour
         }
     }
 
-   
-    
     // Base variables for all enemies
     [SerializeField] protected float speed = 3f;
     [SerializeField] protected float damage = 5f;
@@ -83,6 +84,10 @@ public abstract class EnemyBase : MonoBehaviour
         healthSystem.onDamaged.AddListener(OnDamaged);
         healthSystem.onDeath.AddListener(Die);
 
+        // Initialize events
+        OnEnemyhit = new UnityEvent();
+        OnEnemyDead = new EnemyDeadEvent();
+
         // Initialize health bar
         HealthBar.fillAmount = healthSystem.GetHealthPercentage();
         // Disabilita la healthbar di default
@@ -101,7 +106,6 @@ public abstract class EnemyBase : MonoBehaviour
         if (!IsAlive || player == null) return;
         
         HandleBehavior();
-        
     }
 
     protected abstract EnemyType GetEnemyType();
@@ -121,8 +125,6 @@ public abstract class EnemyBase : MonoBehaviour
         if (!isMoving)
         {
             isMoving = true;
-            
-           
         }
     }
    
@@ -131,7 +133,6 @@ public abstract class EnemyBase : MonoBehaviour
         if (isMoving)
         {
             isMoving = false;
-           
         }
     }
    
@@ -155,7 +156,7 @@ public abstract class EnemyBase : MonoBehaviour
     protected virtual void OnDamaged()
     {
         // Visual feedback: flash del colore
-        OnEnemyhit?.Invoke(this, EventArgs.Empty);
+        OnEnemyhit?.Invoke();
         // Aggiorna la healthbar
         HealthBar.fillAmount = healthSystem.GetHealthPercentage();
         // Rendi visibile la healthbar
@@ -185,13 +186,11 @@ public abstract class EnemyBase : MonoBehaviour
         backgroundHealthBar.gameObject.SetActive(false);
     }
 
-    
-
     // Enemy death method
     public virtual void Die()
     {
         GameManager.Instance?.EnemyKilled();
-        OnEnemyDead?.Invoke(this, new EnemyDeadEventArgs(GetEnemyType(),this.transform.position));
+        OnEnemyDead?.Invoke(GetEnemyType(), transform.position);
         StartCoroutine(HandleDeath());
         DisableHealthBar();
     }
@@ -199,10 +198,9 @@ public abstract class EnemyBase : MonoBehaviour
     private IEnumerator HandleDeath()
     {
         GetComponent<Collider2D>().enabled = false;
-         yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1f);
         spriteRenderer.enabled = false; 
         Destroy(gameObject);
-       
     }
 
     // Deal damage to player
@@ -238,7 +236,6 @@ public abstract class EnemyBase : MonoBehaviour
     protected virtual void RaiseAttackEvent()
     {
         isAttacking = true;
-        
     }
 
     protected virtual void OnTriggerExit2D(Collider2D other)
