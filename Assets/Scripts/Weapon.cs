@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+public abstract class Weapon : MonoBehaviour
 {
     [SerializeField] private WeaponSO weaponSo;
 
@@ -11,12 +11,21 @@ public class Weapon : MonoBehaviour
 
     [SerializeField] private Transform pivotPoint;
     
-
-     void Update()
+    void Update()
     {
         HandleShooting();
         HandleWeaponRotation();
     }
+
+    
+        public Vector3 GetProjectileDirection()
+        {
+            Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            mouseWorldPosition.z = 0f;
+
+            Vector3 direction = (mouseWorldPosition - shotPoint.position).normalized;
+            return direction;
+        }
 
    private void HandleWeaponRotation()
 {
@@ -49,11 +58,32 @@ public class Weapon : MonoBehaviour
     }
 }
 
-    private void HandleShooting()
+    protected abstract void HandleShooting();
+    
+    public void SetWeaponSO(WeaponSO weaponSo)
     {
-        if (Input.GetMouseButtonDown(0) )
-        {
-            Instantiate( weaponSo.projectile.projectilePrefab, shotPoint.position, shotPoint.rotation);
-        }
+        this.weaponSo = weaponSo;
     }
+
+    public WeaponSO GetWeaponSO()
+    {
+        return weaponSo;
+    }
+    public Transform GetPivotPoint()
+    {
+        return pivotPoint;
+    }
+
+    public Transform GetShotPoint()
+    {
+        return shotPoint;
+    }
+
+    public Transform GetWeaponPrefab()
+    {
+        return weaponPrefab;
+    }
+   
+
+    
 }
