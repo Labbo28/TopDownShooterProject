@@ -9,10 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8695391fd3e7ef448541fd320615c98, type: 3}
-  m_Name: Weapon
+  m_Script: {fileID: 11500000, guid: 885ca30da7b436540bd3ff03b604c745, type: 3}
+  m_Name: Assault_Rifle_Bullet
   m_EditorClassIdentifier: 
-  projectile: {fileID: 11400000, guid: f0420310c9f69c74bbe6190f8dca6929, type: 2}
-  maxAmmo: 8
-  fireRate: 1
-  reloadTime: 2
+  speed: 15
+  damage: 30
+  lifeTime: 3
+  projectilePrefab: {fileID: 4838925836734502132, guid: 6e6da3e4e9465b744931624ae26bb664,
+    type: 3}

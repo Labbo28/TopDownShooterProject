@@ -55,6 +55,8 @@ public abstract class Weapon : MonoBehaviour
 
     private void Start()
     {
+        GameObject shotPointObject = GameObject.Find("shotPoint");
+        shotPointObject.transform.rotation = Quaternion.Euler(0f, 0f, -90f);
         currentAmmo = weaponSo.maxAmmo;
     }
     private void Awake()
@@ -68,11 +70,19 @@ public abstract class Weapon : MonoBehaviour
     {
         Debug.Log("Fire Rate Timer: " + fireRateTimer.GetTime());
         Debug.Log("Current Ammo: " + currentAmmo);
+        Debug.Log("Reload Timer: " + reloadTimer.GetTime());
         HandleManualReload();
         HandleShooting();
         HandleWeaponRotation();
-         reloadTimer.Tick(Time.deltaTime);
-        fireRateTimer.Tick(Time.deltaTime);
+        UpdateReloading();
+        UpdateTimers();
+         
+    }
+
+    private void UpdateTimers()
+    {
+       reloadTimer.Tick(Time.deltaTime);
+       fireRateTimer.Tick(Time.deltaTime);
     }
 
     public Vector3 GetProjectileDirection()
@@ -120,14 +130,26 @@ public abstract class Weapon : MonoBehaviour
             Reload();
         }
     }
-      private void Reload()
+    private bool isReloading = false;
+
+    private void Reload()
     {
-        if (reloadTimer.IsFinished)
+        if (!isReloading && reloadTimer.IsFinished)
         {
-            currentAmmo = weaponSo.maxAmmo;
+            isReloading = true;
             reloadTimer.Start();
         }
     }
+
+    private void UpdateReloading()
+    {
+        if (isReloading && reloadTimer.IsFinished)
+        {
+            currentAmmo = weaponSo.maxAmmo;
+            isReloading = false;
+        }
+    }
+   
 
     public void HandleShooting()
     {
