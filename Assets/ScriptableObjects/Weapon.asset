@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: Weapon
   m_EditorClassIdentifier: 
   projectile: {fileID: 11400000, guid: f0420310c9f69c74bbe6190f8dca6929, type: 2}
-  fireRate: 2
+  maxAmmo: 8
+  fireRate: 1
+  reloadTime: 2

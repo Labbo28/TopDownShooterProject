@@ -3,12 +3,11 @@ using UnityEngine;
 public class Shotgun : Weapon
 {
     private int numberOfPellets = 10;
-    private float spreadAngle = 40f;
+    private float spreadAngle = 20f;
 
-    protected override void HandleShooting()
+    protected override void Shoot()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
+       
             for (int i = 0; i < numberOfPellets; i++)
             {
                 float angle = Random.Range(-spreadAngle / 2, spreadAngle / 2);
@@ -17,13 +16,11 @@ public class Shotgun : Weapon
 
                 // Instantiate the projectile prefab and set its direction
                 GameObject projectile = Instantiate(
-                    GetWeaponSO().projectile.projectilePrefab,
-                    GetShotPoint().position,
-                    GetShotPoint().rotation * rotation
+                    WeaponSo.projectile.projectilePrefab,
+                    ShotPoint.position,
+                    ShotPoint.rotation * rotation
                 );
 
-                
-            }
         }
     }
 }

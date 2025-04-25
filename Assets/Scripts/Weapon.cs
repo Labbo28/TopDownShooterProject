@@ -10,80 +10,141 @@ public abstract class Weapon : MonoBehaviour
     [SerializeField] Transform shotPoint;
 
     [SerializeField] private Transform pivotPoint;
+
+    private int currentAmmo;
+    private float lastShotTime = 0f;
+
+    public WeaponSO WeaponSo
+    {
+        get => weaponSo;
+        set => weaponSo = value;
+    }
+
+    public Transform WeaponPrefab
+    {
+        get => weaponPrefab;
+        set => weaponPrefab = value;
+    }
+
+    public Transform ShotPoint
+    {
+        get => shotPoint;
+        set => shotPoint = value;
+    }
+
+    public Transform PivotPoint
+    {
+        get => pivotPoint;
+        set => pivotPoint = value;
+    }
+
+    public int CurrentAmmo
+    {
+        get => currentAmmo;
+        set => currentAmmo = value;
+    }
+
+    public float LastShotTime
+    {
+        get => lastShotTime;
+        set => lastShotTime = value;
+    }
+
+    private CountdownTimer reloadTimer;
+    private CountdownTimer fireRateTimer;
+
+    private void Start()
+    {
+        currentAmmo = weaponSo.maxAmmo;
+    }
+    private void Awake()
+    {
     
+        reloadTimer = new CountdownTimer(weaponSo.reloadTime);
+        fireRateTimer = new CountdownTimer(weaponSo.fireRate);
+    }
+
     void Update()
     {
+        Debug.Log("Fire Rate Timer: " + fireRateTimer.GetTime());
+        Debug.Log("Current Ammo: " + currentAmmo);
+        HandleManualReload();
         HandleShooting();
         HandleWeaponRotation();
+         reloadTimer.Tick(Time.deltaTime);
+        fireRateTimer.Tick(Time.deltaTime);
     }
 
-    
-        public Vector3 GetProjectileDirection()
+    public Vector3 GetProjectileDirection()
+    {
+        Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mouseWorldPosition.z = 0f;
+
+        Vector3 direction = (mouseWorldPosition - shotPoint.position).normalized;
+        return direction;
+    }
+
+    private void HandleWeaponRotation()
+    {
+        Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mouseWorldPosition.z = 0f;
+
+        Vector3 direction = mouseWorldPosition - pivotPoint.position;
+
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+        weaponPrefab.rotation = Quaternion.Euler(0f, 0f, angle);
+
+        float weaponDistance = 0.6f;
+        Vector3 weaponPosition = pivotPoint.position + (direction.normalized * weaponDistance);
+        weaponPrefab.position = weaponPosition;
+
+        SpriteRenderer weaponSprite = weaponPrefab.GetComponent<SpriteRenderer>();
+        if (weaponSprite != null)
         {
-            Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            mouseWorldPosition.z = 0f;
-
-            Vector3 direction = (mouseWorldPosition - shotPoint.position).normalized;
-            return direction;
+            if (mouseWorldPosition.x < pivotPoint.position.x)
+            {
+                weaponSprite.flipY = true;
+            }
+            else
+            {
+                weaponSprite.flipY = false;
+            }
         }
-
-   private void HandleWeaponRotation()
-{
-    Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-    mouseWorldPosition.z = 0f; 
+    }
     
-    Vector3 direction = mouseWorldPosition - pivotPoint.position;
-    
-    float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-    
-    weaponPrefab.rotation = Quaternion.Euler(0f, 0f, angle );
-    
-    
-    float weaponDistance = 0.6f; 
-    Vector3 weaponPosition = pivotPoint.position + (direction.normalized * weaponDistance);
-    weaponPrefab.position = weaponPosition;
-
-    SpriteRenderer weaponSprite = weaponPrefab.GetComponent<SpriteRenderer>();
-    if (weaponSprite != null)
+    private void HandleManualReload()
     {
-        if (mouseWorldPosition.x < pivotPoint.position.x)
+        if (Input.GetKeyDown(KeyCode.R))
         {
-          
-            weaponSprite.flipY = true;
+            Reload();
         }
-        else
+    }
+      private void Reload()
+    {
+        if (reloadTimer.IsFinished)
         {
-            weaponSprite.flipY = false;
+            currentAmmo = weaponSo.maxAmmo;
+            reloadTimer.Start();
         }
     }
-}
 
-    protected abstract void HandleShooting();
-    
-    public void SetWeaponSO(WeaponSO weaponSo)
+    public void HandleShooting()
     {
-        this.weaponSo = weaponSo;
+        if (Input.GetMouseButton(0) && fireRateTimer.IsFinished)
+        {
+            if (currentAmmo > 0)
+            {
+                Shoot();
+                currentAmmo--;
+                fireRateTimer.Start();
+            }
+            else
+            {
+                Reload();
+            }
+        }
     }
 
-    public WeaponSO GetWeaponSO()
-    {
-        return weaponSo;
-    }
-    public Transform GetPivotPoint()
-    {
-        return pivotPoint;
-    }
-
-    public Transform GetShotPoint()
-    {
-        return shotPoint;
-    }
-
-    public Transform GetWeaponPrefab()
-    {
-        return weaponPrefab;
-    }
-   
-
-    
+    protected abstract void Shoot();
 }

@@ -5,6 +5,9 @@
     public class WeaponSO : ScriptableObject
     {
         public ProjectileSO projectile;
+        public int maxAmmo;
         public float fireRate;
+        public float reloadTime;
+        
         
     }

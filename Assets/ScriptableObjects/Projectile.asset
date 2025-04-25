@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Projectile
   m_EditorClassIdentifier: 
   speed: 20
-  damage: 20
-  lifeTime: 3
+  damage: 5
+  lifeTime: 0.5
   projectilePrefab: {fileID: 4838925836734502132, guid: 3a786196ff8912944a36b47672c60330,
     type: 3}
