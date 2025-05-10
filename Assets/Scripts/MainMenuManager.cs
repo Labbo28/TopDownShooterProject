@@ -5,9 +5,10 @@ using UnityEngine.UI;
 public class MainMenuManager : MonoBehaviour
 {
   [SerializeField] private Button startButton;
-  [SerializeField] private Button optionsButton;
-  
   [SerializeField] private Button quitButton;
+
+    [SerializeField] private Button optionsButton; 
+ 
 
     //da creare 
     [SerializeField] private GameObject optionsPanel;
@@ -15,22 +16,28 @@ public class MainMenuManager : MonoBehaviour
     void Start()
     {
         startButton.onClick.AddListener(OnStartButtonClicked);
-        optionsButton.onClick.AddListener(OnOptionsButtonClicked);
+       
         quitButton.onClick.AddListener(OnQuitButtonClicked);
-    }
-
-    private void OnQuitButtonClicked()
-    {
-        #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-        #endif
-
-         Application.Quit();
+        optionsButton.onClick.AddListener(OnOptionsButtonClicked);
     }
 
     private void OnOptionsButtonClicked()
     {
-        throw new NotImplementedException();
+        gameObject.SetActive(false);
+        optionsButton.gameObject.SetActive(false);
+        optionsPanel.SetActive(true);
+
+    }
+
+    private void OnQuitButtonClicked()
+    {
+        Debug.Log("Evento agganciato");
+        #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+        Debug.Log("Uscita dall'editor Unity");
+        #endif
+
+         Application.Quit();
     }
 
     private void OnStartButtonClicked()
