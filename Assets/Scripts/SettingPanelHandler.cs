@@ -1,9 +1,10 @@
 using System;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class SettingPanelHandler : MonoBehaviour {
+public class SettingPanelHandler : MonoBehaviour 
+{
     [SerializeField] private Button quitPanelButton;
     [SerializeField] private Button muteMainButton;
     [SerializeField] private Button muteEffectsButton;
@@ -11,7 +12,6 @@ public class SettingPanelHandler : MonoBehaviour {
 
     [SerializeField] private GameObject optionButtonGameObject;
   
-    
     [SerializeField] private Slider sliderMainVolume;
     [SerializeField] private Slider sliderEffectsVolume;
     [SerializeField] private Slider sliderMusicVolume;
@@ -19,8 +19,9 @@ public class SettingPanelHandler : MonoBehaviour {
     [SerializeField] private Image mainVolumeImage;
     [SerializeField] private Image effectsVolumeImage;
     [SerializeField] private Image musicVolumeImage;
-
-
+    
+    [SerializeField] private Sprite mutedSprite;
+    [SerializeField] private Sprite unmutedSprite;
     
     private bool isMainMuted = false;
     private bool isEffectsMuted = false;
@@ -29,22 +30,33 @@ public class SettingPanelHandler : MonoBehaviour {
     private float lastMainVolume = 1f;
     private float lastEffectsVolume = 1f;
     private float lastMusicVolume = 1f;
-
-    private Sprite mutedSprite;
-    private Sprite unmutedSprite;
+    
+    void Awake()
+    {
+        gameObject.SetActive(false);
+        
+      
+        if (mutedSprite == null)
+            mutedSprite = Resources.Load<Sprite>("Assets/static_assets/Undead Survivor/Sprites/muted.png");
+            
+        if (unmutedSprite == null)
+            unmutedSprite = Resources.Load<Sprite>("Assets/static_assets/Undead Survivor/Sprites/unmuted.png");
+    }
     
     void Start()
     {
+       
         quitPanelButton.onClick.AddListener(OnQuitPanelButtonClicked);
-        
         muteMainButton.onClick.AddListener(OnMuteMainButtonClicked);
         muteEffectsButton.onClick.AddListener(OnMuteEffectsButtonClicked);
         muteMusicButton.onClick.AddListener(OnMuteMusicButtonClicked);
         
+      
         sliderMainVolume.onValueChanged.AddListener(OnSliderMainVolumeChanged);
         sliderEffectsVolume.onValueChanged.AddListener(OnSliderEffectsVolumeChanged);
         sliderMusicVolume.onValueChanged.AddListener(OnSliderMusicVolumeChanged);
 
+       
         sliderMainVolume.value = 1f;
         sliderEffectsVolume.value = 1f; 
         sliderMusicVolume.value = 1f;
@@ -52,9 +64,35 @@ public class SettingPanelHandler : MonoBehaviour {
         lastMainVolume = sliderMainVolume.value;
         lastEffectsVolume = sliderEffectsVolume.value;
         lastMusicVolume = sliderMusicVolume.value;
-
-        mutedSprite = Resources.Load<Sprite>("Assets/static_assets/Undead Survivor/Sprites/muted.png");
-        unmutedSprite = Resources.Load<Sprite>("Assets/static_assets/Undead Survivor/Sprites/unmuted.png");
+        
+      
+        AddSoundEffectsToButton(quitPanelButton);
+        AddSoundEffectsToButton(muteMainButton);
+        AddSoundEffectsToButton(muteEffectsButton);
+        AddSoundEffectsToButton(muteMusicButton);
+    }
+    
+    private void AddSoundEffectsToButton(Button button)
+    {
+        // Add hover sound
+        EventTrigger eventTrigger = button.gameObject.GetComponent<EventTrigger>();
+        if (eventTrigger == null)
+            eventTrigger = button.gameObject.AddComponent<EventTrigger>();
+            
+        // Setup pointer enter event (hover)
+        EventTrigger.Entry pointerEnterEntry = new EventTrigger.Entry();
+        pointerEnterEntry.eventID = EventTriggerType.PointerEnter;
+        pointerEnterEntry.callback.AddListener((data) => {
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.PlayButtonHover();
+        });
+        eventTrigger.triggers.Add(pointerEnterEntry);
+        
+        // Add click sound via additional listener
+        button.onClick.AddListener(() => {
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.PlayButtonClick();
+        });
     }
     
     private void OnSliderMusicVolumeChanged(float newVolume)
@@ -105,6 +143,10 @@ public class SettingPanelHandler : MonoBehaviour {
             musicVolumeImage.sprite = unmutedSprite;
             Debug.Log("Musica non più mutata");
         }
+        
+      
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.SetMuted(AudioManager.AudioSourceType.Music, isMusicMuted);
     }
     
     private void OnMuteEffectsButtonClicked()
@@ -125,6 +167,10 @@ public class SettingPanelHandler : MonoBehaviour {
             effectsVolumeImage.sprite = unmutedSprite;
             Debug.Log("Effetti non più mutati");
         }
+        
+        
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.SetMuted(AudioManager.AudioSourceType.SFX, isEffectsMuted);
     }
     
     private void OnMuteMainButtonClicked()
@@ -145,6 +191,9 @@ public class SettingPanelHandler : MonoBehaviour {
             mainVolumeImage.sprite = unmutedSprite;
             Debug.Log("Volume principale non più mutato");
         }
+       
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.SetMuted(AudioManager.AudioSourceType.Master, isMainMuted);
     }
     
     private void OnQuitPanelButtonClicked()
@@ -152,26 +201,25 @@ public class SettingPanelHandler : MonoBehaviour {
         Debug.Log("Quit Panel Button Clicked");
         optionButtonGameObject.SetActive(true);
         gameObject.SetActive(false);
-        
     }
     
     private void UpdateMainVolume(float volume)
     {
-        AudioListener.volume = volume;
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.SetMasterVolume(volume);
+        else
+            AudioListener.volume = volume;
     }
     
     private void UpdateEffectsVolume(float volume)
     {
-        
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.SetSFXVolume(volume);
     }
     
     private void UpdateMusicVolume(float volume)
     {
-        
-    }
-    
-    void Awake()
-    {
-        gameObject.SetActive(false);
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.SetMusicVolume(volume);
     }
 }
