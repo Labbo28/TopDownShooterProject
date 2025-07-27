@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         gameTime += Time.deltaTime;
-        if(Mathf.FloorToInt(gameTime) != Mathf.FloorToInt(previousGameTime))
+        if (Mathf.FloorToInt(gameTime) != Mathf.FloorToInt(previousGameTime))
         {
             formattedTime = GameTimeDisplay.FormatGameTime(gameTime);
             OnGameTimeChanged?.Invoke();
