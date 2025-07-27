@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class MeleeEnemy : EnemyBase
 {
-    [SerializeField] private float chaseRange = 7f;
+    
     [SerializeField] private float attackRange = 1f;
     
     // Sovrascriviamo il comportamento principale
@@ -25,15 +25,11 @@ public class MeleeEnemy : EnemyBase
             }
         }
         // Se il giocatore è nel raggio di inseguimento
-        else if (distanceToPlayer <= chaseRange)
+        else 
         {
             Move(player.position, speed);
-            // LookAtPlayer();
         }
-        else
-        {
-            StopMoving();
-        }
+        
     }
     
     // Sovrascriviamo il metodo di attacco per un comportamento specifico

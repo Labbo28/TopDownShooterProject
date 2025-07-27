@@ -373,7 +373,7 @@ GameObject:
   - component: {fileID: 85746467}
   - component: {fileID: 85746466}
   m_Layer: 0
-  m_Name: MainMenuAudioManager
+  m_Name: AudioManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -391,11 +391,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84965c012716c4b41ae6407dcc9a8576, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menuMusic: {fileID: 8300000, guid: 4559935c00ef8e94b846e2e03e39f0d0, type: 3}
-  buttonHoverSound: {fileID: 0}
-  buttonClickSound: {fileID: 8300000, guid: 4b294d59d2399014daa718b35c9de73b, type: 3}
   musicSource: {fileID: 1755285310}
   sfxSource: {fileID: 1755285310}
+  menuMusic: {fileID: 8300000, guid: 4559935c00ef8e94b846e2e03e39f0d0, type: 3}
+  buttonClickSound: {fileID: 8300000, guid: 4b294d59d2399014daa718b35c9de73b, type: 3}
+  buttonHoverSound: {fileID: 0}
+  audioMixer: {fileID: 0}
 --- !u!4 &85746467
 Transform:
   m_ObjectHideFlags: 0
@@ -1215,6 +1216,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 735fba489db5a7940b8ceb4f4a4b7418, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onButtonClicked:
+    m_PersistentCalls:
+      m_Calls: []
   startButton: {fileID: 1475427132}
   quitButton: {fileID: 2146298233}
   optionsButton: {fileID: 1149707897}
@@ -2077,6 +2081,8 @@ MonoBehaviour:
   mainVolumeImage: {fileID: 1052811364}
   effectsVolumeImage: {fileID: 1660719732}
   musicVolumeImage: {fileID: 2111522686}
+  mutedSprite: {fileID: 0}
+  unmutedSprite: {fileID: 0}
 --- !u!1 &1024671610
 GameObject:
   m_ObjectHideFlags: 0

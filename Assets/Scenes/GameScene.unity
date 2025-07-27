@@ -890,7 +890,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be4d089d2c006534abe82bfbf96b63c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
+  target: {fileID: 40188221}
   lerpSpeed: 1
 --- !u!1001 &615170422
 PrefabInstance:
