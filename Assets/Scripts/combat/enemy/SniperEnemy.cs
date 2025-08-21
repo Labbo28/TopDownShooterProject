@@ -211,7 +211,7 @@ public class SniperEnemy : EnemyBase
         Gizmos.DrawWireSphere(transform.position, idealDistance);
     }
 
-    protected override EnemyType GetEnemyType()
+    public override EnemyType GetEnemyType()
     {
         return EnemyType.Sniper;
     }

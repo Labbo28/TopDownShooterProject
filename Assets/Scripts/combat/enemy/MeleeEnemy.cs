@@ -46,7 +46,7 @@ public class MeleeEnemy : EnemyBase
     }
 
     // Sovrascriviamo il metodo per ottenere il tipo di nemico
-    protected override EnemyType GetEnemyType()
+    public override EnemyType GetEnemyType()
     {
         return EnemyType.Melee;
     }

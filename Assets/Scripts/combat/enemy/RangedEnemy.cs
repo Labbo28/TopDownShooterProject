@@ -7,7 +7,7 @@ public class RangedEnemy : EnemyBase
     [SerializeField] private float shootingRange = 10f;  // Raggio di tiro
     [SerializeField] private GameObject projectilePrefab;  // Prefab del proiettile
 
-    protected override EnemyType GetEnemyType()
+    public override EnemyType GetEnemyType()
     {
        return EnemyType.Ranged;
     }

@@ -5,14 +5,6 @@ using UnityEngine.Events;
 using System.Collections;
 using System.Runtime.CompilerServices;
 
-public enum EnemyType
-{
-    Melee,
-    Ranged,
-    Sniper,
-    Boss,
-    // altri tipi di nemici
-}
 
 public class EnemyDeadEvent : UnityEvent<EnemyType, Vector3> { }
 
@@ -108,7 +100,7 @@ public abstract class EnemyBase : MonoBehaviour
         HandleBehavior();
     }
 
-    protected abstract EnemyType GetEnemyType();
+    public abstract EnemyType GetEnemyType();
 
     // comportamento da implementare nelle classi derivate
     protected abstract void HandleBehavior();
@@ -243,6 +235,23 @@ public abstract class EnemyBase : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInRange = false;
+        }
+    }
+
+    public void ScaleDifficulty(float healthMultiplier, float damageMultiplier, float speedMultiplier)
+    {
+        if (healthSystem != null)
+        {
+            healthSystem.ScaleHealth(healthMultiplier);
+            HealthBar.fillAmount = healthSystem.GetHealthPercentage();
+        }
+        
+        damage *= damageMultiplier;
+        speed *= speedMultiplier;
+        
+        if (rb != null)
+        {
+            rb.linearVelocity = rb.linearVelocity.normalized * speed;
         }
     }
 }

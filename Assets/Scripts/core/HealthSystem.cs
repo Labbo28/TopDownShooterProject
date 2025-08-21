@@ -51,6 +51,12 @@ public class HealthSystem : MonoBehaviour, IDamageable
         onDeath?.Invoke();
         // Base implementation - specific behavior should be handled by subscribers
     }
+
+    public void ScaleHealth(float scaleFactor)
+    {
+        maxHealth *= scaleFactor;
+      
+    }
     
     // Helper methods to get health values
     public float GetHealthPercentage()
