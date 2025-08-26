@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
 {
     public UnityEvent OnEnemyKilled;
     public UnityEvent OnGameTimeChanged;
+
+    
     public static GameManager Instance { get; private set; }
 
     private GameTimeDisplay gameTimeDisplay;
@@ -68,6 +70,7 @@ public class GameManager : MonoBehaviour
         OnWaveCompleted = new UnityEvent<int>();
         OnAllWavesCompleted = new UnityEvent();
     }
+    
 
     private void Start()
     {
@@ -79,6 +82,8 @@ public class GameManager : MonoBehaviour
             spawner.OnWaveCompleted += OnSpawnerWaveCompleted;
             spawner.OnAllWavesCompleted += OnSpawnerAllWavesCompleted;
         }
+        Player.Instance.OnPlayerDead.AddListener(GameOver);
+
     }
 
     private void Update()

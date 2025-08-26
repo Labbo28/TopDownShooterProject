@@ -45,6 +45,12 @@ public class UIManager : MonoBehaviour
         gameManager.OnGameTimeChanged.AddListener(OnGameTimeChanged);
         gameManager.OnXPChanged.AddListener(OnXPChanged);
         gameManager.OnPlayerLevelUp.AddListener(OnPlayerLevelUp);
+        gameManager.OnGameOver.AddListener(OnGameOver);
+    }
+
+    private void OnGameOver()
+    {
+        throw new NotImplementedException();
     }
 
     private void OnPlayerLevelUp(int level)
