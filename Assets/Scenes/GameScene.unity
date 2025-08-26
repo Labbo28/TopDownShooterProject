@@ -475,8 +475,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerTransform: {fileID: 40188221}
-  mapChunkSize: 40
-  distanceTreashold: 1.5
+  chunkSize: 40
+  distanceThreshold: 1.5
 --- !u!1001 &232512247
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1022,8 +1022,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerTransform: {fileID: 40188221}
-  mapChunkSize: 40
-  distanceTreashold: 1
+  chunkSize: 0
+  distanceThreshold: 1.5
 --- !u!1 &846283980
 GameObject:
   m_ObjectHideFlags: 0
