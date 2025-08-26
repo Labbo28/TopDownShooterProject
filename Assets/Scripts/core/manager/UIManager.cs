@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using TMPro;
+using Unity.Mathematics.Geometry;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +13,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject TextTime;
     [SerializeField] GameObject TextLevel;
     [SerializeField] GameObject SliderXP;
+
+    [SerializeField] GameObject TextDead;
 
     private void Awake()
     {
@@ -37,6 +41,11 @@ public class UIManager : MonoBehaviour
         {
             Debug.LogWarning("SliderXP non assegnato");
         }
+
+        if (TextDead == null)
+        {
+            Debug.LogWarning("TextDead non assegnato");
+        }
     }
 
     private void Start()
@@ -46,11 +55,20 @@ public class UIManager : MonoBehaviour
         gameManager.OnXPChanged.AddListener(OnXPChanged);
         gameManager.OnPlayerLevelUp.AddListener(OnPlayerLevelUp);
         gameManager.OnGameOver.AddListener(OnGameOver);
+        
     }
+
 
     private void OnGameOver()
     {
-        throw new NotImplementedException();
+        float fadeDuration = 5f;
+        CanvasGroup cg = TextDead.GetComponent<CanvasGroup>();
+        float t = 0f;
+        while (t < fadeDuration)
+        {
+            t += Time.deltaTime;
+            cg.alpha = Mathf.Lerp(0, 1, t / fadeDuration);
+        }
     }
 
     private void OnPlayerLevelUp(int level)
