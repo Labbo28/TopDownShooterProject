@@ -211,7 +211,7 @@ MonoBehaviour:
   OnPlayerDead:
     m_PersistentCalls:
       m_Calls: []
-  _movementSpeed: 5
+  _movementSpeed: 20
   _dashCooldown: 3
   rotationSpeed: 3
 --- !u!50 &9060932166925476516
@@ -320,7 +320,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -1413294825, guid: 99a24620d31e5ce4e823c32d11e17c2c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

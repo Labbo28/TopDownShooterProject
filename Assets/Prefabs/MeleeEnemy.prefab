@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: 8578451255481585487}
   - component: {fileID: 6020913500450426487}
   - component: {fileID: 4022199802507677181}
+  - component: {fileID: 7746410630189946890}
+  - component: {fileID: 4045595480225171684}
   m_Layer: 6
   m_Name: MeleeEnemy
   m_TagString: Untagged
@@ -82,7 +84,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 613658156, guid: 1bc6097228993f045852159e71f81d5b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -138,14 +140,14 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2372909403197453248}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_LinearDamping: 5
+  m_AngularDamping: 5
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -156,7 +158,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &8578451255481585487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -180,6 +182,10 @@ MonoBehaviour:
   HealthBar: {fileID: 5333312199946071443}
   backgroundHealthBar: {fileID: 7022701402907246434}
   healthBarDisplayDuration: 2
+  enableRepositioning: 1
+  maxDistanceFromPlayer: 25
+  repositionDistance: 15
+  debugRepositioning: 0
   attackRange: 1
 --- !u!95 &6020913500450426487
 Animator:
@@ -216,6 +222,58 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemy: {fileID: 8578451255481585487}
+--- !u!114 &7746410630189946890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2372909403197453248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f407b2e3ffa9a347b9911b819a6c888, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistanceFromPlayer: 20
+  repositionDistance: 15
+  debugMode: 1
+  playerTransform: {fileID: 0}
+--- !u!58 &4045595480225171684
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2372909403197453248}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 0.4
 --- !u!1 &4815355251459302377
 GameObject:
   m_ObjectHideFlags: 0

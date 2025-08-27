@@ -5,7 +5,6 @@ using UnityEngine.Events;
 using System.Collections;
 using System.Runtime.CompilerServices;
 
-
 public class EnemyDeadEvent : UnityEvent<EnemyType, Vector3> { }
 
 public abstract class EnemyBase : MonoBehaviour
@@ -35,12 +34,18 @@ public abstract class EnemyBase : MonoBehaviour
     [SerializeField] protected float detectRadius = 10f;
     [SerializeField] protected float actionRadius = 0.5f;
     [SerializeField] protected Image HealthBar;
-
     [SerializeField] protected Image backgroundHealthBar;
     
     // Durata in secondi in cui la healthbar rimane visibile dopo aver subito danni
     [SerializeField] protected float healthBarDisplayDuration = 2f;
 
+    // ===== SISTEMA DI RIPOSIZIONAMENTO =====
+    [Header("Repositioning System")]
+    [SerializeField] private bool enableRepositioning = true;
+    [SerializeField] private float maxDistanceFromPlayer = 25f;
+    [SerializeField] private float repositionDistance = 15f;
+    [SerializeField] private bool debugRepositioning = false;
+    
     // Common components
     protected Transform player;
     protected SpriteRenderer spriteRenderer;
@@ -81,10 +86,15 @@ public abstract class EnemyBase : MonoBehaviour
         OnEnemyDead = new EnemyDeadEvent();
 
         // Initialize health bar
-        HealthBar.fillAmount = healthSystem.GetHealthPercentage();
-        // Disabilita la healthbar di default
-        HealthBar.gameObject.SetActive(false);
-        backgroundHealthBar.gameObject.SetActive(false);
+        if (HealthBar != null)
+        {
+            HealthBar.fillAmount = healthSystem.GetHealthPercentage();
+            HealthBar.gameObject.SetActive(false);
+        }
+        if (backgroundHealthBar != null)
+        {
+            backgroundHealthBar.gameObject.SetActive(false);
+        }
     }
 
     protected virtual void Start()
@@ -97,8 +107,104 @@ public abstract class EnemyBase : MonoBehaviour
     {
         if (!IsAlive || player == null) return;
         
+        // Sistema di riposizionamento
+        if (enableRepositioning)
+        {
+            CheckAndRepositionIfNeeded();
+        }
+        
         HandleBehavior();
     }
+
+    // ===== SISTEMA DI RIPOSIZIONAMENTO =====
+    
+    /// <summary>
+    /// Controlla se il nemico è troppo lontano dal player e lo riposiziona se necessario
+    /// </summary>
+    private void CheckAndRepositionIfNeeded()
+    {
+        if (player == null) return;
+        
+        float distanceFromPlayer = Vector3.Distance(transform.position, player.position);
+        
+        if (distanceFromPlayer > maxDistanceFromPlayer)
+        {
+            RepositionNearPlayer();
+        }
+    }
+    
+    /// <summary>
+    /// Riposiziona il nemico in una posizione casuale attorno al player
+    /// </summary>
+    private void RepositionNearPlayer()
+    {
+        if (player == null) return;
+        
+        // Genera un angolo casuale attorno al player
+        float randomAngle = UnityEngine.Random.Range(0f, 360f) * Mathf.Deg2Rad;
+        
+        // Calcola la nuova posizione usando trigonometria
+        Vector3 repositionOffset = new Vector3(
+            Mathf.Cos(randomAngle) * repositionDistance,
+            Mathf.Sin(randomAngle) * repositionDistance,
+            0f
+        );
+        
+        Vector3 newPosition = player.position + repositionOffset;
+        
+        // Store old position for debug
+        Vector3 oldPosition = transform.position;
+        
+        // Applica la nuova posizione
+        transform.position = newPosition;
+        
+        // Reset physics
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+        }
+        
+        // Reset enemy state dopo riposizionamento
+        ResetStateAfterRepositioning();
+        
+        if (debugRepositioning)
+        {
+            Debug.Log($"Enemy {gameObject.name} repositioned from distance {Vector3.Distance(oldPosition, player.position):F2} to {Vector3.Distance(newPosition, player.position):F2}", this);
+        }
+    }
+    
+    /// <summary>
+    /// Resetta gli stati del nemico dopo il riposizionamento
+    /// </summary>
+    protected virtual void ResetStateAfterRepositioning()
+    {
+        isMoving = false;
+        isAttacking = false;
+        playerInRange = false;
+        
+        // Le classi derivate possono override questo metodo per comportamenti specifici
+    }
+    
+    /// <summary>
+    /// Forza il riposizionamento (utile per testing)
+    /// </summary>
+    public void ForceReposition()
+    {
+        if (enableRepositioning)
+        {
+            RepositionNearPlayer();
+        }
+    }
+    
+    /// <summary>
+    /// Abilita/disabilita il sistema di riposizionamento
+    /// </summary>
+    public void SetRepositioningEnabled(bool enabled)
+    {
+        enableRepositioning = enabled;
+    }
+
+    // ===== METODI ORIGINALI =====
 
     public abstract EnemyType GetEnemyType();
 
@@ -150,10 +256,15 @@ public abstract class EnemyBase : MonoBehaviour
         // Visual feedback: flash del colore
         OnEnemyhit?.Invoke();
         // Aggiorna la healthbar
-        HealthBar.fillAmount = healthSystem.GetHealthPercentage();
-        // Rendi visibile la healthbar
-        HealthBar.gameObject.SetActive(true);
-        backgroundHealthBar.gameObject.SetActive(true);
+        if (HealthBar != null)
+        {
+            HealthBar.fillAmount = healthSystem.GetHealthPercentage();
+            HealthBar.gameObject.SetActive(true);
+        }
+        if (backgroundHealthBar != null)
+        {
+            backgroundHealthBar.gameObject.SetActive(true);
+        }
 
         // Se esiste già una coroutine per nascondere la healthbar, fermala
         if (hideHealthBarCoroutine != null)
@@ -168,14 +279,14 @@ public abstract class EnemyBase : MonoBehaviour
     protected IEnumerator ShowHealthBarCoroutine()
     {
         yield return new WaitForSeconds(healthBarDisplayDuration);
-        HealthBar.gameObject.SetActive(false);
-        backgroundHealthBar.gameObject.SetActive(false);
+        if (HealthBar != null) HealthBar.gameObject.SetActive(false);
+        if (backgroundHealthBar != null) backgroundHealthBar.gameObject.SetActive(false);
     }
 
     private void DisableHealthBar()
     {
-        HealthBar.gameObject.SetActive(false);
-        backgroundHealthBar.gameObject.SetActive(false);
+        if (HealthBar != null) HealthBar.gameObject.SetActive(false);
+        if (backgroundHealthBar != null) backgroundHealthBar.gameObject.SetActive(false);
     }
 
     // Enemy death method
@@ -243,7 +354,10 @@ public abstract class EnemyBase : MonoBehaviour
         if (healthSystem != null)
         {
             healthSystem.ScaleHealth(healthMultiplier);
-            HealthBar.fillAmount = healthSystem.GetHealthPercentage();
+            if (HealthBar != null)
+            {
+                HealthBar.fillAmount = healthSystem.GetHealthPercentage();
+            }
         }
         
         damage *= damageMultiplier;
@@ -252,6 +366,32 @@ public abstract class EnemyBase : MonoBehaviour
         if (rb != null)
         {
             rb.linearVelocity = rb.linearVelocity.normalized * speed;
+        }
+    }
+
+    // Debug visualization
+    protected virtual void OnDrawGizmosSelected()
+    {
+        if (!enableRepositioning || player == null) return;
+        
+        // Disegna la distanza massima (rosso)
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(player.position, maxDistanceFromPlayer);
+        
+        // Disegna la distanza di riposizionamento (giallo)
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(player.position, repositionDistance);
+        
+        // Disegna la linea di connessione
+        float currentDistance = Vector3.Distance(transform.position, player.position);
+        Gizmos.color = currentDistance > maxDistanceFromPlayer ? Color.red : Color.green;
+        Gizmos.DrawLine(transform.position, player.position);
+        
+        // Cerchio attorno al nemico per indicare se è fuori range
+        if (currentDistance > maxDistanceFromPlayer)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, 1f);
         }
     }
 }

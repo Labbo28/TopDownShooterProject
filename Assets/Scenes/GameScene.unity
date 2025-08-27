@@ -249,9 +249,10 @@ MonoBehaviour:
   waves:
   - {fileID: 11400000, guid: c45df04d7acade949a48bff4be7d0e6a, type: 2}
   spawnPoints:
-  - {fileID: 0}
+  - {fileID: 1921689878}
   - {fileID: 578075862}
   - {fileID: 2045230101}
+  - {fileID: 1200787166}
   spawnRadius: 10
   maxEnemiesAlive: 50
   minDistanceFromPlayer: 5
