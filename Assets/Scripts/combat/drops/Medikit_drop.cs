@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Medikit_drop : MonoBehaviour
+public class Medikit_drop : Drop
 {
     private Transform player;
 

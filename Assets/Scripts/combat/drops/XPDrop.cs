@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class XPDrop : MonoBehaviour
+public class XPDrop : Drop
 {
 
 

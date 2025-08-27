@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class MagnetDrop : MonoBehaviour
+public class MagnetDrop : Drop
 {
     private float attractRadiusMultiplier = 2f;
     private float attractSpeedMultiplier = 2f;
