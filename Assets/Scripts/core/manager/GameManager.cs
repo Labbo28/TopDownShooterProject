@@ -2,6 +2,7 @@ using System;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -45,17 +46,40 @@ public class GameManager : MonoBehaviour
     public UnityEvent<int> OnWaveCompleted;
     public UnityEvent OnAllWavesCompleted;
 
+    // Flag per sapere se dobbiamo reinizializzare
+    private bool needsReinitialization = false;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
         {
+            // Se stiamo ricaricando la GameScene, resettiamo lo stato
+            if (SceneManager.GetActiveScene().name == "GameScene")
+            {
+                Debug.Log("Resetting GameManager for new game session");
+                needsReinitialization = true;
+            }
+            
             Destroy(gameObject);
             return;
         }
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        gameTimeDisplay = gameObject.AddComponent<GameTimeDisplay>();
+
+        // Iscriviti agli eventi di caricamento scene
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
+        InitializeGameManager();
+    }
+
+    private void InitializeGameManager()
+    {
+        gameTimeDisplay = gameObject.GetComponent<GameTimeDisplay>();
+        if (gameTimeDisplay == null)
+        {
+            gameTimeDisplay = gameObject.AddComponent<GameTimeDisplay>();
+        }
 
         // Initialize events
         OnEnemyKilled = new UnityEvent();
@@ -67,14 +91,71 @@ public class GameManager : MonoBehaviour
         OnWaveStarted = new UnityEvent<int>();
         OnWaveCompleted = new UnityEvent<int>();
         OnAllWavesCompleted = new UnityEvent();
-
-        
     }
 
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "GameScene")
+        {
+            Debug.Log("GameScene loaded, reinitializing GameManager");
+            ResetGameState();
+            
+            // Reinizializza i collegamenti dopo un frame per assicurarsi che tutto sia pronto
+            Invoke(nameof(ReinitializeConnections), 0.1f);
+        }
+    }
+
+    private void ResetGameState()
+    {
+        // Reset di tutte le variabili di gioco
+        gameTime = 0f;
+        currentWave = 0;
+        enemiesKilled = 0;
+        XP = 0;
+        PlayerLevel = 1;
+        xpNeededToLevelUp = 10;
+        previousGameTime = 0f;
+        formattedTime = "00:00";
+        spawnerManagedWave = 0;
+        
+        // Reset degli attributi drop
+        attractRadius = 1.5f;
+        attractSpeed = 2f;
+        healAmount = 0.3f;
+
+        Debug.Log("Game state reset completed");
+    }
+
+    private void ReinitializeConnections()
+    {
+        // Cerca e collega il player se presente
+        if (Player.Instance != null)
+        {
+            Player.Instance.OnPlayerDead.RemoveListener(GameOver);
+            Player.Instance.OnPlayerDead.AddListener(GameOver);
+            Debug.Log("Player death event reconnected");
+        }
+
+        // Registra agli eventi dello spawner se presente
+        Spawner spawner = FindObjectOfType<Spawner>();
+        if (spawner != null && !useTimeBasedWaves)
+        {
+            spawner.OnWaveStarted += OnSpawnerWaveStarted;
+            spawner.OnWaveCompleted += OnSpawnerWaveCompleted;
+            spawner.OnAllWavesCompleted += OnSpawnerAllWavesCompleted;
+            Debug.Log("Spawner events reconnected");
+        }
+
+        Debug.Log("GameManager reinitalization completed");
+    }
 
     private void Start()
     {
-        Player.Instance.OnPlayerDead.AddListener(GameOver);
+        if (Player.Instance != null)
+        {
+            Player.Instance.OnPlayerDead.AddListener(GameOver);
+        }
+
         // Registra agli eventi dello spawner se presente
         Spawner spawner = FindObjectOfType<Spawner>();
         if (spawner != null && !useTimeBasedWaves)
@@ -83,7 +164,6 @@ public class GameManager : MonoBehaviour
             spawner.OnWaveCompleted += OnSpawnerWaveCompleted;
             spawner.OnAllWavesCompleted += OnSpawnerAllWavesCompleted;
         }
-       
     }
 
     private void Update()
@@ -237,6 +317,16 @@ public class GameManager : MonoBehaviour
             OnWaveStarted?.Invoke(currentWave);
         }
     }
+
+    public int GetPlayerLevel()
+    {
+        return PlayerLevel;
+    }
+
+    public float GetCurrentXP()
+    {
+        return XP;
+    }
     
     private void OnDestroy()
     {
@@ -248,5 +338,8 @@ public class GameManager : MonoBehaviour
             spawner.OnWaveCompleted -= OnSpawnerWaveCompleted;
             spawner.OnAllWavesCompleted -= OnSpawnerAllWavesCompleted;
         }
+
+        // Rimuovi l'iscrizione agli eventi di scena
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 }

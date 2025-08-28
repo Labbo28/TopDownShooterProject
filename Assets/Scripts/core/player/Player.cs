@@ -27,40 +27,43 @@ public class Player : MonoBehaviour
     private CountdownTimer dashTimer;
     private Vector2 movementDirection;
     private Vector3 initialPosition = Vector3.zero;
+    private bool isDead = false;
+    private Animator playerAnimator;
 
     private void Awake()
     {
-        // Se esiste già un'istanza e non è questa
+        // Gestione del Singleton più semplice
         if (Instance != null && Instance != this)
         {
-            // Se stiamo caricando la GameScene, distruggi l'istanza vecchia e usa questa nuova
-            if (SceneManager.GetActiveScene().name == "GameScene")
-            {
-                Debug.Log("Destroying old Player instance and using new one from scene");
-                Destroy(Instance.gameObject);
-                Instance = this;
-                DontDestroyOnLoad(gameObject);
-            }
-            else
-            {
-                // Altrimenti distruggi questa nuova istanza (comportamento normale del Singleton)
-                Destroy(gameObject);
-                return;
-            }
-        }
-        else
-        {
-            // Prima istanza o istanza nulla
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
+            Debug.Log("Destroying duplicate Player instance");
+            Destroy(gameObject);
+            return;
         }
 
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+        
+        // Iscriviti agli eventi di caricamento scene
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        
         InitializePlayer();
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "GameScene")
+        {
+            Debug.Log("GameScene loaded, resetting Player");
+            ResetPlayer();
+        }
     }
 
     private void InitializePlayer()
     {
         dashTimer = new CountdownTimer(dashCooldown);
+        
+        // Get the Animator component
+        playerAnimator = GetComponent<Animator>();
         
         // Get or add HealthSystem component
         healthSystem = GetComponent<HealthSystem>();
@@ -70,10 +73,12 @@ public class Player : MonoBehaviour
         }
         
         // Setup death event
+        healthSystem.onDeath.RemoveListener(OnPlayerDeath); // Rimuovi prima per evitare duplicati
         healthSystem.onDeath.AddListener(OnPlayerDeath);
         
-        // Salva la posizione iniziale
-        initialPosition = transform.position;
+        // Trova la posizione di spawn corretta
+        FindSpawnPosition();
+        isDead = false;
         
         Debug.Log($"Player initialized at position: {initialPosition}");
     }
@@ -105,7 +110,17 @@ public class Player : MonoBehaviour
 
     private void OnPlayerDeath()
     {
+        if (isDead) return; // Evita chiamate multiple
+        
+        isDead = true;
         Debug.Log("Player has died.");
+        
+        // Imposta l'animazione di morte
+        if (playerAnimator != null)
+        {
+            playerAnimator.SetBool("isDead", true);
+        }
+        
         OnPlayerDead?.Invoke();
         DisablePlayerControls();
     }
@@ -196,25 +211,98 @@ public class Player : MonoBehaviour
         dashTimer?.Reset();
     }
 
-    // Metodo pubblico per resettare il player (opzionale, se preferisci il reset invece della distruzione)
+    // Metodo per trovare la posizione di spawn nella scena corrente
+    private void FindSpawnPosition()
+    {
+        // Cerca un oggetto con tag "PlayerSpawn"
+        GameObject spawnPoint = GameObject.FindGameObjectWithTag("PlayerSpawn");
+        if (spawnPoint != null)
+        {
+            initialPosition = spawnPoint.transform.position;
+            transform.position = initialPosition;
+            Debug.Log($"Found PlayerSpawn at: {initialPosition}");
+        }
+        else
+        {
+            // Se non c'è uno spawn point specifico, usa una posizione di default o quella corrente
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null && player != gameObject)
+            {
+                // Se c'è un altro player nella scena (dalla scena), usa la sua posizione
+                initialPosition = player.transform.position;
+                transform.position = initialPosition;
+                Debug.Log($"Using existing Player position: {initialPosition}");
+            }
+            else
+            {
+                // Altrimenti usa (0,0,0) o la posizione corrente se ragionevole
+                if (transform.position == Vector3.zero || Vector3.Distance(transform.position, Vector3.zero) > 100f)
+                {
+                    initialPosition = Vector3.zero;
+                    transform.position = initialPosition;
+                    Debug.Log("Using default spawn position: (0,0,0)");
+                }
+                else
+                {
+                    initialPosition = transform.position;
+                    Debug.Log($"Using current position as spawn: {initialPosition}");
+                }
+            }
+        }
+    }
+
+    // Metodo per resettare completamente il player
     public void ResetPlayer()
     {
         Debug.Log("Resetting Player...");
         
-        // Reset salute se esiste un metodo nel HealthSystem
+        isDead = false;
+        
+        // Reset HealthSystem usando il nuovo metodo
         if (healthSystem != null)
         {
-            // Qui dovresti aggiungere un metodo ResetHealth() nel HealthSystem
-            // healthSystem.ResetHealth();
+            healthSystem.ResetHealth();
+            // Assicurati che l'evento di morte sia collegato
+            healthSystem.onDeath.RemoveListener(OnPlayerDeath);
+            healthSystem.onDeath.AddListener(OnPlayerDeath);
+        }
+        else
+        {
+            // Se per qualche motivo l'HealthSystem è null, crealo
+            InitializePlayer();
         }
         
-        // Reset posizione
-        transform.position = initialPosition;
+        // Reset dell'Animator
+        if (playerAnimator != null)
+        {
+            playerAnimator.SetBool("isDead", false);
+            playerAnimator.SetBool("isRunning", false);
+            // Reset eventuali trigger
+            playerAnimator.ResetTrigger("Hit");
+            Debug.Log("Animator reset completed");
+        }
+        else
+        {
+            // Prova a trovare l'animator se è null
+            playerAnimator = GetComponent<Animator>();
+            if (playerAnimator != null)
+            {
+                playerAnimator.SetBool("isDead", false);
+                playerAnimator.SetBool("isRunning", false);
+                playerAnimator.ResetTrigger("Hit");
+            }
+        }
+        
+        // Trova la nuova posizione di spawn nella scena corrente
+        FindSpawnPosition();
         
         // Reset timer dash
-        if (dashTimer != null && dashTimer.IsRunning)
+        if (dashTimer != null)
         {
-            dashTimer.Stop();
+            if (dashTimer.IsRunning)
+            {
+                dashTimer.Stop();
+            }
             dashTimer.Reset();
         }
         
@@ -224,18 +312,7 @@ public class Player : MonoBehaviour
         // Reset eventi di animazione
         OnPlayerStopMoving?.Invoke();
         
-        Debug.Log($"Player reset completed. Position: {transform.position}");
-    }
-
-    // Metodo statico per distruggere l'istanza corrente (utile per il reset completo)
-    public static void DestroyCurrentInstance()
-    {
-        if (Instance != null)
-        {
-            Debug.Log("Destroying current Player instance");
-            Destroy(Instance.gameObject);
-            Instance = null;
-        }
+        Debug.Log($"Player reset completed. Position: {transform.position}, Health: {healthSystem?.Health}/{healthSystem?.MaxHealth}");
     }
 
     private void OnDestroy()
@@ -245,6 +322,9 @@ public class Player : MonoBehaviour
         {
             dashTimer.OnTimerStop -= ResetDashTimer;
         }
+        
+        // Rimuovi l'iscrizione agli eventi di scena
+        SceneManager.sceneLoaded -= OnSceneLoaded;
         
         // Se questa istanza viene distrutta, resetta il singleton
         if (Instance == this)

@@ -76,5 +76,6 @@ public class MainMenuManager : MonoBehaviour
         onButtonClicked?.Invoke();
         // Carica la scena di gioco
         LoadingManager.Instance.LoadScene("GameScene");
+        Player.Instance.gameObject.SetActive(true);
     }
 }

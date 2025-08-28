@@ -17,8 +17,12 @@ public class HealthSystem : MonoBehaviour, IDamageable
     
     private void Awake()
     {
-        currentHealth = maxHealth;
-        
+        ResetHealth();
+        InitializeEvents();
+    }
+
+    private void InitializeEvents()
+    {
         // Initialize events if they're null
         if (onDamaged == null) onDamaged = new UnityEvent();
         if (onHealed == null) onHealed = new UnityEvent();
@@ -27,6 +31,8 @@ public class HealthSystem : MonoBehaviour, IDamageable
     
     public void TakeDamage(float damageAmount)
     {
+        if (!IsAlive) return; // Non prendere danno se già morto
+        
         currentHealth -= damageAmount;
         currentHealth = Mathf.Max(currentHealth, 0); // Ensure health doesn't go below 0
         
@@ -40,6 +46,8 @@ public class HealthSystem : MonoBehaviour, IDamageable
     
     public void Heal(float healAmount)
     {
+        if (!IsAlive) return; // Non curare se morto
+        
         currentHealth += healAmount;
         currentHealth = Mathf.Min(currentHealth, maxHealth); // Ensure health doesn't exceed maximum
         
@@ -48,6 +56,8 @@ public class HealthSystem : MonoBehaviour, IDamageable
     
     public virtual void Die()
     {
+        if (currentHealth > 0) return; // Assicurati che sia effettivamente morto
+        
         onDeath?.Invoke();
         // Base implementation - specific behavior should be handled by subscribers
     }
@@ -55,12 +65,62 @@ public class HealthSystem : MonoBehaviour, IDamageable
     public void ScaleHealth(float scaleFactor)
     {
         maxHealth *= scaleFactor;
-      
+        // Scala anche la vita corrente proporzionalmente
+        float healthPercentage = GetHealthPercentage();
+        currentHealth = maxHealth * healthPercentage;
+    }
+
+    // Metodo per resettare completamente la salute
+    public void ResetHealth()
+    {
+        currentHealth = maxHealth;
+        Debug.Log($"Health reset to {currentHealth}/{maxHealth}");
+    }
+
+    // Metodo per resettare la salute con un nuovo valore massimo
+    public void ResetHealth(float newMaxHealth)
+    {
+        maxHealth = newMaxHealth;
+        currentHealth = maxHealth;
+        Debug.Log($"Health reset to {currentHealth}/{maxHealth} with new max health");
+    }
+
+    // Metodo per impostare la salute a un valore specifico
+    public void SetHealth(float newHealth)
+    {
+        currentHealth = Mathf.Clamp(newHealth, 0f, maxHealth);
+        
+        if (currentHealth <= 0 && IsAlive)
+        {
+            Die();
+        }
+    }
+
+    // Metodo per revivere il personaggio
+    public void Revive(float healthAmount = -1)
+    {
+        if (healthAmount < 0)
+        {
+            currentHealth = maxHealth; // Revive con salute piena
+        }
+        else
+        {
+            currentHealth = Mathf.Min(healthAmount, maxHealth);
+        }
+        
+        Debug.Log($"Revived with {currentHealth}/{maxHealth} health");
     }
     
     // Helper methods to get health values
     public float GetHealthPercentage()
     {
+        if (maxHealth == 0) return 0;
         return currentHealth / maxHealth;
+    }
+
+    // Metodo per ottenere informazioni debug
+    public void LogHealthStatus()
+    {
+        Debug.Log($"Health Status: {currentHealth}/{maxHealth} ({GetHealthPercentage():P0}) - IsAlive: {IsAlive}");
     }
 }
