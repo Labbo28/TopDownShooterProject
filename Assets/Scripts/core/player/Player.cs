@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -18,27 +19,48 @@ public class Player : MonoBehaviour
     private const float DashDuration = 0.2f;
 
     // Fields
-    [SerializeField] private float _movementSpeed = 5f;
-    [SerializeField] private float _dashCooldown = 3f;
+    [SerializeField] private float movementSpeed = 5f;
+    [SerializeField] private float dashCooldown = 3f;
     [SerializeField] private float rotationSpeed = 3f;
  
     private HealthSystem healthSystem;
-    private CountdownTimer _dashTimer;
-  
-    private Vector2 _movementDirection;
+    private CountdownTimer dashTimer;
+    private Vector2 movementDirection;
+    private Vector3 initialPosition = Vector3.zero;
 
     private void Awake()
     {
+        // Se esiste già un'istanza e non è questa
         if (Instance != null && Instance != this)
         {
-            Destroy(gameObject);
-            return;
+            // Se stiamo caricando la GameScene, distruggi l'istanza vecchia e usa questa nuova
+            if (SceneManager.GetActiveScene().name == "GameScene")
+            {
+                Debug.Log("Destroying old Player instance and using new one from scene");
+                Destroy(Instance.gameObject);
+                Instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+            else
+            {
+                // Altrimenti distruggi questa nuova istanza (comportamento normale del Singleton)
+                Destroy(gameObject);
+                return;
+            }
+        }
+        else
+        {
+            // Prima istanza o istanza nulla
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
 
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
+        InitializePlayer();
+    }
 
-        _dashTimer = new CountdownTimer(_dashCooldown);
+    private void InitializePlayer()
+    {
+        dashTimer = new CountdownTimer(dashCooldown);
         
         // Get or add HealthSystem component
         healthSystem = GetComponent<HealthSystem>();
@@ -49,13 +71,18 @@ public class Player : MonoBehaviour
         
         // Setup death event
         healthSystem.onDeath.AddListener(OnPlayerDeath);
+        
+        // Salva la posizione iniziale
+        initialPosition = transform.position;
+        
+        Debug.Log($"Player initialized at position: {initialPosition}");
     }
 
     private void Start()
     {
-        if (_dashTimer != null)
+        if (dashTimer != null)
         {
-            _dashTimer.OnTimerStop += ResetDashTimer;
+            dashTimer.OnTimerStop += ResetDashTimer;
         }
     }
 
@@ -65,7 +92,7 @@ public class Player : MonoBehaviour
         if (healthSystem != null && !healthSystem.IsAlive) return;
                
         // Tick the timer and handle movement
-        _dashTimer?.Tick(Time.deltaTime);  
+        dashTimer?.Tick(Time.deltaTime);  
         
         HandleMovement();
 
@@ -83,27 +110,44 @@ public class Player : MonoBehaviour
         DisablePlayerControls();
     }
 
-private void DisablePlayerControls()
-{
-    // Disabilita il sistema delle armi
-    Weapon[] weapons = GetComponentsInChildren<Weapon>();
-    foreach (Weapon weapon in weapons)
+    private void DisablePlayerControls()
     {
-        weapon.enabled = false;
+        // Disabilita il sistema delle armi
+        Weapon[] weapons = GetComponentsInChildren<Weapon>();
+        foreach (Weapon weapon in weapons)
+        {
+            weapon.enabled = false;
+        }
+        
+        // Disabilita LookAtCursor se presente
+        LookAtCursor lookAtCursor = GetComponentInChildren<LookAtCursor>();
+        if (lookAtCursor != null)
+        {
+            lookAtCursor.enabled = false;
+        }
     }
-    
-    // Disabilita LookAtCursor se presente
-    LookAtCursor lookAtCursor = GetComponentInChildren<LookAtCursor>();
-    if (lookAtCursor != null)
+
+    private void EnablePlayerControls()
     {
-        lookAtCursor.enabled = false;
+        // Riattiva il sistema delle armi
+        Weapon[] weapons = GetComponentsInChildren<Weapon>();
+        foreach (Weapon weapon in weapons)
+        {
+            weapon.enabled = true;
+        }
+        
+        // Riattiva LookAtCursor se presente
+        LookAtCursor lookAtCursor = GetComponentInChildren<LookAtCursor>();
+        if (lookAtCursor != null)
+        {
+            lookAtCursor.enabled = true;
+        }
     }
- 
-}
+
     private void HandleMovement()
     {
-        _movementDirection = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        if (_movementDirection.magnitude > 0)
+        movementDirection = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        if (movementDirection.magnitude > 0)
         {
             OnPlayerMoving?.Invoke();
         }
@@ -112,18 +156,18 @@ private void DisablePlayerControls()
             OnPlayerStopMoving?.Invoke();
         }
 
-        transform.Translate(_movementDirection * (Time.deltaTime * _movementSpeed));
+        transform.Translate(movementDirection * (Time.deltaTime * movementSpeed));
     }
 
     private void HandleDash()
     {
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            Vector3 dashDirection = new Vector3(_movementDirection.x, _movementDirection.y).normalized;
+            Vector3 dashDirection = new Vector3(movementDirection.x, movementDirection.y).normalized;
             Vector3 dashTarget = transform.position + dashDirection * DashDistance;
 
             StartCoroutine(DashMovement(dashTarget, DashDuration));
-            _dashTimer?.Start();
+            dashTimer?.Start();
         }
     }
 
@@ -144,11 +188,68 @@ private void DisablePlayerControls()
 
     private bool CanDash()
     {
-        return _dashTimer != null && !_dashTimer.IsRunning;
+        return dashTimer != null && !dashTimer.IsRunning;
     }
 
     private void ResetDashTimer()
     {
-        _dashTimer?.Reset();
+        dashTimer?.Reset();
+    }
+
+    // Metodo pubblico per resettare il player (opzionale, se preferisci il reset invece della distruzione)
+    public void ResetPlayer()
+    {
+        Debug.Log("Resetting Player...");
+        
+        // Reset salute se esiste un metodo nel HealthSystem
+        if (healthSystem != null)
+        {
+            // Qui dovresti aggiungere un metodo ResetHealth() nel HealthSystem
+            // healthSystem.ResetHealth();
+        }
+        
+        // Reset posizione
+        transform.position = initialPosition;
+        
+        // Reset timer dash
+        if (dashTimer != null && dashTimer.IsRunning)
+        {
+            dashTimer.Stop();
+            dashTimer.Reset();
+        }
+        
+        // Riattiva controlli
+        EnablePlayerControls();
+        
+        // Reset eventi di animazione
+        OnPlayerStopMoving?.Invoke();
+        
+        Debug.Log($"Player reset completed. Position: {transform.position}");
+    }
+
+    // Metodo statico per distruggere l'istanza corrente (utile per il reset completo)
+    public static void DestroyCurrentInstance()
+    {
+        if (Instance != null)
+        {
+            Debug.Log("Destroying current Player instance");
+            Destroy(Instance.gameObject);
+            Instance = null;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        // Cleanup del timer
+        if (dashTimer != null)
+        {
+            dashTimer.OnTimerStop -= ResetDashTimer;
+        }
+        
+        // Se questa istanza viene distrutta, resetta il singleton
+        if (Instance == this)
+        {
+            Instance = null;
+        }
     }
 }

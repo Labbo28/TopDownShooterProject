@@ -32,12 +32,12 @@ public class UIManager : MonoBehaviour
     private void OnRetryButtonClicked()
     {
         Debug.Log("Retrying...");
-       LoadingManager.Instance.LoadScene("GameScene");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("GameScene");
     }
 
     private void OnQuitButtonClicked()
     {
-       LoadingManager.Instance.LoadScene("MainMenu");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
     }
 
     private void OnGameOver()

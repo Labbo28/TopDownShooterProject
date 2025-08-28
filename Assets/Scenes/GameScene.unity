@@ -402,6 +402,16 @@ PrefabInstance:
       objectReference: {fileID: 240845321}
     - target: {fileID: 7124054703887630459, guid: 09f724a1baf4c704db76d277de087064,
         type: 3}
+      propertyPath: QuitButton
+      value: 
+      objectReference: {fileID: 1552535653}
+    - target: {fileID: 7124054703887630459, guid: 09f724a1baf4c704db76d277de087064,
+        type: 3}
+      propertyPath: RetryButton
+      value: 
+      objectReference: {fileID: 1933800774}
+    - target: {fileID: 7124054703887630459, guid: 09f724a1baf4c704db76d277de087064,
+        type: 3}
       propertyPath: gameManager
       value: 
       objectReference: {fileID: 22042733}
