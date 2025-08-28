@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class Drop : MonoBehaviour
 {
     // Time (in seconds) before the drop is automatically destroyed
-    [SerializeField] private float timeToLive = 5f;
+    [SerializeField] private float timeToLive = 180f;
 
     private void Awake()
     {

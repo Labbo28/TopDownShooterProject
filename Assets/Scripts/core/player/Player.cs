@@ -80,8 +80,26 @@ public class Player : MonoBehaviour
     {
         Debug.Log("Player has died.");
         OnPlayerDead?.Invoke();
+        DisablePlayerControls();
     }
 
+private void DisablePlayerControls()
+{
+    // Disabilita il sistema delle armi
+    Weapon[] weapons = GetComponentsInChildren<Weapon>();
+    foreach (Weapon weapon in weapons)
+    {
+        weapon.enabled = false;
+    }
+    
+    // Disabilita LookAtCursor se presente
+    LookAtCursor lookAtCursor = GetComponentInChildren<LookAtCursor>();
+    if (lookAtCursor != null)
+    {
+        lookAtCursor.enabled = false;
+    }
+ 
+}
     private void HandleMovement()
     {
         _movementDirection = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));

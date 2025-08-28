@@ -67,10 +67,14 @@ public class GameManager : MonoBehaviour
         OnWaveStarted = new UnityEvent<int>();
         OnWaveCompleted = new UnityEvent<int>();
         OnAllWavesCompleted = new UnityEvent();
+
+        
     }
+
 
     private void Start()
     {
+        Player.Instance.OnPlayerDead.AddListener(GameOver);
         // Registra agli eventi dello spawner se presente
         Spawner spawner = FindObjectOfType<Spawner>();
         if (spawner != null && !useTimeBasedWaves)
@@ -79,6 +83,7 @@ public class GameManager : MonoBehaviour
             spawner.OnWaveCompleted += OnSpawnerWaveCompleted;
             spawner.OnAllWavesCompleted += OnSpawnerAllWavesCompleted;
         }
+       
     }
 
     private void Update()
