@@ -33,6 +33,8 @@ public class HealthSystem : MonoBehaviour, IDamageable
     {
         if (!IsAlive) return; // Non prendere danno se già morto
         
+        bool isPlayer = gameObject.CompareTag("Player"); // Check if the damaged entity is the player
+        DamageNumberController.Instance.CreateNumber(damageAmount, transform.position + Vector3.up * 0.8f, isPlayer);// Show damage number above the entity
         currentHealth -= damageAmount;
         currentHealth = Mathf.Max(currentHealth, 0); // Ensure health doesn't go below 0
         
