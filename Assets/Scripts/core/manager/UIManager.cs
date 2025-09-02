@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject TextTime;
     [SerializeField] GameObject TextLevel;
     [SerializeField] GameObject SliderXP;
+    [SerializeField] GameObject SliderPlayerHp;
 
     [Header("Game Over Elements")]
     [SerializeField] GameObject TextDead;
@@ -64,6 +65,8 @@ public class UIManager : MonoBehaviour
             gameManager.OnXPChanged.AddListener(OnXPChanged);
             gameManager.OnPlayerLevelUp.AddListener(OnPlayerLevelUp);
             gameManager.OnGameOver.AddListener(OnGameOver);
+            Player.Instance.GetComponent<HealthSystem>().onDamaged.AddListener(OnPlayerDamaged);
+            Player.Instance.GetComponent<HealthSystem>().onHealed.AddListener(OnPlayerHealed);
 
             if (RetryButton != null)
                 RetryButton.GetComponent<Button>().onClick.AddListener(OnRetryButtonClicked);
@@ -77,6 +80,37 @@ public class UIManager : MonoBehaviour
         {
             Debug.LogError($"Failed to register UI events: {e.Message}");
         }
+    }
+
+    private void UpdatePlayerHealth()
+    {
+        if (SliderPlayerHp != null && Player.Instance != null)
+        {
+            Slider hpSlider = SliderPlayerHp.GetComponent<Slider>();
+            HealthSystem healthSystem = Player.Instance.GetComponent<HealthSystem>();
+            if (hpSlider != null && healthSystem != null)
+            {
+                hpSlider.value = healthSystem.Health / healthSystem.MaxHealth;
+            }
+            else
+            {
+                Debug.LogWarning("SliderPlayerHp doesn't have a Slider component or HealthSystem is missing!");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("SliderPlayerHp is null or Player instance is null!");
+        }
+    }
+
+    private void OnPlayerDamaged()
+    {
+        UpdatePlayerHealth();
+    }
+    
+    private void OnPlayerHealed()
+    {
+        UpdatePlayerHealth();
     }
 
     private void UnregisterEvents()
