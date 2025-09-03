@@ -20,6 +20,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject RetryButton;
     [SerializeField] GameObject QuitButton;
 
+    [SerializeField] GameObject TextHealth;
+
     // Rimuoviamo il campo serializzato e usiamo sempre l'istanza Singleton
     private GameManager gameManager;
     private bool eventsRegistered = false;
@@ -82,27 +84,28 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private void UpdatePlayerHealth()
+ private void UpdatePlayerHealth()
+{
+    if (SliderPlayerHp == null || Player.Instance == null) return;
+
+    Slider hpSlider = SliderPlayerHp.GetComponent<Slider>();
+    HealthSystem healthSystem = Player.Instance.GetComponent<HealthSystem>();
+    
+    if (hpSlider == null || healthSystem == null) return;
+
+    // Corretto: usa le proprietà invece dei metodi inesistenti
+    hpSlider.value = healthSystem.Health / healthSystem.MaxHealth;
+    
+    if (TextHealth != null)
     {
-        if (SliderPlayerHp != null && Player.Instance != null)
+        Text healthText = TextHealth.GetComponent<Text>();
+        if (healthText != null)
         {
-            Slider hpSlider = SliderPlayerHp.GetComponent<Slider>();
-            HealthSystem healthSystem = Player.Instance.GetComponent<HealthSystem>();
-            if (hpSlider != null && healthSystem != null)
-            {
-                hpSlider.value = healthSystem.Health / healthSystem.MaxHealth;
-            }
-            else
-            {
-                Debug.LogWarning("SliderPlayerHp doesn't have a Slider component or HealthSystem is missing!");
-            }
-        }
-        else
-        {
-            Debug.LogWarning("SliderPlayerHp is null or Player instance is null!");
+            // Corretto: usa Health invece di GetCurrentHealth e MaxHealth invece di maxHealth
+            healthText.text = $"{Mathf.CeilToInt(healthSystem.Health)}/{Mathf.CeilToInt(healthSystem.MaxHealth)}";
         }
     }
-
+}
     private void OnPlayerDamaged()
     {
         UpdatePlayerHealth();
@@ -148,6 +151,7 @@ public class UIManager : MonoBehaviour
         OnGameTimeChanged();
         OnXPChanged(gameManager.GetCurrentXP());
         OnPlayerLevelUp(gameManager.GetPlayerLevel());
+        UpdatePlayerHealth();
     }
 
     private void OnRetryButtonClicked()
