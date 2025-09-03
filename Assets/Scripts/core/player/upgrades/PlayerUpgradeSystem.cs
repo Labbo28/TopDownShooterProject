@@ -58,11 +58,11 @@ public class PlayerUpgradeSystem : MonoBehaviour
             availableOptions.RemoveAt(randomIndex);
 
             // Create upgrade button UI
-            CreateUpgradeButton(upgrade);
+            CreateUpgradeButton(upgrade,i);
         }
     }
 
-    private void CreateUpgradeButton(PlayerUpgrade upgrade)
+    private void CreateUpgradeButton(PlayerUpgrade upgrade, int index)
     {
         // Implementa la creazione del bottone UI
         // Questo collegherebbe l'upgrade al sistema UI
