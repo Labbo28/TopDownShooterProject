@@ -73,8 +73,12 @@ public class PlayerUpgradeSystem : MonoBehaviour
         choiceGO.SetActive(true);
 
         var image = choiceGO.transform.GetChild(0).GetComponent<UnityEngine.UI.Image>();
-        var nameTMP = choiceGO.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>();
-        var descTMP = choiceGO.transform.GetChild(2).GetComponent<TMPro.TextMeshProUGUI>();
+        var descTMP = choiceGO.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>();
+        var nameTMP = choiceGO.transform.GetChild(2).GetComponent<TMPro.TextMeshProUGUI>();
+
+        descTMP.fontSize = 20;
+        nameTMP.fontSize = 25;
+    
 
         if (image != null && upgrade.icon != null)
             image.sprite = upgrade.icon;

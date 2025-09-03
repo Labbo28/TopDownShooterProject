@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     public UnityEvent OnPlayerMoving;
     public UnityEvent OnPlayerStopMoving;
     public UnityEvent OnPlayerDead;
-    
+
     // Singleton
     public static Player Instance { get; private set; }
 
@@ -19,10 +19,10 @@ public class Player : MonoBehaviour
     private const float DashDuration = 0.2f;
 
     // Fields
-    [SerializeField] private float movementSpeed = 5f;
+    [SerializeField] private float movementSpeed = 4f;
     [SerializeField] private float dashCooldown = 3f;
     [SerializeField] private float rotationSpeed = 3f;
- 
+
     private HealthSystem healthSystem;
     private CountdownTimer dashTimer;
     private Vector2 movementDirection;
@@ -42,10 +42,10 @@ public class Player : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        
+
         // Iscriviti agli eventi di caricamento scene
         SceneManager.sceneLoaded += OnSceneLoaded;
-        
+
         InitializePlayer();
     }
 
@@ -61,25 +61,25 @@ public class Player : MonoBehaviour
     private void InitializePlayer()
     {
         dashTimer = new CountdownTimer(dashCooldown);
-        
+
         // Get the Animator component
         playerAnimator = GetComponent<Animator>();
-        
+
         // Get or add HealthSystem component
         healthSystem = GetComponent<HealthSystem>();
         if (healthSystem == null)
         {
             healthSystem = gameObject.AddComponent<HealthSystem>();
         }
-        
+
         // Setup death event
         healthSystem.onDeath.RemoveListener(OnPlayerDeath); // Rimuovi prima per evitare duplicati
         healthSystem.onDeath.AddListener(OnPlayerDeath);
-        
+
         // Trova la posizione di spawn corretta
         FindSpawnPosition();
         isDead = false;
-        
+
         Debug.Log($"Player initialized at position: {initialPosition}");
     }
 
@@ -95,10 +95,10 @@ public class Player : MonoBehaviour
     {
         // Skip updates if player is dead
         if (healthSystem != null && !healthSystem.IsAlive) return;
-               
+
         // Tick the timer and handle movement
-        dashTimer?.Tick(Time.deltaTime);  
-        
+        dashTimer?.Tick(Time.deltaTime);
+
         HandleMovement();
 
         // Check for dash
@@ -111,16 +111,16 @@ public class Player : MonoBehaviour
     private void OnPlayerDeath()
     {
         if (isDead) return; // Evita chiamate multiple
-        
+
         isDead = true;
         Debug.Log("Player has died.");
-        
+
         // Imposta l'animazione di morte
         if (playerAnimator != null)
         {
             playerAnimator.SetBool("isDead", true);
         }
-        
+
         OnPlayerDead?.Invoke();
         DisablePlayerControls();
     }
@@ -133,7 +133,7 @@ public class Player : MonoBehaviour
         {
             weapon.enabled = false;
         }
-        
+
         // Disabilita LookAtCursor se presente
         LookAtCursor lookAtCursor = GetComponentInChildren<LookAtCursor>();
         if (lookAtCursor != null)
@@ -150,7 +150,7 @@ public class Player : MonoBehaviour
         {
             weapon.enabled = true;
         }
-        
+
         // Riattiva LookAtCursor se presente
         LookAtCursor lookAtCursor = GetComponentInChildren<LookAtCursor>();
         if (lookAtCursor != null)
@@ -255,9 +255,9 @@ public class Player : MonoBehaviour
     public void ResetPlayer()
     {
         Debug.Log("Resetting Player...");
-        
+
         isDead = false;
-        
+
         // Reset HealthSystem usando il nuovo metodo
         if (healthSystem != null)
         {
@@ -271,7 +271,7 @@ public class Player : MonoBehaviour
             // Se per qualche motivo l'HealthSystem è null, crealo
             InitializePlayer();
         }
-        
+
         // Reset dell'Animator
         if (playerAnimator != null)
         {
@@ -292,10 +292,10 @@ public class Player : MonoBehaviour
                 playerAnimator.ResetTrigger("Hit");
             }
         }
-        
+
         // Trova la nuova posizione di spawn nella scena corrente
         FindSpawnPosition();
-        
+
         // Reset timer dash
         if (dashTimer != null)
         {
@@ -305,13 +305,13 @@ public class Player : MonoBehaviour
             }
             dashTimer.Reset();
         }
-        
+
         // Riattiva controlli
         EnablePlayerControls();
-        
+
         // Reset eventi di animazione
         OnPlayerStopMoving?.Invoke();
-        
+
         Debug.Log($"Player reset completed. Position: {transform.position}, Health: {healthSystem?.Health}/{healthSystem?.MaxHealth}");
     }
 
@@ -322,14 +322,29 @@ public class Player : MonoBehaviour
         {
             dashTimer.OnTimerStop -= ResetDashTimer;
         }
-        
+
         // Rimuovi l'iscrizione agli eventi di scena
         SceneManager.sceneLoaded -= OnSceneLoaded;
-        
+
         // Se questa istanza viene distrutta, resetta il singleton
         if (Instance == this)
         {
             Instance = null;
         }
     }
+
+    public float GetMovementSpeed()
+    {
+        return movementSpeed;
+    }
+
+    public void SetMovementSpeed(float newSpeed)
+    {
+        movementSpeed = newSpeed;
+    }
+
+    public CountdownTimer GetDashTimer() => dashTimer;
+
+    public float GetDashCooldown() => dashCooldown;
+    
 }
