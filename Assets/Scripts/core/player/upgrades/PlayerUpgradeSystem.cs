@@ -8,7 +8,7 @@ public class PlayerUpgradeSystem : MonoBehaviour
 
     [SerializeField] private List<PlayerUpgrade> availableUpgrades;
     [SerializeField] private GameObject upgradeUIPanel;
-    [SerializeField] private GameObject upgradeButtonPrefab;
+    [SerializeField] private List<GameObject> upgradeChoices;
 
     private List<PlayerUpgrade> currentUpgrades = new List<PlayerUpgrade>();
 
@@ -29,8 +29,10 @@ public class PlayerUpgradeSystem : MonoBehaviour
         if (GameManager.Instance != null)
         {
             GameManager.Instance.OnPlayerLevelUp.AddListener(ShowUpgradeOptions);
+            GameManager.Instance.OnGameOver.AddListener(ResetUpgrades);
         }
     }
+
 
     private void ShowUpgradeOptions(int playerLevel)
     {
@@ -58,25 +60,59 @@ public class PlayerUpgradeSystem : MonoBehaviour
             availableOptions.RemoveAt(randomIndex);
 
             // Create upgrade button UI
-            CreateUpgradeButton(upgrade,i);
+            CreateUpgradeButton(upgrade, i);
         }
     }
 
     private void CreateUpgradeButton(PlayerUpgrade upgrade, int index)
     {
-        // Implementa la creazione del bottone UI
-        // Questo collegherebbe l'upgrade al sistema UI
+        if (index < 0 || index >= upgradeChoices.Count)
+            return;
+
+        var choiceGO = upgradeChoices[index];
+        choiceGO.SetActive(true);
+
+        var image = choiceGO.transform.GetChild(0).GetComponent<UnityEngine.UI.Image>();
+        var nameTMP = choiceGO.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>();
+        var descTMP = choiceGO.transform.GetChild(2).GetComponent<TMPro.TextMeshProUGUI>();
+
+        if (image != null && upgrade.icon != null)
+            image.sprite = upgrade.icon;
+
+        if (nameTMP != null)
+            nameTMP.text = $"{upgrade.upgradeName}  Lv.{upgrade.currentLevel + 1}/{upgrade.maxLevel}";
+
+        if (descTMP != null)
+            descTMP.text = upgrade.description;
+
+        var button = choiceGO.GetComponent<Button>();
+        if (button != null)
+        {
+            button.onClick.RemoveAllListeners();
+            button.onClick.AddListener(() => SelectUpgrade(upgrade));
+        }
     }
 
     public void SelectUpgrade(PlayerUpgrade upgrade)
     {
         upgrade.ApplyUpgrade(Player.Instance);
         currentUpgrades.Add(upgrade);
+        Debug.Log($"Selected Upgrade: {upgrade.upgradeName} to level {upgrade.currentLevel}");
+        Debug.Log($"Player Health after upgrade: {Player.Instance.GetComponent<HealthSystem>().MaxHealth}");
 
         // Hide upgrade panel
         upgradeUIPanel.SetActive(false);
 
         // Resume game
         Time.timeScale = 1f;
+    }
+    
+    private void ResetUpgrades()
+    {
+        currentUpgrades.Clear();
+        foreach (var upgrade in availableUpgrades)
+        {
+            upgrade.currentLevel = 0;
+        }
     }
 }

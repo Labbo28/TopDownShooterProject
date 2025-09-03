@@ -72,9 +72,6 @@ public abstract class Weapon : MonoBehaviour
     {
         return; // Non fare nulla se il player è morto
     }
-        Debug.Log("Fire Rate Timer: " + fireRateTimer.GetTime());
-        Debug.Log("Current Ammo: " + currentAmmo);
-        Debug.Log("Reload Timer: " + reloadTimer.GetTime());
         HandleManualReload();
         HandleShooting();
         HandleWeaponRotation();
