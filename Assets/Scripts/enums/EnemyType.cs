@@ -4,5 +4,17 @@ public enum EnemyType
     Ranged,
     Sniper,
     Boss,
-    // altri tipi di nemici
+    
+    // Tipi specifici di zombie
+    Zombie,
+    ZombieFast,
+    
+    // Tipi specifici di scheletri
+    Skeleton,
+    SkeletonBoss,
+    
+    // Altri tipi futuri
+    // Necromancer,
+    // Guardian,
+    // etc.
 }

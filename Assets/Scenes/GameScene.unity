@@ -2353,14 +2353,28 @@ MonoBehaviour:
     dropPrefabs:
     - {fileID: 7511834963911293722, guid: 2704bbc430750b94fbfa28b5f4d20b87, type: 3}
   enemyDropConfigs:
-  - enemyType: 0
+  - enemyType: 4
     xpDropChance: 1
     minXPDrops: 1
     maxXPDrops: 3
     specialDropChance: 0.1
     medikitWeight: 0.5
     magnetWeight: 0.5
-  - enemyType: 1
+  - enemyType: 5
+    xpDropChance: 1
+    minXPDrops: 1
+    maxXPDrops: 3
+    specialDropChance: 0.1
+    medikitWeight: 0.5
+    magnetWeight: 0.5
+  - enemyType: 6
+    xpDropChance: 1
+    minXPDrops: 1
+    maxXPDrops: 3
+    specialDropChance: 0.1
+    medikitWeight: 0.5
+    magnetWeight: 0.5
+  - enemyType: 7
     xpDropChance: 1
     minXPDrops: 1
     maxXPDrops: 3

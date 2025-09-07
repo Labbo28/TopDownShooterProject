@@ -12,13 +12,13 @@ GameObject:
   - component: {fileID: 3989125993780402028}
   - component: {fileID: 4977929207809432338}
   - component: {fileID: 5965238633583886444}
-  - component: {fileID: 8578451255481585487}
   - component: {fileID: 6020913500450426487}
   - component: {fileID: 4022199802507677181}
   - component: {fileID: 7746410630189946890}
   - component: {fileID: 4045595480225171684}
+  - component: {fileID: 6428436762538810543}
   m_Layer: 6
-  m_Name: MeleeEnemy
+  m_Name: SkeletonBossEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34,7 +34,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0.179, z: 0}
-  m_LocalScale: {x: 1.0162859, y: 1.0162859, z: 1.0162859}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4116569137950349829}
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 613658156, guid: 1bc6097228993f045852159e71f81d5b, type: 3}
+  m_Sprite: {fileID: 1782705385, guid: d33598d781682e049a53a0a13104ef29, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -159,34 +159,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &8578451255481585487
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2372909403197453248}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a25dae4b80f363f4ba900fb2dc81886e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OnEnemyhit:
-    m_PersistentCalls:
-      m_Calls: []
-  speed: 3
-  damage: 5
-  attackCooldown: 1
-  detectRadius: 10
-  actionRadius: 0.5
-  HealthBar: {fileID: 5333312199946071443}
-  backgroundHealthBar: {fileID: 7022701402907246434}
-  healthBarDisplayDuration: 2
-  enableRepositioning: 1
-  maxDistanceFromPlayer: 25
-  repositionDistance: 15
-  debugRepositioning: 0
-  attackRange: 1
 --- !u!95 &6020913500450426487
 Animator:
   serializedVersion: 7
@@ -197,7 +169,7 @@ Animator:
   m_GameObject: {fileID: 2372909403197453248}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f2855d618fc8d9c499189d3f39b9cbbc, type: 2}
+  m_Controller: {fileID: 22100000, guid: 8d1d920724ffb8a409ce0e458dc4b7a9, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -221,7 +193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5538a53e77d74ad6aa79a61b31089c11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 8578451255481585487}
+  enemy: {fileID: 0}
 --- !u!114 &7746410630189946890
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -274,6 +246,43 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.4
+--- !u!114 &6428436762538810543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2372909403197453248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 960dc567bf851e09facd7bc8062cc98e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnEnemyhit:
+    m_PersistentCalls:
+      m_Calls: []
+  speed: 3
+  damage: 5
+  attackCooldown: 1
+  detectRadius: 10
+  actionRadius: 0.5
+  HealthBar: {fileID: 5333312199946071443}
+  backgroundHealthBar: {fileID: 7022701402907246434}
+  healthBarDisplayDuration: 2
+  enableRepositioning: 1
+  maxDistanceFromPlayer: 25
+  repositionDistance: 15
+  debugRepositioning: 1
+  attackRange: 2
+  chargeAttackRange: 8
+  areaAttackRange: 4
+  summonRange: 10
+  minionPrefab: {fileID: 2372909403197453248, guid: fb4d4d81774a74e4a8fc129406bc1cc0,
+    type: 3}
+  maxMinions: 3
+  summonCooldown: 15
+  chargeAttackCooldown: 8
+  areaAttackCooldown: 12
 --- !u!1 &4815355251459302377
 GameObject:
   m_ObjectHideFlags: 0
