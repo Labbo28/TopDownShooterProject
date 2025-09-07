@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8c89fa1be678b004eb6070d2412a8327, type: 3}
-  m_Name: Wave1
+  m_Name: Wave3
   m_EditorClassIdentifier: 
   waveNumber: 1
   waveName: ciao
@@ -18,14 +18,36 @@ MonoBehaviour:
   spawnData:
   - enemyPrefab: {fileID: 2372909403197453248, guid: fb4d4d81774a74e4a8fc129406bc1cc0,
       type: 3}
-    spawnCount: 8
-    spawnRate: 0.3
+    spawnCount: 10
+    spawnRate: 0.2
+    startTime: 0
+    duration: 50
+    spawnContinuously: 1
+    delayBetweenSpawns: 0
+    healthMultiplier: 1.1
+    damageMultiplier: 1
+    speedMultiplier: 1
+  - enemyPrefab: {fileID: 2372909403197453248, guid: 87e7590eeee3d1bf6bc5699063a5ec67,
+      type: 3}
+    spawnCount: 6
+    spawnRate: 0.2
     startTime: 0
     duration: 50
     spawnContinuously: 1
     delayBetweenSpawns: 0
     healthMultiplier: 1
-    damageMultiplier: 1
+    damageMultiplier: 1.1
+    speedMultiplier: 1
+  - enemyPrefab: {fileID: 2372909403197453248, guid: ac3ced40651686dd3908d525794a369a,
+      type: 3}
+    spawnCount: 6
+    spawnRate: 0.2
+    startTime: 0
+    duration: 50
+    spawnContinuously: 1
+    delayBetweenSpawns: 0
+    healthMultiplier: 1
+    damageMultiplier: 1.1
     speedMultiplier: 1
   requireAllEnemiesDead: 0
   maxEnemiesAlive: 50
