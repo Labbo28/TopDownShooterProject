@@ -53,6 +53,6 @@ MonoBehaviour:
   maxEnemiesAlive: 50
   xpMultiplier: 1
   dropRateMultiplier: 1
-  isBossWave: 1
+  isBossWave: 0
   bossPrefab: {fileID: 2372909403197453248, guid: dc578a454a04468b7bc85c8be8aab8ff,
     type: 3}
