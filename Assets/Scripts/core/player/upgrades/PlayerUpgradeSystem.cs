@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class PlayerUpgradeSystem : MonoBehaviour
 {
@@ -10,7 +11,8 @@ public class PlayerUpgradeSystem : MonoBehaviour
     [SerializeField] private GameObject upgradeUIPanel;
     [SerializeField] private List<GameObject> upgradeChoices;
 
-    private List<PlayerUpgrade> currentUpgrades = new List<PlayerUpgrade>();
+    // Ora uso RuntimeUpgrade invece di PlayerUpgrade
+    private List<RuntimeUpgrade> runtimeUpgrades = new List<RuntimeUpgrade>();
 
     private void Awake()
     {
@@ -20,12 +22,20 @@ public class PlayerUpgradeSystem : MonoBehaviour
             return;
         }
         Instance = this;
-        
+        InitializeRuntimeUpgrades();
+    }
+
+    private void InitializeRuntimeUpgrades()
+    {
+        runtimeUpgrades.Clear();
+        foreach (var upgrade in availableUpgrades)
+        {
+            runtimeUpgrades.Add(new RuntimeUpgrade(upgrade));
+        }
     }
 
     private void Start()
     {
-        // Subscribe to level up event
         if (GameManager.Instance != null)
         {
             GameManager.Instance.OnPlayerLevelUp.AddListener(ShowUpgradeOptions);
@@ -33,13 +43,10 @@ public class PlayerUpgradeSystem : MonoBehaviour
         }
     }
 
-
     private void ShowUpgradeOptions(int playerLevel)
     {
-        // Pause game
         Time.timeScale = 0f;
 
-        // Show upgrade panel
         if (upgradeUIPanel != null)
         {
             upgradeUIPanel.SetActive(true);
@@ -49,22 +56,28 @@ public class PlayerUpgradeSystem : MonoBehaviour
 
     private void PopulateUpgradeOptions()
     {
-        // Show 3 random upgrades that aren't maxed
-        List<PlayerUpgrade> availableOptions = availableUpgrades.FindAll(u => !u.IsMaxLevel);
+        // Trova upgrade che possono essere potenziati
+        List<RuntimeUpgrade> availableOptions = runtimeUpgrades.Where(u => u.CanUpgrade()).ToList();
 
-        // Randomly select 3 upgrades
-        for (int i = 0; i < Mathf.Min(3, availableOptions.Count); i++)
+        // Nascondi tutti i choice UI prima di popolare
+        foreach (var choice in upgradeChoices)
+        {
+            choice.SetActive(false);
+        }
+
+        // Seleziona random 3 upgrade
+        int numChoices = Mathf.Min(3, availableOptions.Count);
+        for (int i = 0; i < numChoices; i++)
         {
             int randomIndex = Random.Range(0, availableOptions.Count);
-            PlayerUpgrade upgrade = availableOptions[randomIndex];
+            RuntimeUpgrade upgrade = availableOptions[randomIndex];
             availableOptions.RemoveAt(randomIndex);
 
-            // Create upgrade button UI
             CreateUpgradeButton(upgrade, i);
         }
     }
 
-    private void CreateUpgradeButton(PlayerUpgrade upgrade, int index)
+    private void CreateUpgradeButton(RuntimeUpgrade runtimeUpgrade, int index)
     {
         if (index < 0 || index >= upgradeChoices.Count)
             return;
@@ -78,45 +91,57 @@ public class PlayerUpgradeSystem : MonoBehaviour
 
         descTMP.fontSize = 20;
         nameTMP.fontSize = 25;
-    
 
-        if (image != null && upgrade.icon != null)
-            image.sprite = upgrade.icon;
+        if (image != null && runtimeUpgrade.Icon != null)
+            image.sprite = runtimeUpgrade.Icon;
 
         if (nameTMP != null)
-            nameTMP.text = $"{upgrade.upgradeName}  Lv.{upgrade.currentLevel + 1}/{upgrade.maxLevel}";
+            nameTMP.text = $"{runtimeUpgrade.UpgradeName}  Lv.{runtimeUpgrade.CurrentLevel + 1}/{runtimeUpgrade.MaxLevel}";
 
         if (descTMP != null)
-            descTMP.text = upgrade.description;
+            descTMP.text = runtimeUpgrade.Description;
 
         var button = choiceGO.GetComponent<Button>();
         if (button != null)
         {
             button.onClick.RemoveAllListeners();
-            button.onClick.AddListener(() => SelectUpgrade(upgrade));
+            button.onClick.AddListener(() => SelectUpgrade(runtimeUpgrade));
         }
     }
 
-    public void SelectUpgrade(PlayerUpgrade upgrade)
+    public void SelectUpgrade(RuntimeUpgrade runtimeUpgrade)
     {
-        upgrade.ApplyUpgrade(Player.Instance);
-        currentUpgrades.Add(upgrade);
-        Debug.Log($"Selected Upgrade: {upgrade.upgradeName} to level {upgrade.currentLevel}");
+        runtimeUpgrade.ApplyUpgrade(Player.Instance);
+        
+        Debug.Log($"Selected Upgrade: {runtimeUpgrade.UpgradeName} to level {runtimeUpgrade.CurrentLevel}");
         Debug.Log($"Player Health after upgrade: {Player.Instance.GetComponent<HealthSystem>().MaxHealth}");
 
-        // Hide upgrade panel
         upgradeUIPanel.SetActive(false);
-
-        // Resume game
         Time.timeScale = 1f;
     }
-    
+
     private void ResetUpgrades()
     {
-        currentUpgrades.Clear();
-        foreach (var upgrade in availableUpgrades)
+        foreach (var runtimeUpgrade in runtimeUpgrades)
         {
-            upgrade.currentLevel = 0;
+            runtimeUpgrade.ResetLevel();
         }
+    }
+
+    // Metodi di utilità per accedere agli upgrade runtime
+    public RuntimeUpgrade GetRuntimeUpgrade(string upgradeName)
+    {
+        return runtimeUpgrades.FirstOrDefault(u => u.UpgradeName == upgradeName);
+    }
+
+    public List<RuntimeUpgrade> GetAllRuntimeUpgrades()
+    {
+        return new List<RuntimeUpgrade>(runtimeUpgrades);
+    }
+
+    public int GetUpgradeLevel(string upgradeName)
+    {
+        var upgrade = GetRuntimeUpgrade(upgradeName);
+        return upgrade?.CurrentLevel ?? 0;
     }
 }
