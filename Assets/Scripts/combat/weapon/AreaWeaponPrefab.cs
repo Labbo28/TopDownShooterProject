@@ -58,7 +58,11 @@ public class AreaWeaponPrefab : MonoBehaviour
     {
         // Crescita verso la dimensione target
         transform.localScale = Vector3.MoveTowards(transform.localScale, targetSize, Time.deltaTime * 10);
-
+        //quando almeno un nemico è dentro la trappola essa iuncomincia a roteare 
+        if (enemiesInRange.Count > 0)
+        {
+            transform.Rotate(0, 0, weapon.rotationSpeed *300 * Time.deltaTime);
+        }
         // Riduzione del timer principale
         timer -= Time.deltaTime;
 
@@ -75,7 +79,7 @@ public class AreaWeaponPrefab : MonoBehaviour
         }
 
         // Gestione del danno periodico
-        counter -= Time.deltaTime;
+        counter -= Time.deltaTime*weapon.rotationSpeed;
         if (counter <= 0)
         {
             // Infligge danno a tutti i nemici presenti nella lista

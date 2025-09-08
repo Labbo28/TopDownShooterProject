@@ -9,6 +9,8 @@ public class AreaWeapon : MonoBehaviour
     // Prefab da istanziare che rappresenta l'arma ad area
     [SerializeField] private GameObject prefab;
 
+    [SerializeField] public float rotationSpeed = 1f;
+
     // Contatore interno che gestisce il tempo di cooldown tra un'istanza e l'altra
     private float spawnCounter;
 
