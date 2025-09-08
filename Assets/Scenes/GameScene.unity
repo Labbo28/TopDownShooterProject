@@ -957,6 +957,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7419523088963079914, guid: 10e812d652debc74bab849538b8aaf96,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2611,9 +2616,9 @@ MonoBehaviour:
   shotPoint: {fileID: 0}
   pivotPoint: {fileID: 305003114}
   prefab: {fileID: 5785520162873480696, guid: 908c955acedfe054e88a0dae5e9f18de, type: 3}
-  speed: 10
+  speed: 1
   range: 1.5
-  amount: 0
+  amount: 1
   weaponDamage: 3
 --- !u!1 &1010304718
 GameObject:
@@ -2941,7 +2946,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -1.0000153, y: -4.9999924}
+  m_AnchoredPosition: {x: -1, y: -5}
   m_SizeDelta: {x: -2, y: -1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1216164186
