@@ -338,6 +338,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waves:
   - {fileID: 11400000, guid: c45df04d7acade949a48bff4be7d0e6a, type: 2}
+  - {fileID: 11400000, guid: c11bbc41b2fd495b984e2e40a8a349de, type: 2}
+  - {fileID: 11400000, guid: 5a8739b47cd07f314a7f2ca4d0e2bc1b, type: 2}
+  - {fileID: 11400000, guid: 4d739f0aaca8cb83dbb0b8f97103432c, type: 2}
   spawnPoints:
   - {fileID: 1921689878}
   - {fileID: 578075862}
@@ -2376,8 +2379,8 @@ MonoBehaviour:
     magnetWeight: 0.5
   - enemyType: 7
     xpDropChance: 1
-    minXPDrops: 1
-    maxXPDrops: 3
+    minXPDrops: 15
+    maxXPDrops: 20
     specialDropChance: 0.1
     medikitWeight: 0.5
     magnetWeight: 0.5

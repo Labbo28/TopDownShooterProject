@@ -16,7 +16,7 @@ MonoBehaviour:
   waveName: ciao
   waveDuration: 60
   spawnData:
-  - enemyPrefab: {fileID: 2372909403197453248, guid: fb4d4d81774a74e4a8fc129406bc1cc0,
+  - enemyPrefab: {fileID: 2372909403197453248, guid: ac3ced40651686dd3908d525794a369a,
       type: 3}
     spawnCount: 10
     spawnRate: 0.2
@@ -27,13 +27,13 @@ MonoBehaviour:
     healthMultiplier: 1.1
     damageMultiplier: 1
     speedMultiplier: 1
-  - enemyPrefab: {fileID: 2372909403197453248, guid: 87e7590eeee3d1bf6bc5699063a5ec67,
+  - enemyPrefab: {fileID: 2372909403197453248, guid: dc578a454a04468b7bc85c8be8aab8ff,
       type: 3}
-    spawnCount: 6
+    spawnCount: 1
     spawnRate: 0.2
     startTime: 0
-    duration: 50
-    spawnContinuously: 1
+    duration: 2
+    spawnContinuously: 0
     delayBetweenSpawns: 0
     healthMultiplier: 1
     damageMultiplier: 1.1
