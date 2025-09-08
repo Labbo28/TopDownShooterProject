@@ -35,6 +35,7 @@ public class EnemyAnimator : MonoBehaviour
         _enemyAnimator.SetBool("Dead", true);
         enemy.OnEnemyhit.RemoveListener(OnEnemyHit);
         enemy.OnEnemyDead.RemoveListener(OnEnemyDead);
+        Debug.Log("Nemico morto, animazione di morte attivata");
     }
 
     private void OnDestroy()
