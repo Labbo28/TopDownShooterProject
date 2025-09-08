@@ -238,7 +238,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -160}
+  m_AnchoredPosition: {x: 0, y: -112.4}
   m_SizeDelta: {x: 0, y: 7}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &67198441
@@ -338,9 +338,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waves:
   - {fileID: 11400000, guid: c45df04d7acade949a48bff4be7d0e6a, type: 2}
-  - {fileID: 11400000, guid: c11bbc41b2fd495b984e2e40a8a349de, type: 2}
-  - {fileID: 11400000, guid: 5a8739b47cd07f314a7f2ca4d0e2bc1b, type: 2}
-  - {fileID: 11400000, guid: 4d739f0aaca8cb83dbb0b8f97103432c, type: 2}
   spawnPoints:
   - {fileID: 1921689878}
   - {fileID: 578075862}
@@ -410,6 +407,21 @@ PrefabInstance:
     - target: {fileID: 6592734942948576410, guid: 09f724a1baf4c704db76d277de087064,
         type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6592734942948576410, guid: 09f724a1baf4c704db76d277de087064,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6838624388808356287, guid: 09f724a1baf4c704db76d277de087064,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6838624388808356287, guid: 09f724a1baf4c704db76d277de087064,
+        type: 3}
+      propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7117802612794217465, guid: 09f724a1baf4c704db76d277de087064,
@@ -2435,31 +2447,17 @@ MonoBehaviour:
     dropPrefabs:
     - {fileID: 7511834963911293722, guid: 2704bbc430750b94fbfa28b5f4d20b87, type: 3}
   enemyDropConfigs:
-  - enemyType: 4
+  - enemyType: 0
     xpDropChance: 1
     minXPDrops: 1
     maxXPDrops: 3
     specialDropChance: 0.1
     medikitWeight: 0.5
     magnetWeight: 0.5
-  - enemyType: 5
+  - enemyType: 1
     xpDropChance: 1
     minXPDrops: 1
     maxXPDrops: 3
-    specialDropChance: 0.1
-    medikitWeight: 0.5
-    magnetWeight: 0.5
-  - enemyType: 6
-    xpDropChance: 1
-    minXPDrops: 1
-    maxXPDrops: 3
-    specialDropChance: 0.1
-    medikitWeight: 0.5
-    magnetWeight: 0.5
-  - enemyType: 7
-    xpDropChance: 1
-    minXPDrops: 15
-    maxXPDrops: 20
     specialDropChance: 0.1
     medikitWeight: 0.5
     magnetWeight: 0.5
@@ -2564,6 +2562,59 @@ Transform:
   m_Children: []
   m_Father: {fileID: 846283981}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &958960652
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 958960653}
+  - component: {fileID: 958960654}
+  m_Layer: 0
+  m_Name: Spin Weapon
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &958960653
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 958960652}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1955577347}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &958960654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 958960652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91af1ffa9e73d334b8edfb496daa081a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponSo: {fileID: 0}
+  weaponPrefab: {fileID: 0}
+  shotPoint: {fileID: 0}
+  pivotPoint: {fileID: 305003114}
+  prefab: {fileID: 5785520162873480696, guid: 908c955acedfe054e88a0dae5e9f18de, type: 3}
+  speed: 10
+  range: 1.5
+  amount: 0
+  weaponDamage: 3
 --- !u!1 &1010304718
 GameObject:
   m_ObjectHideFlags: 0
@@ -2598,8 +2649,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -28, y: -109}
-  m_SizeDelta: {x: 160, y: 10}
+  m_AnchoredPosition: {x: -28.400024, y: -109.399994}
+  m_SizeDelta: {x: 30.7246, y: 10}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1010304720
 MonoBehaviour:
@@ -2890,7 +2941,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -1, y: -5}
+  m_AnchoredPosition: {x: -1.0000153, y: -4.9999924}
   m_SizeDelta: {x: -2, y: -1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1216164186
@@ -3392,11 +3443,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cbdfb64e9159784396f1475cee0aee7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponSo: {fileID: 0}
+  weaponPrefab: {fileID: 0}
+  shotPoint: {fileID: 0}
+  pivotPoint: {fileID: 0}
   prefab: {fileID: 6804826553281151105, guid: 40a92ec3fde603d478f78b8ab14f4da4, type: 3}
-  weaponDamage: 40
+  rotationSpeed: 1
+  weaponDamage: 0
   range: 0.2
   cooldown: 5
-  duration: 3
+  duration: 5
 --- !u!1 &1622874958
 GameObject:
   m_ObjectHideFlags: 0
@@ -4192,6 +4248,7 @@ Transform:
   m_Children:
   - {fileID: 1563323489}
   - {fileID: 2020020238}
+  - {fileID: 958960653}
   m_Father: {fileID: 40188221}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2002699870

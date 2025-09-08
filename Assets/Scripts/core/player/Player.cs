@@ -120,9 +120,9 @@ public class Player : MonoBehaviour
         {
             playerAnimator.SetBool("isDead", true);
         }
-
-        OnPlayerDead?.Invoke();
         DisablePlayerControls();
+        OnPlayerDead?.Invoke();
+        
     }
 
     private void DisablePlayerControls()
