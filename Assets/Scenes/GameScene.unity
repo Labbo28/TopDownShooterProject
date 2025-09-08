@@ -2613,7 +2613,7 @@ MonoBehaviour:
   prefab: {fileID: 5785520162873480696, guid: 908c955acedfe054e88a0dae5e9f18de, type: 3}
   speed: 10
   range: 1.5
-  amount: 1
+  amount: 0
   weaponDamage: 3
 --- !u!1 &1010304718
 GameObject:
@@ -2941,7 +2941,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -1, y: -5}
+  m_AnchoredPosition: {x: -1.0000153, y: -4.9999924}
   m_SizeDelta: {x: -2, y: -1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1216164186
@@ -3449,10 +3449,10 @@ MonoBehaviour:
   pivotPoint: {fileID: 0}
   prefab: {fileID: 6804826553281151105, guid: 40a92ec3fde603d478f78b8ab14f4da4, type: 3}
   rotationSpeed: 1
-  weaponDamage: 40
+  weaponDamage: 0
   range: 0.2
   cooldown: 5
-  duration: 3
+  duration: 5
 --- !u!1 &1622874958
 GameObject:
   m_ObjectHideFlags: 0
