@@ -4,7 +4,7 @@ using UnityEngine;
 /// Questa classe gestisce la generazione periodica di un'arma ad area.
 /// L'arma viene istanziata sotto forma di prefab alla posizione dell'entità che possiede questo script.
 /// </summary>
-public class AreaWeapon : MonoBehaviour
+public class AreaWeapon : Weapon
 {
     // Prefab da istanziare che rappresenta l'arma ad area
     [SerializeField] private GameObject prefab;
@@ -44,5 +44,12 @@ public class AreaWeapon : MonoBehaviour
             // Se si volesse far seguire il prefab al giocatore, aggiungere 'transform' come quarto argomento
             Instantiate(prefab, transform.position, transform.rotation);
         }
+    }
+
+
+    // Arma passiva: sovrascrivo Shoot ma non faccio nulla
+    protected override void Shoot()
+    {
+        // Vuoto: questa weapon non spara proiettili
     }
 }

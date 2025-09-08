@@ -79,7 +79,7 @@ public class AreaWeaponPrefab : MonoBehaviour
         }
 
         // Gestione del danno periodico
-        counter -= Time.deltaTime*weapon.rotationSpeed;
+        counter -= Time.deltaTime*weapon.rotationSpeed; //la velocità di rotazione influisce sulla frequenza dei danni
         if (counter <= 0)
         {
             // Infligge danno a tutti i nemici presenti nella lista
