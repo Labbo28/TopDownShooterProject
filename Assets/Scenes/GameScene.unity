@@ -238,7 +238,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -112.4}
+  m_AnchoredPosition: {x: 0, y: -122.3}
   m_SizeDelta: {x: 0, y: 7}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &67198441
@@ -338,6 +338,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waves:
   - {fileID: 11400000, guid: c45df04d7acade949a48bff4be7d0e6a, type: 2}
+  - {fileID: 11400000, guid: c11bbc41b2fd495b984e2e40a8a349de, type: 2}
+  - {fileID: 11400000, guid: 5a8739b47cd07f314a7f2ca4d0e2bc1b, type: 2}
+  - {fileID: 11400000, guid: 4d739f0aaca8cb83dbb0b8f97103432c, type: 2}
   spawnPoints:
   - {fileID: 1921689878}
   - {fileID: 578075862}
@@ -417,12 +420,12 @@ PrefabInstance:
     - target: {fileID: 6838624388808356287, guid: 09f724a1baf4c704db76d277de087064,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6838624388808356287, guid: 09f724a1baf4c704db76d277de087064,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -128.80727
       objectReference: {fileID: 0}
     - target: {fileID: 7117802612794217465, guid: 09f724a1baf4c704db76d277de087064,
         type: 3}
@@ -576,10 +579,6 @@ PrefabInstance:
         type: 3}
       insertIndex: 3
       addedObject: {fileID: 1010304719}
-    - targetCorrespondingSourceObject: {fileID: 7117802612794217465, guid: 09f724a1baf4c704db76d277de087064,
-        type: 3}
-      insertIndex: 4
-      addedObject: {fileID: 416966131}
     - targetCorrespondingSourceObject: {fileID: 7117802612794217465, guid: 09f724a1baf4c704db76d277de087064,
         type: 3}
       insertIndex: -1
@@ -1369,85 +1368,6 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 369723962}
-  m_CullTransparentMesh: 1
---- !u!1 &416966130
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 416966131}
-  - component: {fileID: 416966133}
-  - component: {fileID: 416966132}
-  m_Layer: 5
-  m_Name: Text Player Life
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &416966131
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 416966130}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1225815134}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -226, y: -109.4}
-  m_SizeDelta: {x: 49.2432, y: 10}
-  m_Pivot: {x: 1, y: 1}
---- !u!114 &416966132
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 416966130}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FontData:
-    m_Font: {fileID: 12800000, guid: e715fcabbb6163e48b780b3b92979f8e, type: 3}
-    m_FontSize: 8
-    m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 8
-    m_MaxSize: 40
-    m_Alignment: 3
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
-    m_LineSpacing: 1
-  m_Text: Player Life
---- !u!222 &416966133
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 416966130}
   m_CullTransparentMesh: 1
 --- !u!1 &480766559
 GameObject:
@@ -2452,17 +2372,31 @@ MonoBehaviour:
     dropPrefabs:
     - {fileID: 7511834963911293722, guid: 2704bbc430750b94fbfa28b5f4d20b87, type: 3}
   enemyDropConfigs:
-  - enemyType: 0
+  - enemyType: 4
     xpDropChance: 1
     minXPDrops: 1
     maxXPDrops: 3
     specialDropChance: 0.1
     medikitWeight: 0.5
     magnetWeight: 0.5
-  - enemyType: 1
+  - enemyType: 5
     xpDropChance: 1
     minXPDrops: 1
     maxXPDrops: 3
+    specialDropChance: 0.1
+    medikitWeight: 0.5
+    magnetWeight: 0.5
+  - enemyType: 6
+    xpDropChance: 1
+    minXPDrops: 1
+    maxXPDrops: 3
+    specialDropChance: 0.1
+    medikitWeight: 0.5
+    magnetWeight: 0.5
+  - enemyType: 7
+    xpDropChance: 1
+    minXPDrops: 15
+    maxXPDrops: 20
     specialDropChance: 0.1
     medikitWeight: 0.5
     magnetWeight: 0.5
@@ -2654,8 +2588,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -28.400024, y: -109.399994}
-  m_SizeDelta: {x: 30.7246, y: 10}
+  m_AnchoredPosition: {x: -40.9, y: -119.2}
+  m_SizeDelta: {x: 160, y: 10}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1010304720
 MonoBehaviour:
@@ -3454,10 +3388,10 @@ MonoBehaviour:
   pivotPoint: {fileID: 0}
   prefab: {fileID: 6804826553281151105, guid: 40a92ec3fde603d478f78b8ab14f4da4, type: 3}
   rotationSpeed: 1
-  weaponDamage: 0
+  weaponDamage: 40
   range: 0.2
   cooldown: 5
-  duration: 5
+  duration: 3
 --- !u!1 &1622874958
 GameObject:
   m_ObjectHideFlags: 0
