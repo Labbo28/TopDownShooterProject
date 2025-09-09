@@ -221,6 +221,7 @@ public class GameManager : MonoBehaviour
         XP += xp;
         if (XP >= xpNeededToLevelUp)
         {
+            AudioManager.Instance?.PlayLevelUpSound();
             PlayerLevel++;
             OnPlayerLevelUp?.Invoke(PlayerLevel);
             XP -= xpNeededToLevelUp;

@@ -330,6 +330,7 @@ public abstract class EnemyBase : MonoBehaviour
         {
             if (other.TryGetComponent<Projectile>(out var projectile) && healthSystem != null)
             {
+                AudioManager.Instance?.PlayHitSound();
                 healthSystem.TakeDamage(projectile.Damage);
                 Destroy(other.gameObject);
             }

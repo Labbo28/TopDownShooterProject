@@ -38,6 +38,61 @@ MonoBehaviour:
     healthMultiplier: 1
     damageMultiplier: 1
     speedMultiplier: 1
+  - enemyPrefab: {fileID: 2372909403197453248, guid: ac3ced40651686dd3908d525794a369a,
+      type: 3}
+    spawnCount: 50
+    spawnRate: 0.3
+    startTime: 0
+    duration: 50
+    spawnContinuously: 1
+    delayBetweenSpawns: 0
+    healthMultiplier: 1
+    damageMultiplier: 1
+    speedMultiplier: 1
+  - enemyPrefab: {fileID: 2372909403197453248, guid: ac3ced40651686dd3908d525794a369a,
+      type: 3}
+    spawnCount: 50
+    spawnRate: 0.3
+    startTime: 0
+    duration: 50
+    spawnContinuously: 1
+    delayBetweenSpawns: 0
+    healthMultiplier: 1
+    damageMultiplier: 1
+    speedMultiplier: 1
+  - enemyPrefab: {fileID: 2372909403197453248, guid: ac3ced40651686dd3908d525794a369a,
+      type: 3}
+    spawnCount: 100
+    spawnRate: 0.3
+    startTime: 0
+    duration: 50
+    spawnContinuously: 1
+    delayBetweenSpawns: 0
+    healthMultiplier: 1
+    damageMultiplier: 1
+    speedMultiplier: 1
+  - enemyPrefab: {fileID: 2372909403197453248, guid: ac3ced40651686dd3908d525794a369a,
+      type: 3}
+    spawnCount: 50
+    spawnRate: 0.3
+    startTime: 0
+    duration: 50
+    spawnContinuously: 1
+    delayBetweenSpawns: 0
+    healthMultiplier: 1
+    damageMultiplier: 1
+    speedMultiplier: 1
+  - enemyPrefab: {fileID: 2372909403197453248, guid: ac3ced40651686dd3908d525794a369a,
+      type: 3}
+    spawnCount: 50
+    spawnRate: 0.3
+    startTime: 0
+    duration: 50
+    spawnContinuously: 1
+    delayBetweenSpawns: 0
+    healthMultiplier: 1
+    damageMultiplier: 1
+    speedMultiplier: 1
   requireAllEnemiesDead: 0
   maxEnemiesAlive: 50
   xpMultiplier: 1
