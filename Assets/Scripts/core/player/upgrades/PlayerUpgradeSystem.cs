@@ -59,6 +59,15 @@ public class PlayerUpgradeSystem : MonoBehaviour
         // Trova upgrade che possono essere potenziati
         List<RuntimeUpgrade> availableOptions = runtimeUpgrades.Where(u => u.CanUpgrade()).ToList();
 
+        //chek aggiuntivo per evitare che vengano mostrati upgrade al max level
+        for (int i = availableOptions.Count - 1; i >= 0; i--)
+        {
+            if (availableOptions[i].IsMaxLevel)
+            {
+                availableOptions.RemoveAt(i);
+            }
+        }
+
         // Nascondi tutti i choice UI prima di popolare
         foreach (var choice in upgradeChoices)
         {
