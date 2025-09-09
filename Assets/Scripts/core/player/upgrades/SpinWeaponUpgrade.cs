@@ -10,7 +10,7 @@ public class SpinWeaponUpgrade : PlayerUpgrade
     [SerializeField] private float damageMultiplier = 1.25f; // +25% damage per level
     
     [Header("Speed Settings")]
-    [SerializeField] private float speedMultiplier = 1.15f; // +15% rotation speed per level
+    [SerializeField] private float speedMultiplier = 1.03f; // +3% rotation speed per level
     
     [Header("Range Settings")]
     [SerializeField] private float rangeMultiplier = 1.1f; // +10% range per level
