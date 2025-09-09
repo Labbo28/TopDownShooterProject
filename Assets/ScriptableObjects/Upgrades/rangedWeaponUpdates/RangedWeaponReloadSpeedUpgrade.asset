@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: RangedWeaponReloadSpeedUpgrade
   m_EditorClassIdentifier: 
   upgradeName: 
-  description: 
-  icon: {fileID: 0}
+  description: reload up!
+  icon: {fileID: -144335857, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}
   maxLevel: 5
   reloadSpeedMultiplier: 0.9

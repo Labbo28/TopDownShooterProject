@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3e0bebee38db4c46a18a72762c5e088, type: 3}
   m_Name: AreaWeaponUpgrade
   m_EditorClassIdentifier: 
-  upgradeName: 
-  description: 
-  icon: {fileID: 0}
+  upgradeName: general up!
+  description: DAMAGE,RANGE,COOLDOWN,DURATION
+  icon: {fileID: 21300000, guid: 47f5bf48a94594a4ca2527f935665c59, type: 3}
   maxLevel: 5
   damageMultiplier: 1.25
   rangeMultiplier: 1.1
