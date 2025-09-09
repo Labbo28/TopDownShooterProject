@@ -52,4 +52,5 @@ public class AreaWeapon : Weapon
     {
         // Vuoto: questa weapon non spara proiettili
     }
+    
 }

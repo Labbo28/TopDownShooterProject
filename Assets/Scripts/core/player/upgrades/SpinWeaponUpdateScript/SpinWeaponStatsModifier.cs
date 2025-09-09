@@ -10,7 +10,7 @@ public class SpinWeaponStatsModifier : MonoBehaviour
     public int AdditionalBladeCount => additionalBladeCount;
     public float DamageMultiplier => damageMultiplier;
     public float SpeedMultiplier => speedMultiplier;
-    public float RangeMultiplier => rangeMultiplier;
+   
 
     public void AddBladeCount(int count)
     {
@@ -57,20 +57,7 @@ public class SpinWeaponStatsModifier : MonoBehaviour
         Debug.Log($"Total spin weapon speed multiplier: {speedMultiplier:F2}");
     }
 
-    public void AddRangeMultiplier(float multiplier)
-    {
-        // Applica il moltiplicatore di range alle armi esistenti
-        SpinWeapon[] spinWeapons = GetComponentsInChildren<SpinWeapon>();
-        foreach (SpinWeapon spinWeapon in spinWeapons)
-        {
-            float oldRange = spinWeapon.range;
-            spinWeapon.range *= multiplier;
-            Debug.Log($"Applied range multiplier {multiplier:F2} to {spinWeapon.name}: {oldRange:F2} -> {spinWeapon.range:F2}");
-        }
-        
-        rangeMultiplier *= multiplier;
-        Debug.Log($"Total spin weapon range multiplier: {rangeMultiplier:F2}");
-    }
+
 
     // Metodo per applicare i modificatori a una nuova SpinWeapon
     public void ApplyToNewSpinWeapon(SpinWeapon spinWeapon)

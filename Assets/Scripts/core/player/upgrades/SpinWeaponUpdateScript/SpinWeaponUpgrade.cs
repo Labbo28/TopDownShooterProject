@@ -12,8 +12,7 @@ public class SpinWeaponUpgrade : PlayerUpgrade
     [Header("Speed Settings")]
     [SerializeField] private float speedMultiplier = 1.03f; // +3% rotation speed per level
     
-    [Header("Range Settings")]
-    [SerializeField] private float rangeMultiplier = 1.1f; // +10% range per level
+
 
     public override void ApplyUpgrade(Player player, int currentLevel)
     {
@@ -28,9 +27,9 @@ public class SpinWeaponUpgrade : PlayerUpgrade
         spinStats.AddBladeCount(additionalBlades);
         spinStats.AddDamageMultiplier(damageMultiplier);
         spinStats.AddSpeedMultiplier(speedMultiplier);
-        spinStats.AddRangeMultiplier(rangeMultiplier);
+    
         
         Debug.Log($"Spin Weapon Upgrade applied! Level: {currentLevel + 1}");
-        Debug.Log($"Current stats - Blades: +{spinStats.AdditionalBladeCount}, Damage: x{spinStats.DamageMultiplier:F2}, Speed: x{spinStats.SpeedMultiplier:F2}, Range: x{spinStats.RangeMultiplier:F2}");
+        Debug.Log($"Current stats - Blades: +{spinStats.AdditionalBladeCount}, Damage: x{spinStats.DamageMultiplier:F2}, Speed: x{spinStats.SpeedMultiplier:F2}");
     }
 }
