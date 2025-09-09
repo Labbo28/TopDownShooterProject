@@ -10,7 +10,7 @@ public class SpinWeapon : Weapon
     [SerializeField] public float speed = 1.5f; // Velocità di rotazione delle lame
     [SerializeField] public float range = 2f; // Distanza dal centro (giocatore)
     [SerializeField] public int amount = 3; // Numero di lame rotanti
-    [SerializeField] public float weaponDamage = 3f; // Danno inflitto da ogni lama
+    [SerializeField] public float weaponDamage = 10f; // Danno inflitto da ogni lama
 
     private int lastAmount = -1; // Tiene traccia dell'ultimo valore di 'amount' per aggiornare i prefab solo quando necessario
 

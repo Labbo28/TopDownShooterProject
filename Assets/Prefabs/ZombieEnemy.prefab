@@ -187,6 +187,8 @@ MonoBehaviour:
   repositionDistance: 15
   debugRepositioning: 0
   attackRange: 1
+  pursuingSpeedMultiplier: 1.2
+  isPursuing: 0
 --- !u!95 &6020913500450426487
 Animator:
   serializedVersion: 7
@@ -197,7 +199,7 @@ Animator:
   m_GameObject: {fileID: 2372909403197453248}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f2855d618fc8d9c499189d3f39b9cbbc, type: 2}
+  m_Controller: {fileID: 9100000, guid: a1a81fbf5c7c7db4faac97373bb89a52, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

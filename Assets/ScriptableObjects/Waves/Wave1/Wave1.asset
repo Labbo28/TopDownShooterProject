@@ -27,6 +27,17 @@ MonoBehaviour:
     healthMultiplier: 1
     damageMultiplier: 1
     speedMultiplier: 1
+  - enemyPrefab: {fileID: 2372909403197453248, guid: fb4d4d81774a74e4a8fc129406bc1cc0,
+      type: 3}
+    spawnCount: 50
+    spawnRate: 0.3
+    startTime: 0
+    duration: 50
+    spawnContinuously: 1
+    delayBetweenSpawns: 0
+    healthMultiplier: 1
+    damageMultiplier: 1
+    speedMultiplier: 1
   requireAllEnemiesDead: 0
   maxEnemiesAlive: 50
   xpMultiplier: 1

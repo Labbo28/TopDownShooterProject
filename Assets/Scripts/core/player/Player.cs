@@ -28,7 +28,7 @@ public class Player : MonoBehaviour
     private Vector2 movementDirection;
     private Vector3 initialPosition = Vector3.zero;
     private bool isDead = false;
-    private Animator playerAnimator;
+    // Animator gestito da PlayerAnimator component
 
     private void Awake()
     {
@@ -62,8 +62,7 @@ public class Player : MonoBehaviour
     {
         dashTimer = new CountdownTimer(dashCooldown);
 
-        // Get the Animator component
-        playerAnimator = GetComponent<Animator>();
+        // Animator gestito da PlayerAnimator component
 
         // Get or add HealthSystem component
         healthSystem = GetComponent<HealthSystem>();
@@ -115,11 +114,7 @@ public class Player : MonoBehaviour
         isDead = true;
         Debug.Log("Player has died.");
 
-        // Imposta l'animazione di morte
-        if (playerAnimator != null)
-        {
-            playerAnimator.SetBool("isDead", true);
-        }
+        // Animazione di morte gestita da PlayerAnimator tramite eventi
         DisablePlayerControls();
         OnPlayerDead?.Invoke();
         
@@ -272,25 +267,12 @@ public class Player : MonoBehaviour
             InitializePlayer();
         }
 
-        // Reset dell'Animator
-        if (playerAnimator != null)
+        // Reset dell'Animator gestito da PlayerAnimator component
+        PlayerAnimator playerAnimatorComponent = GetComponent<PlayerAnimator>();
+        if (playerAnimatorComponent != null)
         {
-            playerAnimator.SetBool("isDead", false);
-            playerAnimator.SetBool("isRunning", false);
-            // Reset eventuali trigger
-            playerAnimator.ResetTrigger("Hit");
-            Debug.Log("Animator reset completed");
-        }
-        else
-        {
-            // Prova a trovare l'animator se è null
-            playerAnimator = GetComponent<Animator>();
-            if (playerAnimator != null)
-            {
-                playerAnimator.SetBool("isDead", false);
-                playerAnimator.SetBool("isRunning", false);
-                playerAnimator.ResetTrigger("Hit");
-            }
+            playerAnimatorComponent.ResetAnimator();
+            Debug.Log("Animator reset completed via PlayerAnimator component");
         }
 
         // Trova la nuova posizione di spawn nella scena corrente
@@ -312,7 +294,50 @@ public class Player : MonoBehaviour
         // Reset eventi di animazione
         OnPlayerStopMoving?.Invoke();
 
+        // Reset dei componenti di upgrade personalizzati
+        ResetUpgradeComponents();
+
         Debug.Log($"Player reset completed. Position: {transform.position}, Health: {healthSystem?.Health}/{healthSystem?.MaxHealth}");
+    }
+
+    private void ResetUpgradeComponents()
+    {
+        // Reset RangedWeaponStatsModifier
+        RangedWeaponStatsModifier rangedWeaponStats = GetComponent<RangedWeaponStatsModifier>();
+        if (rangedWeaponStats != null)
+        {
+            rangedWeaponStats.ResetModifiers();
+        }
+
+        // Reset HealingBoostComponent
+        HealingBoostComponent healingBoost = GetComponent<HealingBoostComponent>();
+        if (healingBoost != null)
+        {
+            healingBoost.ResetMultiplier();
+        }
+
+        // Reset SpinWeaponStatsModifier
+        SpinWeaponStatsModifier spinWeaponStats = GetComponent<SpinWeaponStatsModifier>();
+        if (spinWeaponStats != null)
+        {
+            spinWeaponStats.ResetModifiers();
+        }
+
+        // MagnetDropBooster rimosso
+
+        // Rimuovi HealthRegenComponent se presente
+        HealthRegenComponent healthRegen = GetComponent<HealthRegenComponent>();
+        if (healthRegen != null)
+        {
+            Destroy(healthRegen);
+        }
+
+        // MagnetVisualEffect rimosso dal sistema
+
+        // Reset velocità di movimento al valore base
+        SetMovementSpeed(4f); // Velocità base originale
+
+        Debug.Log("Upgrade components reset completed");
     }
 
     private void OnDestroy()

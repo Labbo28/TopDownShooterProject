@@ -174,6 +174,7 @@ public class DropManager : MonoBehaviour
         // Logica per decidere quale XP drop usare in base al tipo di nemico
         switch (enemyType)
         {
+            // Tipi generici
             case EnemyType.Melee:
                 return 0; // XP di bronzo
             case EnemyType.Ranged:
@@ -182,8 +183,21 @@ public class DropManager : MonoBehaviour
                 return 1; // XP d'argento 
             case EnemyType.Boss:
                 return 2; // XP d'oro 
+                
+            // Tipi specifici di zombie
+            case EnemyType.Zombie:
+                return UnityEngine.Random.Range(0, 2); // XP di bronzo o argento
+            case EnemyType.ZombieFast:
+                return 1; // XP d'argento (più veloce = più prezioso)
+                
+            // Tipi specifici di scheletri
+            case EnemyType.Skeleton:
+                return UnityEngine.Random.Range(1, 3); // XP d'argento o oro
+            case EnemyType.SkeletonBoss:
+                return 2; // XP d'oro
+                
             default:
-                return 0;
+                return 0; // XP di bronzo come fallback
         }
     }
 

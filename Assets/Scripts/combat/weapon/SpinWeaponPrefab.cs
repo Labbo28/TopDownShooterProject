@@ -38,6 +38,7 @@ public class SpinWeaponPrefab : MonoBehaviour
         transform.up = offset.normalized; // Orienta la lama verso l'esterno
     }
 
+  
     /// <summary>
     /// Gestisce la collisione con i nemici.
     /// Se il collider ha il tag "Enemy" e implementa IDamageable, infligge danno.

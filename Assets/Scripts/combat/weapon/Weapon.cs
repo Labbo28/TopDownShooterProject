@@ -53,17 +53,39 @@ public abstract class Weapon : MonoBehaviour
     private CountdownTimer reloadTimer;
     private CountdownTimer fireRateTimer;
 
+    private void Awake()
+    {
+        // Initialize timers with base values - will be updated with modifiers in Start()
+        reloadTimer = new CountdownTimer(weaponSo.reloadTime);
+        fireRateTimer = new CountdownTimer(weaponSo.fireRate);
+    }
+    
     private void Start()
     {
         GameObject shotPointObject = GameObject.Find("shotPoint");
         shotPointObject.transform.rotation = Quaternion.Euler(0f, 0f, -90f);
         currentAmmo = weaponSo.maxAmmo;
+        
+        // Apply modifiers after awake to ensure Player components exist
+        UpdateTimersWithModifiers();
     }
-    private void Awake()
-    {
     
-        reloadTimer = new CountdownTimer(weaponSo.reloadTime);
-        fireRateTimer = new CountdownTimer(weaponSo.fireRate);
+    public void UpdateTimersWithModifiers()
+    {
+        if (Player.Instance != null && !(this is SpinWeapon))
+        {
+            RangedWeaponStatsModifier modifier = Player.Instance.GetComponent<RangedWeaponStatsModifier>();
+            if (modifier != null)
+            {
+                float modifiedFireRate = weaponSo.fireRate * modifier.FireRateMultiplier;
+                float modifiedReloadTime = weaponSo.reloadTime * modifier.ReloadSpeedMultiplier;
+                
+                reloadTimer = new CountdownTimer(modifiedReloadTime);
+                fireRateTimer = new CountdownTimer(modifiedFireRate);
+                
+                Debug.Log($"Applied weapon modifiers to {name}: FireRate={modifiedFireRate}, ReloadTime={modifiedReloadTime}");
+            }
+        }
     }
 
     void Update()

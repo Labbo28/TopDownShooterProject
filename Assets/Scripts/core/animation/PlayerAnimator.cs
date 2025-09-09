@@ -89,8 +89,21 @@ public class PlayerAnimator : MonoBehaviour
 
     public void ResetAnimator()
     {
+        // Se l'animator è null, prova a recuperarlo
+        if (playerAnimator == null)
+        {
+            playerAnimator = GetComponent<Animator>();
+        }
+        
         if (playerAnimator != null)
         {
+            // Controlla se ha un controller assegnato
+            if (playerAnimator.runtimeAnimatorController == null)
+            {
+                Debug.LogWarning($"PlayerAnimator on {gameObject.name}: RuntimeAnimatorController is missing!");
+                return;
+            }
+            
             // Reset di tutti i parametri dell'animator
             playerAnimator.SetBool("isRunning", false);
             playerAnimator.SetBool("isDead", false);
@@ -98,16 +111,27 @@ public class PlayerAnimator : MonoBehaviour
             // Reset eventuali trigger
             playerAnimator.ResetTrigger("Hit");
             
-            // Forza il ritorno allo stato idle
-            playerAnimator.Play("Idle", 0, 0f);
+            // Forza il ritorno allo stato idle (solo se lo stato esiste)
+            try
+            {
+                playerAnimator.Play("Idle", 0, 0f);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogWarning($"Could not play 'Idle' state: {e.Message}");
+            }
             
             Debug.Log("Animator reset to default state");
+        }
+        else
+        {
+            Debug.LogError($"PlayerAnimator on {gameObject.name}: Could not find Animator component!");
         }
     }
 
     private void OnPlayerMoving()
     {
-        if (playerAnimator != null)
+        if (ValidateAnimator())
         {
             playerAnimator.SetBool("isRunning", true);
         }
@@ -115,7 +139,7 @@ public class PlayerAnimator : MonoBehaviour
 
     private void OnPlayerStopMoving()
     {
-        if (playerAnimator != null)
+        if (ValidateAnimator())
         {
             playerAnimator.SetBool("isRunning", false);
         }
@@ -123,12 +147,34 @@ public class PlayerAnimator : MonoBehaviour
 
     private void OnPlayerDead()
     {
-        if (playerAnimator != null)
+        if (ValidateAnimator())
         {
             playerAnimator.SetBool("isDead", true);
             // Ferma il movimento
             playerAnimator.SetBool("isRunning", false);
         }
+    }
+    
+    private bool ValidateAnimator()
+    {
+        if (playerAnimator == null)
+        {
+            playerAnimator = GetComponent<Animator>();
+        }
+        
+        if (playerAnimator == null)
+        {
+            Debug.LogWarning($"PlayerAnimator on {gameObject.name}: Animator component is missing!");
+            return false;
+        }
+        
+        if (playerAnimator.runtimeAnimatorController == null)
+        {
+            Debug.LogWarning($"PlayerAnimator on {gameObject.name}: RuntimeAnimatorController is missing!");
+            return false;
+        }
+        
+        return true;
     }
 
     // Metodo pubblico per forzare il reset (utile per debug o chiamate esterne)

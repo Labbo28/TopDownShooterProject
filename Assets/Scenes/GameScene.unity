@@ -420,12 +420,12 @@ PrefabInstance:
     - target: {fileID: 6838624388808356287, guid: 09f724a1baf4c704db76d277de087064,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6838624388808356287, guid: 09f724a1baf4c704db76d277de087064,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -127.03215
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7117802612794217465, guid: 09f724a1baf4c704db76d277de087064,
         type: 3}
@@ -1284,6 +1284,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 8104474574162944738, guid: 3b6a366fe4a6fb243a5f71328e0e732f,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: ac2561105a68e3a4b9116c26d6f18cc0, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 7682301180357902372, guid: 3b6a366fe4a6fb243a5f71328e0e732f, type: 3}
@@ -1574,6 +1579,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: fb976530cdf8c42f292394a3bcd6ebdb, type: 2}
   - {fileID: 11400000, guid: bf01ae544ad677361970bca90fb21dc1, type: 2}
   - {fileID: 11400000, guid: e848d08fa8a1844908ad7ab8bd03aa83, type: 2}
+  - {fileID: 11400000, guid: 36c3445e22138a0ec83e1543519ce4c4, type: 2}
+  - {fileID: 11400000, guid: c8e25288c89380419b6445e068c70687, type: 2}
+  - {fileID: 11400000, guid: 7a5b915e592e9e9c0b47b3d8aa8795d8, type: 2}
+  - {fileID: 11400000, guid: e019028e3fa333565a2fab5123032c88, type: 2}
   upgradeUIPanel: {fileID: 1446511323}
   upgradeChoices:
   - {fileID: 1660151424}

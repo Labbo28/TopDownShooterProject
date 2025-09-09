@@ -46,7 +46,7 @@ public class EnemyAnimator : MonoBehaviour
 
     private void OnEnemyHit()
     {
-        if (_enemyAnimator != null && _enemyAnimator.parameters != null)
+        if (ValidateEnemyAnimator())
         {
             // Controlla se il parametro "Hit" esiste prima di usarlo
             foreach (var param in _enemyAnimator.parameters)
@@ -63,7 +63,7 @@ public class EnemyAnimator : MonoBehaviour
 
     private void OnEnemyDead(EnemyType enemyType, Vector3 position)
     {
-        if (_enemyAnimator != null && _enemyAnimator.parameters != null)
+        if (ValidateEnemyAnimator())
         {
             // Controlla se il parametro "Dead" esiste prima di usarlo
             foreach (var param in _enemyAnimator.parameters)
@@ -83,6 +83,34 @@ public class EnemyAnimator : MonoBehaviour
             enemy.OnEnemyhit.RemoveListener(OnEnemyHit);
             enemy.OnEnemyDead.RemoveListener(OnEnemyDead);
         }
+    }
+    
+    private bool ValidateEnemyAnimator()
+    {
+        if (_enemyAnimator == null)
+        {
+            _enemyAnimator = GetComponent<Animator>();
+        }
+        
+        if (_enemyAnimator == null)
+        {
+            Debug.LogWarning($"EnemyAnimator on {gameObject.name}: Animator component is missing!");
+            return false;
+        }
+        
+        if (_enemyAnimator.runtimeAnimatorController == null)
+        {
+            Debug.LogWarning($"EnemyAnimator on {gameObject.name}: RuntimeAnimatorController is missing!");
+            return false;
+        }
+        
+        if (_enemyAnimator.parameters == null)
+        {
+            Debug.LogWarning($"EnemyAnimator on {gameObject.name}: Animator parameters are null!");
+            return false;
+        }
+        
+        return true;
     }
 
     private void OnDestroy()

@@ -40,7 +40,7 @@ MonoBehaviour:
     speedMultiplier: 1
   - enemyPrefab: {fileID: 2372909403197453248, guid: ac3ced40651686dd3908d525794a369a,
       type: 3}
-    spawnCount: 6
+    spawnCount: 50
     spawnRate: 0.2
     startTime: 0
     duration: 50

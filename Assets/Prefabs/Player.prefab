@@ -211,8 +211,8 @@ MonoBehaviour:
   OnPlayerDead:
     m_PersistentCalls:
       m_Calls: []
-  _movementSpeed: 20
-  _dashCooldown: 3
+  movementSpeed: 5
+  dashCooldown: 3
   rotationSpeed: 3
 --- !u!50 &9060932166925476516
 Rigidbody2D:
@@ -342,7 +342,7 @@ Animator:
   m_GameObject: {fileID: 7378342022886914370}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: b9e23a95ed25e8a4d977ed25251c8703, type: 2}
+  m_Controller: {fileID: 9100000, guid: ac2561105a68e3a4b9116c26d6f18cc0, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
