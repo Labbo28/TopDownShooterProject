@@ -50,6 +50,7 @@ public class SpinWeaponPrefab : MonoBehaviour
         {
             if (collider.TryGetComponent<IDamageable>(out var target))
             {
+                AudioManager.Instance?.PlayMeleeSound();
                 target.TakeDamage(weapon.weaponDamage); // Infligge danno usando il valore dell'arma
             }
         }

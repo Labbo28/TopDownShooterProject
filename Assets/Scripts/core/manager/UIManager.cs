@@ -156,6 +156,7 @@ public class UIManager : MonoBehaviour
 
     private void OnRetryButtonClicked()
     {
+        AudioManager.Instance?.PlayButtonClick();
         Debug.Log("Retrying...");
 
         // Nascondi l'UI di game over prima di ricaricare
@@ -171,6 +172,7 @@ public class UIManager : MonoBehaviour
 
     private void OnQuitButtonClicked()
     {
+        AudioManager.Instance?.PlayButtonClick();
         Debug.Log("Returning to main menu...");
         Player.Instance.gameObject.SetActive(false);
         UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
@@ -179,7 +181,7 @@ public class UIManager : MonoBehaviour
     private void OnGameOver()
     {
         Debug.Log("GAME OVER!");
-
+        AudioManager.Instance?.PlayLooseSound();
         if (TextDead != null)
         {
             StartCoroutine(FadeInGameOver());
@@ -236,6 +238,7 @@ public class UIManager : MonoBehaviour
 
     private void OnPlayerLevelUp(int level)
     {
+        AudioManager.Instance?.PlayLevelUpSound();
         if (TextLevel != null)
         {
             Text levelText = TextLevel.GetComponent<Text>();

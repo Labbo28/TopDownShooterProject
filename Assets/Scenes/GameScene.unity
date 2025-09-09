@@ -1580,7 +1580,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bf01ae544ad677361970bca90fb21dc1, type: 2}
   - {fileID: 11400000, guid: e848d08fa8a1844908ad7ab8bd03aa83, type: 2}
   - {fileID: 11400000, guid: 36c3445e22138a0ec83e1543519ce4c4, type: 2}
-  - {fileID: 11400000, guid: c8e25288c89380419b6445e068c70687, type: 2}
   - {fileID: 11400000, guid: 7a5b915e592e9e9c0b47b3d8aa8795d8, type: 2}
   - {fileID: 11400000, guid: e019028e3fa333565a2fab5123032c88, type: 2}
   upgradeUIPanel: {fileID: 1446511323}
