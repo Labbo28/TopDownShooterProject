@@ -59,10 +59,27 @@ public class InfiniteChildMover : MonoBehaviour
     /// </summary>
     void Update()
     {
-        // Controlla se playerTransform è assegnato prima di procedere
+        // Aggiorna dinamicamente il riferimento al player se non è assegnato
         if (playerTransform == null)
         {
-            return;
+            // Cerca prima usando il Player singleton
+            if (Player.Instance != null)
+            {
+                playerTransform = Player.Instance.transform;
+            }
+            else
+            {
+                GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+                if (playerObject != null)
+                {
+                    playerTransform = playerObject.transform;
+                }
+                else
+                {
+                    // Se non trova il player, esce dalla funzione
+                    return;
+                }
+            }
         }
 
         if (repositionWholeObject)

@@ -31,6 +31,15 @@ public class DayAndNightCycle : MonoBehaviour
         _CycleMarks();
     }
 
+        // Metodo pubblico per retry
+        public void RetryCycle()
+        {
+            _currentCycleTime = 0f;
+            _currentMarkIndex = -1;
+            _nextMarkIndex = -1;
+            _CycleMarks();
+        }
+
     // Update is called once per frame
     void Update()
     {
