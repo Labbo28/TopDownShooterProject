@@ -5,6 +5,7 @@ public class HealthSystem : MonoBehaviour, IDamageable
 {
     [SerializeField] private float maxHealth = 100;
     private float currentHealth;
+    private float baseMaxHealth;
     
     public UnityEvent onDamaged;
     public UnityEvent onHealed;
@@ -17,8 +18,9 @@ public class HealthSystem : MonoBehaviour, IDamageable
     
     private void Awake()
     {
-        ResetHealth();
-        InitializeEvents();
+    baseMaxHealth = maxHealth;
+    ResetHealth();
+    InitializeEvents();
     }
 
     private void InitializeEvents()
@@ -75,14 +77,16 @@ public class HealthSystem : MonoBehaviour, IDamageable
     // Metodo per resettare completamente la salute
     public void ResetHealth()
     {
-        currentHealth = maxHealth;
+    maxHealth = baseMaxHealth;
+    currentHealth = maxHealth;
     }
 
     // Metodo per resettare la salute con un nuovo valore massimo
     public void ResetHealth(float newMaxHealth)
     {
-        maxHealth = newMaxHealth;
-        currentHealth = maxHealth;
+    baseMaxHealth = newMaxHealth;
+    maxHealth = newMaxHealth;
+    currentHealth = maxHealth;
     }
 
     // Metodo per impostare la salute a un valore specifico

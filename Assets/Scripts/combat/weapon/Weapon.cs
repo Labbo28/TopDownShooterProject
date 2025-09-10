@@ -1,4 +1,3 @@
-
 using System;
 using UnityEngine;
 
@@ -55,19 +54,34 @@ public abstract class Weapon : MonoBehaviour
 
     private void Awake()
     {
-        // Initialize timers with base values - will be updated with modifiers in Start()
+        if (this is SpinWeapon || this is AreaWeapon)
+        {
+            // Per le armi Spin e Area, non fare nulla di speciale
+            return;
+        }
+
         reloadTimer = new CountdownTimer(weaponSo.reloadTime);
         fireRateTimer = new CountdownTimer(weaponSo.fireRate);
     }
     
     private void Start()
     {
-        GameObject shotPointObject = GameObject.Find("shotPoint");
-        shotPointObject.transform.rotation = Quaternion.Euler(0f, 0f, -90f);
-        currentAmmo = weaponSo.maxAmmo;
-        
-        // Apply modifiers after awake to ensure Player components exist
-        UpdateTimersWithModifiers();
+        // Solo per armi da fuoco
+        if (!(this is SpinWeapon) && !(this is AreaWeapon))
+        {
+            GameObject shotPointObject = GameObject.Find("shotPoint");
+            if (shotPointObject != null)
+            {
+                shotPointObject.transform.rotation = Quaternion.Euler(0f, 0f, -90f);
+            }
+            else
+            {
+                Debug.LogWarning("shotPoint non trovato nella scena!");
+            }
+            currentAmmo = weaponSo.maxAmmo;
+            // Apply modifiers after awake to ensure Player components exist
+            UpdateTimersWithModifiers();
+        }
     }
     
     public void UpdateTimersWithModifiers()
@@ -75,14 +89,16 @@ public abstract class Weapon : MonoBehaviour
         if (Player.Instance != null && !(this is SpinWeapon))
         {
             RangedWeaponStatsModifier modifier = Player.Instance.GetComponent<RangedWeaponStatsModifier>();
-            if (modifier != null)
+            if (modifier != null && weaponSo != null)
             {
                 float modifiedFireRate = weaponSo.fireRate * modifier.FireRateMultiplier;
                 float modifiedReloadTime = weaponSo.reloadTime * modifier.ReloadSpeedMultiplier;
-                
                 reloadTimer = new CountdownTimer(modifiedReloadTime);
                 fireRateTimer = new CountdownTimer(modifiedFireRate);
-                
+            }
+            else if (weaponSo == null)
+            {
+                Debug.LogError($"WeaponSO non assegnato su {gameObject.name}!");
             }
         }
     }
@@ -103,8 +119,10 @@ public abstract class Weapon : MonoBehaviour
 
     private void UpdateTimers()
     {
-       reloadTimer.Tick(Time.deltaTime);
-       fireRateTimer.Tick(Time.deltaTime);
+        if (reloadTimer != null)
+            reloadTimer.Tick(Time.deltaTime);
+        if (fireRateTimer != null)
+            fireRateTimer.Tick(Time.deltaTime);
     }
 
     public Vector3 GetProjectileDirection()

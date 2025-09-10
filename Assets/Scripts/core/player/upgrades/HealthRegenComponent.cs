@@ -5,8 +5,16 @@ public class HealthRegenComponent : MonoBehaviour
 {
     private float regenAmountPerSecond = 0f;
     private float regenInterval = 1f;
+    private float baseRegenAmountPerSecond = 0f;
+    private float baseRegenInterval = 1f;
     private HealthSystem healthSystem;
     private Coroutine regenCoroutine;
+
+    private void Awake()
+    {
+        baseRegenAmountPerSecond = regenAmountPerSecond;
+        baseRegenInterval = regenInterval;
+    }
 
     private void Start()
     {
@@ -21,17 +29,22 @@ public class HealthRegenComponent : MonoBehaviour
     {
         regenAmountPerSecond = amountPerSecond;
         regenInterval = interval;
-        
+
         // Riavvia la rigenerazione con i nuovi valori
         if (regenCoroutine != null)
         {
             StopCoroutine(regenCoroutine);
         }
-        
+
         if (regenAmountPerSecond > 0f)
         {
             regenCoroutine = StartCoroutine(RegenerateHealth());
         }
+    }
+
+    public void ResetRegeneration()
+    {
+        SetRegeneration(baseRegenAmountPerSecond, baseRegenInterval);
     }
 
     private IEnumerator RegenerateHealth()
@@ -39,7 +52,7 @@ public class HealthRegenComponent : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(regenInterval);
-            
+
             if (healthSystem != null && healthSystem.IsAlive && healthSystem.Health < healthSystem.MaxHealth)
             {
                 healthSystem.Heal(regenAmountPerSecond * regenInterval);

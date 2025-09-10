@@ -4,6 +4,8 @@ using UnityEngine;
 /// SpinWeapon gestisce un'arma che ruota attorno al giocatore.
 /// Crea più prefab che orbitano attorno al centro, aggiornando il loro numero se la proprietà 'amount' cambia.
 /// </summary>
+
+
 public class SpinWeapon : Weapon
 {
     [SerializeField] private GameObject prefab; // Prefab da istanziare per ogni "lama" rotante
@@ -13,6 +15,7 @@ public class SpinWeapon : Weapon
     [SerializeField] public float weaponDamage = 10f; // Danno inflitto da ogni lama
 
     private int lastAmount = -1; // Tiene traccia dell'ultimo valore di 'amount' per aggiornare i prefab solo quando necessario
+
 
     /// <summary>
     /// Aggiorna i prefab se il numero di lame ('amount') cambia.
@@ -35,7 +38,12 @@ public class SpinWeapon : Weapon
                 // Calcola la rotazione iniziale per distribuire le lame in modo uniforme
                 float rotation = 360f / amount * i;
                 var obj = Instantiate(prefab, transform.position, Quaternion.identity, transform);
-                var spinPrefab = obj.GetComponent<SpinWeaponPrefab>();
+                var spinPrefab = obj.GetComponentInChildren<SpinWeaponPrefab>();
+                if (spinPrefab == null)
+                {
+                    Debug.LogError($"SpinWeaponPrefab non trovato nel prefab istanziato! Prefab: {prefab.name}");
+                    continue;
+                }
                 spinPrefab.Init(rotation); // Inizializza la lama con la rotazione calcolata
                 spinPrefab.weapon = this; // Passa il riferimento all'arma per accedere ai parametri
             }
@@ -48,4 +56,6 @@ public class SpinWeapon : Weapon
     /// Override del metodo Shoot. Non viene usato perché la rotazione è gestita in modo automatico.
     /// </summary>
     protected override void Shoot() { }
+
+
 }

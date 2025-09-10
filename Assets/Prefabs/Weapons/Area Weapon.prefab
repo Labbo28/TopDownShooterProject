@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3238499070675019721}
   m_Layer: 0
   m_Name: Area Weapon
-  m_TagString: Untagged
+  m_TagString: NonFireArms
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

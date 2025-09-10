@@ -4,6 +4,9 @@ using UnityEngine;
 /// Questa classe gestisce la generazione periodica di un'arma ad area.
 /// L'arma viene istanziata sotto forma di prefab alla posizione dell'entità che possiede questo script.
 /// </summary>
+
+
+[CreateAssetMenu(fileName = "AreaWeapon", menuName = "Weapons/AreaWeapon")]
 public class AreaWeapon : Weapon
 {
     // Prefab da istanziare che rappresenta l'arma ad area
@@ -25,6 +28,11 @@ public class AreaWeapon : Weapon
 
     // Durata dell'effetto dell'arma (non utilizzata nel codice corrente)
     public float duration = 3f;
+    
+
+
+
+
 
     /// <summary>
     /// Metodo chiamato ad ogni frame. Gestisce il countdown per l'attivazione dell'arma.
@@ -43,14 +51,14 @@ public class AreaWeapon : Weapon
             // Istanzia il prefab alla posizione e rotazione attuali dell'oggetto
             // Se si volesse far seguire il prefab al giocatore, aggiungere 'transform' come quarto argomento
             Instantiate(prefab, transform.position, transform.rotation);
+            
         }
     }
 
 
-    // Arma passiva: sovrascrivo Shoot ma non faccio nulla
-    protected override void Shoot()
-    {
-        // Vuoto: questa weapon non spara proiettili
-    }
+    /// <summary>
+    /// Override del metodo Shoot. Non viene usato perché la rotazione è gestita in modo automatico.
+    /// </summary>
+    protected override void Shoot() { }
     
 }

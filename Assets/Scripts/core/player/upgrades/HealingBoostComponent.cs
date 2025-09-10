@@ -3,9 +3,15 @@ using UnityEngine;
 public class HealingBoostComponent : MonoBehaviour
 {
     private float healingMultiplier = 1f;
+    private float baseHealingMultiplier = 1f;
     private HealthSystem healthSystem;
 
     public float HealingMultiplier => healingMultiplier;
+
+    private void Awake()
+    {
+        baseHealingMultiplier = healingMultiplier;
+    }
 
     private void Start()
     {
@@ -15,7 +21,6 @@ public class HealingBoostComponent : MonoBehaviour
             Destroy(this);
             return;
         }
-
         // Sostituisci il metodo Heal originale con uno potenziato
         // Questo richiederà una modifica al HealthSystem o un override del comportamento
     }
@@ -32,13 +37,12 @@ public class HealingBoostComponent : MonoBehaviour
         {
             float enhancedAmount = amount * healingMultiplier;
             healthSystem.Heal(enhancedAmount);
-            
         }
     }
 
     // Resetta il moltiplicatore (utile per il reset del gioco)
     public void ResetMultiplier()
     {
-        healingMultiplier = 1f;
+        healingMultiplier = baseHealingMultiplier;
     }
 }

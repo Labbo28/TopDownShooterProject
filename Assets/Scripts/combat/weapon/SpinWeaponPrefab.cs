@@ -46,6 +46,11 @@ public class SpinWeaponPrefab : MonoBehaviour
     /// <param name="collider">Collider che entra in contatto</param>
     private void OnTriggerEnter2D(Collider2D collider)
     {
+        // Controlla se il riferimento all'arma è nullo
+        if (weapon == null)
+        {
+            return;
+        }
         if (collider.CompareTag("Enemy"))
         {
             if (collider.TryGetComponent<IDamageable>(out var target))
