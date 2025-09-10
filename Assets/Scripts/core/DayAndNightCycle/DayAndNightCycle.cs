@@ -22,6 +22,7 @@ public class DayAndNightCycle : MonoBehaviour
     private float _currentCycleTime;
     private int _currentMarkIndex, _nextMarkIndex;
     private float _currentMarkTime, _nextMarkTime;
+    private float _marksTimeDifference;
 
     // Start is called before the first frame update
     void Start()
@@ -34,10 +35,15 @@ public class DayAndNightCycle : MonoBehaviour
     void Update()
     {
         _currentCycleTime = (_currentCycleTime + Time.deltaTime) % _cycleLength;
+
+        // blend color/intensity
+        float t = (_currentCycleTime - _currentMarkTime) / _marksTimeDifference;
+        DayAndNightMark cur = _marks[_currentMarkIndex], next = _marks[_nextMarkIndex];
+        _light.color = Color.Lerp(cur.color, next.color, t);
+        _light.intensity = Mathf.Lerp(cur.intensity, next.intensity, t);
         // passed a mark?
         if (Mathf.Abs(_currentCycleTime - _nextMarkTime) < _TIME_CHECK_EPSILON)
         {
-            DayAndNightMark next = _marks[_nextMarkIndex];
             _light.color = next.color;
             _light.intensity = next.intensity;
             _CycleMarks();
@@ -51,5 +57,8 @@ public class DayAndNightCycle : MonoBehaviour
         _nextMarkIndex = (_currentMarkIndex + 1) % _marks.Length;
         _currentMarkTime = _marks[_currentMarkIndex].timeRatio * _cycleLength;
         _nextMarkTime = _marks[_nextMarkIndex].timeRatio * _cycleLength;
+        _marksTimeDifference = _nextMarkTime - _currentMarkTime;
+        if (_marksTimeDifference < 0)
+            _marksTimeDifference += _cycleLength;
     }
 }
