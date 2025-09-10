@@ -102,7 +102,6 @@ public class SettingPanelHandler : MonoBehaviour
             lastMusicVolume = newVolume;
             UpdateMusicVolume(newVolume);
         }
-        Debug.Log($"Volume Musica cambiato a: {newVolume}");
     }
     
     private void OnSliderEffectsVolumeChanged(float newVolume)
@@ -112,7 +111,6 @@ public class SettingPanelHandler : MonoBehaviour
             lastEffectsVolume = newVolume;
             UpdateEffectsVolume(newVolume);
         }
-        Debug.Log($"Volume Effetti cambiato a: {newVolume}");
     }
     
     private void OnSliderMainVolumeChanged(float newVolume)
@@ -122,7 +120,6 @@ public class SettingPanelHandler : MonoBehaviour
             lastMainVolume = newVolume;
             UpdateMainVolume(newVolume);
         }
-        Debug.Log($"Volume Principale cambiato a: {newVolume}");
     }
     
     private void OnMuteMusicButtonClicked()
@@ -134,14 +131,12 @@ public class SettingPanelHandler : MonoBehaviour
             lastMusicVolume = sliderMusicVolume.value;
             UpdateMusicVolume(0f);
             musicVolumeImage.sprite = mutedSprite;
-            Debug.Log("Musica mutata");
         }
         else
         {
             sliderMusicVolume.value = lastMusicVolume;
             UpdateMusicVolume(lastMusicVolume);
             musicVolumeImage.sprite = unmutedSprite;
-            Debug.Log("Musica non più mutata");
         }
         
       
@@ -158,14 +153,12 @@ public class SettingPanelHandler : MonoBehaviour
             lastEffectsVolume = sliderEffectsVolume.value;
             UpdateEffectsVolume(0f);
             effectsVolumeImage.sprite = mutedSprite;
-            Debug.Log("Effetti mutati");
         }
         else
         {
             sliderEffectsVolume.value = lastEffectsVolume;
             UpdateEffectsVolume(lastEffectsVolume);
             effectsVolumeImage.sprite = unmutedSprite;
-            Debug.Log("Effetti non più mutati");
         }
         
         
@@ -182,14 +175,12 @@ public class SettingPanelHandler : MonoBehaviour
             lastMainVolume = sliderMainVolume.value;
             UpdateMainVolume(0f);
             mainVolumeImage.sprite = mutedSprite;
-            Debug.Log("Volume principale mutato");
         }
         else
         {
             sliderMainVolume.value = lastMainVolume;
             UpdateMainVolume(lastMainVolume);
             mainVolumeImage.sprite = unmutedSprite;
-            Debug.Log("Volume principale non più mutato");
         }
        
         if (AudioManager.Instance != null)
@@ -198,7 +189,6 @@ public class SettingPanelHandler : MonoBehaviour
     
     private void OnQuitPanelButtonClicked()
     {
-        Debug.Log("Quit Panel Button Clicked");
         optionButtonGameObject.SetActive(true);
         gameObject.SetActive(false);
     }

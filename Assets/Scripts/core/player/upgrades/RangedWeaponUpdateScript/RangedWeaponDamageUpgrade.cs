@@ -14,7 +14,5 @@ public class RangedWeaponDamageUpgrade : PlayerUpgrade
             rangedStats = player.gameObject.AddComponent<RangedWeaponStatsModifier>();
         }
         rangedStats.AddDamageMultiplier(damageMultiplier);
-        Debug.Log($"Ranged Weapon Damage Upgrade applied! Level: {currentLevel + 1}");
-        Debug.Log($"Current Damage multiplier: {rangedStats.DamageMultiplier}");
     }
 }

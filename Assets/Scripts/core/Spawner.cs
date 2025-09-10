@@ -41,7 +41,6 @@ public class Spawner : MonoBehaviour
         
         if (playerTransform == null)
         {
-            Debug.LogError("Player not found! Spawner cannot function without player reference.");
             return;
         }
         
@@ -63,7 +62,6 @@ public class Spawner : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("No waves configured in spawner!");
         }
     }
     
@@ -113,7 +111,6 @@ public class Spawner : MonoBehaviour
         
         if (debugMode)
         {
-            Debug.Log($"Starting Wave {currentWave.waveNumber}: {currentWave.waveName}");
         }
         
         OnWaveStarted?.Invoke(currentWave.waveNumber);
@@ -195,7 +192,6 @@ public class Spawner : MonoBehaviour
         
         if (spawnPosition == Vector3.zero)
         {
-            if (debugMode) Debug.LogWarning("Could not find valid spawn position!");
             return;
         }
         
@@ -219,7 +215,6 @@ public class Spawner : MonoBehaviour
         
         if (debugMode)
         {
-            Debug.Log($"Spawned {spawnData.enemyPrefab.name} at {spawnPosition}");
         }
     }
     
@@ -258,7 +253,6 @@ public class Spawner : MonoBehaviour
           enemyBase.ScaleDifficulty(spawnData.healthMultiplier, spawnData.damageMultiplier, spawnData.speedMultiplier);
             if (debugMode)
             {
-                Debug.Log($"Difficulty scaling applied to {enemy.name}");
             }
         }
     }
@@ -299,7 +293,6 @@ public class Spawner : MonoBehaviour
         
         if (debugMode)
         {
-            Debug.Log($"Wave {currentWave.waveNumber} completed!");
         }
         
         OnWaveCompleted?.Invoke(currentWave.waveNumber);

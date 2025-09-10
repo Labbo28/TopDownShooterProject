@@ -61,11 +61,9 @@ public class MainMenuManager : MonoBehaviour
     private void OnQuitButtonClicked()
     {
         onButtonClicked?.Invoke();
-        Debug.Log("Evento agganciato");
         
         #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
-        Debug.Log("Uscita dall'editor Unity");
         #endif
         
         Application.Quit();

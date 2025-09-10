@@ -43,7 +43,6 @@ public class UIManager : MonoBehaviour
         // Aspetta che il GameManager sia pronto
         if (GameManager.Instance == null)
         {
-            Debug.Log("GameManager not ready yet, retrying in 0.1 seconds");
             Invoke(nameof(InitializeUI), 0.1f);
             return;
         }
@@ -52,7 +51,6 @@ public class UIManager : MonoBehaviour
         RegisterEvents();
         UpdateAllUI();
 
-        Debug.Log("UIManager initialized successfully");
     }
 
     private void RegisterEvents()
@@ -75,11 +73,9 @@ public class UIManager : MonoBehaviour
                 QuitButton.GetComponent<Button>().onClick.AddListener(OnQuitButtonClicked);
 
             eventsRegistered = true;
-            Debug.Log("UI events registered successfully");
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"Failed to register UI events: {e.Message}");
         }
     }
 
@@ -133,11 +129,9 @@ public class UIManager : MonoBehaviour
                 QuitButton.GetComponent<Button>().onClick.RemoveListener(OnQuitButtonClicked);
 
             eventsRegistered = false;
-            Debug.Log("UI events unregistered");
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"Failed to unregister UI events: {e.Message}");
         }
     }
 
@@ -156,7 +150,6 @@ public class UIManager : MonoBehaviour
     private void OnRetryButtonClicked()
     {
         AudioManager.Instance?.PlayButtonClick();
-        Debug.Log("Retrying...");
 
         // Nascondi l'UI di game over prima di ricaricare
         if (TextDead != null) TextDead.SetActive(false);
@@ -172,14 +165,12 @@ public class UIManager : MonoBehaviour
     private void OnQuitButtonClicked()
     {
         AudioManager.Instance?.PlayButtonClick();
-        Debug.Log("Returning to main menu...");
         Player.Instance.gameObject.SetActive(false);
         UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
     }
 
     private void OnGameOver()
     {
-        Debug.Log("GAME OVER!");
         AudioManager.Instance?.PlayLooseSound();
         if (TextDead != null)
         {
@@ -187,7 +178,6 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("TextDead is null!");
         }
 
         if (RetryButton != null)
@@ -196,7 +186,6 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("RetryButton is null!");
         }
 
         if (QuitButton != null)
@@ -205,7 +194,6 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("QuitButton is null!");
         }
     }
 
@@ -247,12 +235,10 @@ public class UIManager : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("TextLevel doesn't have a Text component!");
             }
         }
         else
         {
-            Debug.LogWarning("TextLevel is null!");
         }
     }
 
@@ -267,12 +253,10 @@ public class UIManager : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("SliderXP doesn't have a Slider component!");
             }
         }
         else
         {
-            Debug.LogWarning("SliderXP is null or GameManager is null!");
         }
     }
 
@@ -287,12 +271,10 @@ public class UIManager : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("TextTime doesn't have a Text component!");
             }
         }
         else
         {
-            Debug.LogWarning("TextTime is null or GameManager is null!");
         }
     }
 
@@ -307,12 +289,10 @@ public class UIManager : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("TextKill doesn't have a Text component!");
             }
         }
         else
         {
-            Debug.LogWarning("TextKill is null or GameManager is null!");
         }
     }
 

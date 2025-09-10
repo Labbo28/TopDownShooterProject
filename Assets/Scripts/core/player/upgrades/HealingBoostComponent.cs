@@ -12,7 +12,6 @@ public class HealingBoostComponent : MonoBehaviour
         healthSystem = GetComponent<HealthSystem>();
         if (healthSystem == null)
         {
-            Debug.LogError("HealingBoostComponent requires a HealthSystem component!");
             Destroy(this);
             return;
         }
@@ -24,7 +23,6 @@ public class HealingBoostComponent : MonoBehaviour
     public void AddHealingMultiplier(float multiplier)
     {
         healingMultiplier *= multiplier;
-        Debug.Log($"Total healing multiplier: {healingMultiplier}");
     }
 
     // Metodo per applicare la cura potenziata
@@ -35,7 +33,6 @@ public class HealingBoostComponent : MonoBehaviour
             float enhancedAmount = amount * healingMultiplier;
             healthSystem.Heal(enhancedAmount);
             
-            Debug.Log($"Enhanced healing applied: {amount} -> {enhancedAmount} (multiplier: {healingMultiplier})");
         }
     }
 

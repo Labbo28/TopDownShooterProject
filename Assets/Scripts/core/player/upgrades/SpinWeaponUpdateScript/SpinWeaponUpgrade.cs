@@ -29,7 +29,5 @@ public class SpinWeaponUpgrade : PlayerUpgrade
         spinStats.AddSpeedMultiplier(speedMultiplier);
     
         
-        Debug.Log($"Spin Weapon Upgrade applied! Level: {currentLevel + 1}");
-        Debug.Log($"Current stats - Blades: +{spinStats.AdditionalBladeCount}, Damage: x{spinStats.DamageMultiplier:F2}, Speed: x{spinStats.SpeedMultiplier:F2}");
     }
 }

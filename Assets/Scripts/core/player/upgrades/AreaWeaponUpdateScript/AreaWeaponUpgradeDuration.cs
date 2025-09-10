@@ -14,7 +14,5 @@ public class AreaWeaponUpgradeDuration : PlayerUpgrade
             areaStats = player.gameObject.AddComponent<AreaWeaponStatsModifier>();
         }
         areaStats.AddDurationMultiplier(durationMultiplier);
-        Debug.Log($"Area Weapon Upgrade Duration applied! Level: {currentLevel + 1}");
-        Debug.Log($"Current stats - Duration: x{areaStats.DurationMultiplier:F2}");
     }
 }

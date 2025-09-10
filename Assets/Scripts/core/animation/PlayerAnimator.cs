@@ -15,7 +15,6 @@ public class PlayerAnimator : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Nessun Animator presente in PlayerPrefab");
         }
 
         // Se il player non è assegnato, cerca di trovarlo
@@ -52,11 +51,9 @@ public class PlayerAnimator : MonoBehaviour
             player.OnPlayerMoving.AddListener(OnPlayerMoving);
             player.OnPlayerStopMoving.AddListener(OnPlayerStopMoving);
             player.OnPlayerDead.AddListener(OnPlayerDead);
-            Debug.Log("PlayerAnimator events connected");
         }
         else
         {
-            Debug.LogWarning("Player reference is null in PlayerAnimator");
         }
     }
 
@@ -83,7 +80,6 @@ public class PlayerAnimator : MonoBehaviour
             player.OnPlayerStopMoving.AddListener(OnPlayerStopMoving);
             player.OnPlayerDead.AddListener(OnPlayerDead);
             
-            Debug.Log("PlayerAnimator events reconnected after scene load");
         }
     }
 
@@ -100,7 +96,6 @@ public class PlayerAnimator : MonoBehaviour
             // Controlla se ha un controller assegnato
             if (playerAnimator.runtimeAnimatorController == null)
             {
-                Debug.LogWarning($"PlayerAnimator on {gameObject.name}: RuntimeAnimatorController is missing!");
                 return;
             }
             
@@ -118,14 +113,11 @@ public class PlayerAnimator : MonoBehaviour
             }
             catch (System.Exception e)
             {
-                Debug.LogWarning($"Could not play 'Idle' state: {e.Message}");
             }
             
-            Debug.Log("Animator reset to default state");
         }
         else
         {
-            Debug.LogError($"PlayerAnimator on {gameObject.name}: Could not find Animator component!");
         }
     }
 
@@ -164,13 +156,11 @@ public class PlayerAnimator : MonoBehaviour
         
         if (playerAnimator == null)
         {
-            Debug.LogWarning($"PlayerAnimator on {gameObject.name}: Animator component is missing!");
             return false;
         }
         
         if (playerAnimator.runtimeAnimatorController == null)
         {
-            Debug.LogWarning($"PlayerAnimator on {gameObject.name}: RuntimeAnimatorController is missing!");
             return false;
         }
         
@@ -208,7 +198,6 @@ public class PlayerAnimator : MonoBehaviour
             
             if (playerIsAlive && animatorSaysDead)
             {
-                Debug.Log("Fixing animator state mismatch - player is alive but animator says dead");
                 ResetAnimator();
             }
         }

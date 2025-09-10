@@ -15,7 +15,6 @@ public class HealingEfficiencyUpgrade : PlayerUpgrade
             
             GameManager.Instance.SetHealAmount(newHealAmount);
             
-            Debug.Log($"Healing Efficiency Upgrade applied! Heal amount: {currentHealAmount} -> {newHealAmount}");
         }
         
         // Aggiungi anche un componente che migliora tutte le fonti di cura
@@ -27,6 +26,5 @@ public class HealingEfficiencyUpgrade : PlayerUpgrade
         
         healingBoost.AddHealingMultiplier(healingMultiplier);
         
-        Debug.Log($"Healing Efficiency Upgrade applied! Level: {currentLevel + 1}");
     }
 }

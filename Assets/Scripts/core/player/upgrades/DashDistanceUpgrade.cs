@@ -16,6 +16,5 @@ public class DashDistanceUpgrade : PlayerUpgrade
         float newSpeed = currentSpeed * distanceIncreasePercentage;
         player.SetMovementSpeed(newSpeed);
         
-        Debug.Log($"Dash Distance Upgrade applied! Movement speed increased to: {newSpeed}");
     }
 }

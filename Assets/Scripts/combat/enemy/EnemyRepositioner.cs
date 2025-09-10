@@ -40,7 +40,6 @@ public class EnemyRepositioner : MonoBehaviour
             }
             else
             {
-                Debug.LogError("EnemyRepositioner: Impossibile trovare il Player! Assicurati che ci sia un GameObject con tag 'Player' nella scena.");
             }
         }
     }
@@ -101,7 +100,6 @@ public class EnemyRepositioner : MonoBehaviour
         
         if (debugMode)
         {
-            Debug.Log($"Enemy {gameObject.name} repositioned from {oldPosition} to {newPosition} (distance was: {Vector3.Distance(oldPosition, playerTransform.position):F2})", this);
         }
         
         // Opzionale: Resetta il target dell'AI del nemico se esiste

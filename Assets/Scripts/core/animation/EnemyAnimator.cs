@@ -15,7 +15,6 @@ public class EnemyAnimator : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Nessun Animator presente in EnemyPrefab");
         }
 
         // Trova automaticamente l'EnemyBase se non è assegnato
@@ -24,7 +23,6 @@ public class EnemyAnimator : MonoBehaviour
             enemy = GetComponent<EnemyBase>();
             if (enemy == null)
             {
-                Debug.LogError($"EnemyAnimator on {gameObject.name}: Impossibile trovare EnemyBase component!");
                 return;
             }
         }
@@ -40,7 +38,6 @@ public class EnemyAnimator : MonoBehaviour
         }
         else
         {
-            Debug.LogError($"EnemyAnimator on {gameObject.name}: Enemy reference is null!");
         }
     }
 
@@ -57,7 +54,6 @@ public class EnemyAnimator : MonoBehaviour
                     return;
                 }
             }
-            Debug.LogWarning($"Parameter 'Hit' non trovato nell'Animator di {gameObject.name}");
         }
     }
 
@@ -71,7 +67,6 @@ public class EnemyAnimator : MonoBehaviour
                 if (param.name == "Dead" && param.type == AnimatorControllerParameterType.Bool)
                 {
                     _enemyAnimator.SetBool("Dead", true);
-                    Debug.Log($"Nemico {gameObject.name} morto, animazione di morte attivata");
                     break;
                 }
             }
@@ -94,19 +89,16 @@ public class EnemyAnimator : MonoBehaviour
         
         if (_enemyAnimator == null)
         {
-            Debug.LogWarning($"EnemyAnimator on {gameObject.name}: Animator component is missing!");
             return false;
         }
         
         if (_enemyAnimator.runtimeAnimatorController == null)
         {
-            Debug.LogWarning($"EnemyAnimator on {gameObject.name}: RuntimeAnimatorController is missing!");
             return false;
         }
         
         if (_enemyAnimator.parameters == null)
         {
-            Debug.LogWarning($"EnemyAnimator on {gameObject.name}: Animator parameters are null!");
             return false;
         }
         
@@ -128,10 +120,8 @@ public class EnemyAnimator : MonoBehaviour
     {
         if (_enemyAnimator != null && _enemyAnimator.parameters != null)
         {
-            Debug.Log($"Animator parameters for {gameObject.name}:");
             foreach (var param in _enemyAnimator.parameters)
             {
-                Debug.Log($"- {param.name} ({param.type})");
             }
         }
     }

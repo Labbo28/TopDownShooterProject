@@ -14,7 +14,5 @@ public class RangedWeaponFireRateUpgrade : PlayerUpgrade
             rangedStats = player.gameObject.AddComponent<RangedWeaponStatsModifier>();
         }
         rangedStats.AddFireRateMultiplier(fireRateMultiplier);
-        Debug.Log($"Ranged Weapon Fire Rate Upgrade applied! Level: {currentLevel + 1}");
-        Debug.Log($"Current Fire Rate multiplier: {rangedStats.FireRateMultiplier}");
     }
 }

@@ -83,7 +83,6 @@ public abstract class Weapon : MonoBehaviour
                 reloadTimer = new CountdownTimer(modifiedReloadTime);
                 fireRateTimer = new CountdownTimer(modifiedFireRate);
                 
-                Debug.Log($"Applied weapon modifiers to {name}: FireRate={modifiedFireRate}, ReloadTime={modifiedReloadTime}");
             }
         }
     }

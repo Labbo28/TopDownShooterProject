@@ -169,7 +169,6 @@ public abstract class EnemyBase : MonoBehaviour
         
         if (debugRepositioning)
         {
-            Debug.Log($"Enemy {gameObject.name} repositioned from distance {Vector3.Distance(oldPosition, player.position):F2} to {Vector3.Distance(newPosition, player.position):F2}", this);
         }
     }
     

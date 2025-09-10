@@ -64,7 +64,6 @@ public class SkeletonBossEnemy : EnemyBase
             healthSystem.Heal(400);// 5x vita normale
         }
         
-        Debug.Log($"Skeleton Boss initialized with {healthSystem?.Health}/{healthSystem?.MaxHealth} HP");
     }
 
     protected override void HandleBehavior()
@@ -142,7 +141,6 @@ public class SkeletonBossEnemy : EnemyBase
                 speed = baseSpeed * 1.3f; // Diventa più veloce
                 damage = baseDamage * 1.2f; // Più danno
                 StartCoroutine(PhaseTransitionEffect(Color.yellow));
-                Debug.Log("Boss entering Phase 2!");
                 break;
                 
             case BossPhase.Phase3:
@@ -150,7 +148,6 @@ public class SkeletonBossEnemy : EnemyBase
                 damage = baseDamage * 1.5f; // Danno massimo
                 attackCooldown *= 0.7f; // Attacca più spesso
                 StartCoroutine(PhaseTransitionEffect(Color.red));
-                Debug.Log("Boss entering Phase 3 - BERSERK MODE!");
                 break;
         }
     }

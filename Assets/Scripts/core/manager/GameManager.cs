@@ -56,7 +56,6 @@ public class GameManager : MonoBehaviour
             // Se stiamo ricaricando la GameScene, resettiamo lo stato
             if (SceneManager.GetActiveScene().name == "GameScene")
             {
-                Debug.Log("Resetting GameManager for new game session");
                 needsReinitialization = true;
             }
             
@@ -97,7 +96,6 @@ public class GameManager : MonoBehaviour
     {
         if (scene.name == "GameScene")
         {
-            Debug.Log("GameScene loaded, reinitializing GameManager");
             ResetGameState();
             
             // Reinizializza i collegamenti dopo un frame per assicurarsi che tutto sia pronto
@@ -123,7 +121,6 @@ public class GameManager : MonoBehaviour
         attractSpeed = 2f;
         healAmount = 0.3f;
 
-        Debug.Log("Game state reset completed");
     }
 
     private void ReinitializeConnections()
@@ -133,7 +130,6 @@ public class GameManager : MonoBehaviour
         {
             Player.Instance.OnPlayerDead.RemoveListener(GameOver);
             Player.Instance.OnPlayerDead.AddListener(GameOver);
-            Debug.Log("Player death event reconnected");
         }
 
         // Registra agli eventi dello spawner se presente
@@ -143,10 +139,8 @@ public class GameManager : MonoBehaviour
             spawner.OnWaveStarted += OnSpawnerWaveStarted;
             spawner.OnWaveCompleted += OnSpawnerWaveCompleted;
             spawner.OnAllWavesCompleted += OnSpawnerAllWavesCompleted;
-            Debug.Log("Spawner events reconnected");
         }
 
-        Debug.Log("GameManager reinitalization completed");
     }
 
     private void Start()
@@ -213,7 +207,6 @@ public class GameManager : MonoBehaviour
     {
         OnAllWavesCompleted?.Invoke();
         // Potresti voler triggerare una vittoria qui
-        Debug.Log("All waves completed! Player wins!");
     }
 
     public void AddXP(float xp)

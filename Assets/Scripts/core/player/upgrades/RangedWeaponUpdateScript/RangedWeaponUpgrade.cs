@@ -25,7 +25,5 @@ public class RangedWeaponUpgrade : PlayerUpgrade
         rangedStats.AddFireRateMultiplier(fireRateMultiplier);
         rangedStats.AddReloadSpeedMultiplier(reloadSpeedMultiplier);
         
-        Debug.Log($"Ranged Weapon Upgrade applied! Level: {currentLevel + 1}");
-        Debug.Log($"Current multipliers - Damage: {rangedStats.DamageMultiplier}, FireRate: {rangedStats.FireRateMultiplier}, Reload: {rangedStats.ReloadSpeedMultiplier}");
     }
 }

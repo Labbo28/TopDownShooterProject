@@ -20,11 +20,9 @@ public class SpinWeaponStatsModifier : MonoBehaviour
         {
             int oldAmount = spinWeapon.amount;
             spinWeapon.amount += count;
-            Debug.Log($"Added {count} blades to {spinWeapon.name}: {oldAmount} -> {spinWeapon.amount}");
         }
         
         additionalBladeCount += count;
-        Debug.Log($"Total additional blade count: {additionalBladeCount}");
     }
 
     public void AddDamageMultiplier(float multiplier)
@@ -35,11 +33,9 @@ public class SpinWeaponStatsModifier : MonoBehaviour
         {
             float oldDamage = spinWeapon.weaponDamage;
             spinWeapon.weaponDamage *= multiplier;
-            Debug.Log($"Applied damage multiplier {multiplier:F2} to {spinWeapon.name}: {oldDamage:F1} -> {spinWeapon.weaponDamage:F1}");
         }
         
         damageMultiplier *= multiplier;
-        Debug.Log($"Total spin weapon damage multiplier: {damageMultiplier:F2}");
     }
 
     public void AddSpeedMultiplier(float multiplier)
@@ -50,11 +46,9 @@ public class SpinWeaponStatsModifier : MonoBehaviour
         {
             float oldSpeed = spinWeapon.speed;
             spinWeapon.speed *= multiplier;
-            Debug.Log($"Applied speed multiplier {multiplier:F2} to {spinWeapon.name}: {oldSpeed:F2} -> {spinWeapon.speed:F2}");
         }
         
         speedMultiplier *= multiplier;
-        Debug.Log($"Total spin weapon speed multiplier: {speedMultiplier:F2}");
     }
 
 
@@ -70,11 +64,6 @@ public class SpinWeaponStatsModifier : MonoBehaviour
             spinWeapon.speed *= speedMultiplier;
             spinWeapon.range *= rangeMultiplier;
             
-            Debug.Log($"Applied all spin weapon modifiers to new weapon {spinWeapon.name}:");
-            Debug.Log($"  - Blades: +{additionalBladeCount} (total: {spinWeapon.amount})");
-            Debug.Log($"  - Damage: x{damageMultiplier:F2} (total: {spinWeapon.weaponDamage:F1})");
-            Debug.Log($"  - Speed: x{speedMultiplier:F2} (total: {spinWeapon.speed:F2})");
-            Debug.Log($"  - Range: x{rangeMultiplier:F2} (total: {spinWeapon.range:F2})");
         }
     }
 
@@ -85,7 +74,6 @@ public class SpinWeaponStatsModifier : MonoBehaviour
         damageMultiplier = 1f;
         speedMultiplier = 1f;
         rangeMultiplier = 1f;
-        Debug.Log("Spin weapon modifiers reset");
     }
 
     // Metodo helper per ottenere i valori base di una SpinWeapon modificata

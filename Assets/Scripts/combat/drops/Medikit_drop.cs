@@ -17,7 +17,6 @@ public class Medikit_drop : Drop
         {
             HealthSystem hs = other.GetComponent<HealthSystem>();
             hs.Heal(GameManager.Instance.GetHealAmount() * hs.MaxHealth);
-            Debug.Log("il player e stato curato di "); // Assuming Heal() is a method in Player
             Destroy(gameObject);
         }
     }

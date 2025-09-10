@@ -14,7 +14,5 @@ public class SpinWeaponSpeedUpgrade : PlayerUpgrade
             spinStats = player.gameObject.AddComponent<SpinWeaponStatsModifier>();
         }
         spinStats.AddSpeedMultiplier(speedMultiplier);
-        Debug.Log($"Spin Weapon Speed Upgrade applied! Level: {currentLevel + 1}");
-        Debug.Log($"Current Speed multiplier: {spinStats.SpeedMultiplier}");
     }
 }

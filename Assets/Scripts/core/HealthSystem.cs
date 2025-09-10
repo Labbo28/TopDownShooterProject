@@ -76,7 +76,6 @@ public class HealthSystem : MonoBehaviour, IDamageable
     public void ResetHealth()
     {
         currentHealth = maxHealth;
-        Debug.Log($"Health reset to {currentHealth}/{maxHealth}");
     }
 
     // Metodo per resettare la salute con un nuovo valore massimo
@@ -84,7 +83,6 @@ public class HealthSystem : MonoBehaviour, IDamageable
     {
         maxHealth = newMaxHealth;
         currentHealth = maxHealth;
-        Debug.Log($"Health reset to {currentHealth}/{maxHealth} with new max health");
     }
 
     // Metodo per impostare la salute a un valore specifico
@@ -110,7 +108,6 @@ public class HealthSystem : MonoBehaviour, IDamageable
             currentHealth = Mathf.Min(healthAmount, maxHealth);
         }
         
-        Debug.Log($"Revived with {currentHealth}/{maxHealth} health");
     }
     
     // Helper methods to get health values
@@ -123,6 +120,5 @@ public class HealthSystem : MonoBehaviour, IDamageable
     // Metodo per ottenere informazioni debug
     public void LogHealthStatus()
     {
-        Debug.Log($"Health Status: {currentHealth}/{maxHealth} ({GetHealthPercentage():P0}) - IsAlive: {IsAlive}");
     }
 }

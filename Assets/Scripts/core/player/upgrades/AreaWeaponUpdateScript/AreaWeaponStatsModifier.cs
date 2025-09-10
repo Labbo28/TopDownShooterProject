@@ -20,7 +20,6 @@ public class AreaWeaponStatsModifier : MonoBehaviour
             areaWeapon.weaponDamage *= multiplier;
         }
         damageMultiplier *= multiplier;
-        Debug.Log($"Total area weapon damage multiplier: {damageMultiplier:F2}");
     }
 
     public void AddRangeMultiplier(float multiplier)
@@ -31,7 +30,6 @@ public class AreaWeaponStatsModifier : MonoBehaviour
             areaWeapon.range *= multiplier;
         }
         rangeMultiplier *= multiplier;
-        Debug.Log($"Total area weapon range multiplier: {rangeMultiplier:F2}");
     }
 
     public void ReduceCooldown(float reduction)
@@ -42,7 +40,6 @@ public class AreaWeaponStatsModifier : MonoBehaviour
             areaWeapon.cooldown = Mathf.Max(0.1f, areaWeapon.cooldown - reduction);
         }
         cooldownReduction += reduction;
-        Debug.Log($"Total area weapon cooldown reduction: -{cooldownReduction:F2}");
     }
 
     public void AddDurationMultiplier(float multiplier)
@@ -53,7 +50,6 @@ public class AreaWeaponStatsModifier : MonoBehaviour
             areaWeapon.duration *= multiplier;
         }
         durationMultiplier *= multiplier;
-        Debug.Log($"Total area weapon duration multiplier: {durationMultiplier:F2}");
     }
 
     // Apply all modifiers to a new AreaWeapon
@@ -66,11 +62,6 @@ public class AreaWeaponStatsModifier : MonoBehaviour
             areaWeapon.cooldown = Mathf.Max(0.1f, areaWeapon.cooldown - cooldownReduction);
             areaWeapon.duration *= durationMultiplier;
 
-            Debug.Log($"Applied all area weapon modifiers to new weapon {areaWeapon.name}:");
-            Debug.Log($"  - Damage: x{damageMultiplier:F2} (total: {areaWeapon.weaponDamage:F1})");
-            Debug.Log($"  - Range: x{rangeMultiplier:F2} (total: {areaWeapon.range:F2})");
-            Debug.Log($"  - Cooldown: -{cooldownReduction:F2} (total: {areaWeapon.cooldown:F2})");
-            Debug.Log($"  - Duration: x{durationMultiplier:F2} (total: {areaWeapon.duration:F2})");
         }
     }
 
@@ -80,7 +71,6 @@ public class AreaWeaponStatsModifier : MonoBehaviour
         rangeMultiplier = 1f;
         cooldownReduction = 0f;
         durationMultiplier = 1f;
-        Debug.Log("Area weapon modifiers reset");
     }
 
     public void GetModifiedStats(AreaWeapon baseWeapon, out float finalDamage, out float finalRange, out float finalCooldown, out float finalDuration)

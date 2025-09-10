@@ -35,7 +35,6 @@ public class Player : MonoBehaviour
         // Gestione del Singleton più semplice
         if (Instance != null && Instance != this)
         {
-            Debug.Log("Destroying duplicate Player instance");
             Destroy(gameObject);
             return;
         }
@@ -53,7 +52,6 @@ public class Player : MonoBehaviour
     {
         if (scene.name == "GameScene")
         {
-            Debug.Log("GameScene loaded, resetting Player");
             ResetPlayer();
         }
     }
@@ -79,7 +77,6 @@ public class Player : MonoBehaviour
         FindSpawnPosition();
         isDead = false;
 
-        Debug.Log($"Player initialized at position: {initialPosition}");
     }
 
     private void Start()
@@ -112,7 +109,6 @@ public class Player : MonoBehaviour
         if (isDead) return; // Evita chiamate multiple
 
         isDead = true;
-        Debug.Log("Player has died.");
 
         // Animazione di morte gestita da PlayerAnimator tramite eventi
         DisablePlayerControls();
@@ -215,7 +211,6 @@ public class Player : MonoBehaviour
         {
             initialPosition = spawnPoint.transform.position;
             transform.position = initialPosition;
-            Debug.Log($"Found PlayerSpawn at: {initialPosition}");
         }
         else
         {
@@ -226,7 +221,6 @@ public class Player : MonoBehaviour
                 // Se c'è un altro player nella scena (dalla scena), usa la sua posizione
                 initialPosition = player.transform.position;
                 transform.position = initialPosition;
-                Debug.Log($"Using existing Player position: {initialPosition}");
             }
             else
             {
@@ -235,12 +229,10 @@ public class Player : MonoBehaviour
                 {
                     initialPosition = Vector3.zero;
                     transform.position = initialPosition;
-                    Debug.Log("Using default spawn position: (0,0,0)");
                 }
                 else
                 {
                     initialPosition = transform.position;
-                    Debug.Log($"Using current position as spawn: {initialPosition}");
                 }
             }
         }
@@ -249,7 +241,6 @@ public class Player : MonoBehaviour
     // Metodo per resettare completamente il player
     public void ResetPlayer()
     {
-        Debug.Log("Resetting Player...");
 
         isDead = false;
 
@@ -272,7 +263,6 @@ public class Player : MonoBehaviour
         if (playerAnimatorComponent != null)
         {
             playerAnimatorComponent.ResetAnimator();
-            Debug.Log("Animator reset completed via PlayerAnimator component");
         }
 
         // Trova la nuova posizione di spawn nella scena corrente
@@ -297,7 +287,6 @@ public class Player : MonoBehaviour
         // Reset dei componenti di upgrade personalizzati
         ResetUpgradeComponents();
 
-        Debug.Log($"Player reset completed. Position: {transform.position}, Health: {healthSystem?.Health}/{healthSystem?.MaxHealth}");
     }
 
     private void ResetUpgradeComponents()
@@ -337,7 +326,6 @@ public class Player : MonoBehaviour
         // Reset velocità di movimento al valore base
         SetMovementSpeed(4f); // Velocità base originale
 
-        Debug.Log("Upgrade components reset completed");
     }
 
     private void OnDestroy()

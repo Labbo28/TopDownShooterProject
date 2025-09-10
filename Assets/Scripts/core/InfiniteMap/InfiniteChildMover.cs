@@ -43,7 +43,6 @@ public class InfiniteChildMover : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogError("InfiniteChildMover: Impossibile trovare il Player! Assicurati che ci sia un GameObject con tag 'Player' nella scena.");
                 }
             }
         }
@@ -192,7 +191,6 @@ public class InfiniteChildMover : MonoBehaviour
             transform.position = newPosition;
             
             // Debug log per verificare il riposizionamento
-            Debug.Log($"Enemy {gameObject.name} repositioned from distance {distanceFromPlayer:F2} to new position", this);
         }
     }
 

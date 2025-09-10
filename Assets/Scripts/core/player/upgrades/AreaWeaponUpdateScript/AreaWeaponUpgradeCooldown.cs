@@ -14,7 +14,5 @@ public class AreaWeaponUpgradeCooldown : PlayerUpgrade
             areaStats = player.gameObject.AddComponent<AreaWeaponStatsModifier>();
         }
         areaStats.ReduceCooldown(cooldownReduction);
-        Debug.Log($"Area Weapon Upgrade Cooldown applied! Level: {currentLevel + 1}");
-        Debug.Log($"Current stats - Cooldown: -{areaStats.Cooldown:F2}");
     }
 }

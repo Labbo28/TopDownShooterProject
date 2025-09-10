@@ -14,7 +14,5 @@ public class SpinWeaponDamageUpgrade : PlayerUpgrade
             spinStats = player.gameObject.AddComponent<SpinWeaponStatsModifier>();
         }
         spinStats.AddDamageMultiplier(damageMultiplier);
-        Debug.Log($"Spin Weapon Damage Upgrade applied! Level: {currentLevel + 1}");
-        Debug.Log($"Current Damage multiplier: {spinStats.DamageMultiplier}");
     }
 }

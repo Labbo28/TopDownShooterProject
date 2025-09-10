@@ -13,13 +13,11 @@ public class RangedWeaponStatsModifier : MonoBehaviour
     public void AddDamageMultiplier(float multiplier)
     {
         damageMultiplier *= multiplier;
-        Debug.Log($"Total ranged weapon damage multiplier: {damageMultiplier}");
     }
 
     public void AddFireRateMultiplier(float multiplier)
     {
         fireRateMultiplier *= multiplier;
-        Debug.Log($"Total ranged weapon fire rate multiplier: {fireRateMultiplier}");
         
         // Aggiorna le armi esistenti
         UpdateExistingWeapons();
@@ -28,7 +26,6 @@ public class RangedWeaponStatsModifier : MonoBehaviour
     public void AddReloadSpeedMultiplier(float multiplier)
     {
         reloadSpeedMultiplier *= multiplier;
-        Debug.Log($"Total ranged weapon reload speed multiplier: {reloadSpeedMultiplier}");
         
         // Aggiorna le armi esistenti
         UpdateExistingWeapons();
@@ -67,7 +64,6 @@ public class RangedWeaponStatsModifier : MonoBehaviour
             // Applica reload speed
             weapon.WeaponSo.reloadTime *= reloadSpeedMultiplier;
             
-            Debug.Log($"Applied ranged weapon modifiers to {weapon.name}");
         }
     }
 
@@ -77,6 +73,5 @@ public class RangedWeaponStatsModifier : MonoBehaviour
         damageMultiplier = 1f;
         fireRateMultiplier = 1f;
         reloadSpeedMultiplier = 1f;
-        Debug.Log("Ranged weapon modifiers reset");
     }
 }

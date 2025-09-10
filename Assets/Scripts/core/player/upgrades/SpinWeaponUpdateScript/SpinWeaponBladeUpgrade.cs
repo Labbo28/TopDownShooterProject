@@ -14,7 +14,5 @@ public class SpinWeaponBladeUpgrade : PlayerUpgrade
             spinStats = player.gameObject.AddComponent<SpinWeaponStatsModifier>();
         }
         spinStats.AddBladeCount(additionalBlades);
-        Debug.Log($"Spin Weapon Blade Upgrade applied! Level: {currentLevel + 1}");
-        Debug.Log($"Current Additional Blades: {spinStats.AdditionalBladeCount}");
     }
 }

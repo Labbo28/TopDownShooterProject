@@ -23,7 +23,5 @@ public class AreaWeaponUpgradeRange : PlayerUpgrade
     // Applica solo il modificatore di range
     areaStats.AddRangeMultiplier(rangeMultiplier);
 
-    Debug.Log($"Area Weapon Upgrade Range applied! Level: {currentLevel + 1}");
-    Debug.Log($"Current stats - Range: x{areaStats.RangeMultiplier:F2}");
     }
 }

@@ -32,7 +32,5 @@ public class AreaWeaponUpgrade : PlayerUpgrade
         areaStats.ReduceCooldown(cooldownReduction);
         areaStats.AddDurationMultiplier(durationMultiplier);
 
-        Debug.Log($"Area Weapon Upgrade Range applied! Level: {currentLevel + 1}");
-        Debug.Log($"Current stats - Damage: x{areaStats.DamageMultiplier:F2}, Range: x{areaStats.RangeMultiplier:F2}, Cooldown: -{areaStats.Cooldown:F2}, Duration: x{areaStats.DurationMultiplier:F2}");
     }
 }

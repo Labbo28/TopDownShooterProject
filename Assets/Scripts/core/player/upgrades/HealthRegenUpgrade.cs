@@ -20,6 +20,5 @@ public class HealthRegenUpgrade : PlayerUpgrade
         float totalRegenPerSecond = regenAmountPerSecond * (currentLevel + 1);
         regenComponent.SetRegeneration(totalRegenPerSecond, regenInterval);
         
-        Debug.Log($"Health Regeneration Upgrade applied! Regen rate: {totalRegenPerSecond}/sec");
     }
 }

@@ -122,8 +122,6 @@ public class PlayerUpgradeSystem : MonoBehaviour
     {
         runtimeUpgrade.ApplyUpgrade(Player.Instance);
         
-        Debug.Log($"Selected Upgrade: {runtimeUpgrade.UpgradeName} to level {runtimeUpgrade.CurrentLevel}");
-        Debug.Log($"Player Health after upgrade: {Player.Instance.GetComponent<HealthSystem>().MaxHealth}");
 
         upgradeUIPanel.SetActive(false);
         Time.timeScale = 1f;

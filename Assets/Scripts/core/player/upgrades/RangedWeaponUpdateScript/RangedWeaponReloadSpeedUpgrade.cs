@@ -14,7 +14,5 @@ public class RangedWeaponReloadSpeedUpgrade : PlayerUpgrade
             rangedStats = player.gameObject.AddComponent<RangedWeaponStatsModifier>();
         }
         rangedStats.AddReloadSpeedMultiplier(reloadSpeedMultiplier);
-        Debug.Log($"Ranged Weapon Reload Speed Upgrade applied! Level: {currentLevel + 1}");
-        Debug.Log($"Current Reload Speed multiplier: {rangedStats.ReloadSpeedMultiplier}");
     }
 }

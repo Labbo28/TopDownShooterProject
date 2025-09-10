@@ -37,7 +37,6 @@ public class XPDrop : Drop
     
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Collisione con " + other.name);
         if (other.CompareTag("Player"))
         {
             GameManager.Instance.AddXP(xpValue);

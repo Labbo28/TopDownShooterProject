@@ -13,7 +13,6 @@ public class HealthRegenComponent : MonoBehaviour
         healthSystem = GetComponent<HealthSystem>();
         if (healthSystem == null)
         {
-            Debug.LogError("HealthRegenComponent requires a HealthSystem component!");
             Destroy(this);
         }
     }
@@ -44,7 +43,6 @@ public class HealthRegenComponent : MonoBehaviour
             if (healthSystem != null && healthSystem.IsAlive && healthSystem.Health < healthSystem.MaxHealth)
             {
                 healthSystem.Heal(regenAmountPerSecond * regenInterval);
-                Debug.Log($"Health regenerated: +{regenAmountPerSecond * regenInterval}. Current health: {healthSystem.Health}/{healthSystem.MaxHealth}");
             }
         }
     }
