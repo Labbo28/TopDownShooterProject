@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -78,29 +79,43 @@ public class UIManager : MonoBehaviour
         {
         }
     }
-
- private void UpdatePlayerHealth()
-{
-    if (SliderPlayerHp == null || Player.Instance == null) return;
-
-    Slider hpSlider = SliderPlayerHp.GetComponent<Slider>();
-    HealthSystem healthSystem = Player.Instance.GetComponent<HealthSystem>();
     
-    if (hpSlider == null || healthSystem == null) return;
-
-    // Corretto: usa le proprietà invece dei metodi inesistenti
-    hpSlider.value = healthSystem.Health / healthSystem.MaxHealth;
-    
-    if (TextHealth != null)
+    /// <summary>
+    /// Disabilita tutti gli elementi UI principali (non quelli di Game Over).
+    /// </summary>
+    public void DisableUIElements()
     {
-        Text healthText = TextHealth.GetComponent<Text>();
-        if (healthText != null)
+        if (TextKill != null) TextKill.SetActive(false);
+        if (TextTime != null) TextTime.SetActive(false);
+        if (TextLevel != null) TextLevel.SetActive(false);
+        if (SliderXP != null) SliderXP.SetActive(false);
+        if (SliderPlayerHp != null) SliderPlayerHp.SetActive(false);
+        if (TextHealth != null) TextHealth.SetActive(false);
+        
+    }
+
+    private void UpdatePlayerHealth()
+    {
+        if (SliderPlayerHp == null || Player.Instance == null) return;
+
+        Slider hpSlider = SliderPlayerHp.GetComponent<Slider>();
+        HealthSystem healthSystem = Player.Instance.GetComponent<HealthSystem>();
+
+        if (hpSlider == null || healthSystem == null) return;
+
+        // Corretto: usa le proprietà invece dei metodi inesistenti
+        hpSlider.value = healthSystem.Health / healthSystem.MaxHealth;
+
+        if (TextHealth != null)
         {
-            // Corretto: usa Health invece di GetCurrentHealth e MaxHealth invece di maxHealth
-            healthText.text = $"{Mathf.CeilToInt(healthSystem.Health)}/{Mathf.CeilToInt(healthSystem.MaxHealth)}";
+            Text healthText = TextHealth.GetComponent<Text>();
+            if (healthText != null)
+            {
+                // Corretto: usa Health invece di GetCurrentHealth e MaxHealth invece di maxHealth
+                healthText.text = $"{Mathf.CeilToInt(healthSystem.Health)}/{Mathf.CeilToInt(healthSystem.MaxHealth)}";
+            }
         }
     }
-}
     private void OnPlayerDamaged()
     {
         UpdatePlayerHealth();
@@ -137,6 +152,7 @@ public class UIManager : MonoBehaviour
 
     private void UpdateAllUI()
     {
+        if(GameManager.Instance.CurrentGameState==GameState.GameOver) return;
         if (gameManager == null) return;
 
         // Aggiorna tutti gli elementi UI con i valori correnti
@@ -171,6 +187,7 @@ public class UIManager : MonoBehaviour
 
     private void OnGameOver()
     {
+        DisableUIElements();
         AudioManager.Instance?.PlayLooseSound();
         if (TextDead != null)
         {
@@ -192,9 +209,9 @@ public class UIManager : MonoBehaviour
         {
             QuitButton.SetActive(true);
         }
-        else
-        {
-        }
+
+        
+        
     }
 
     private IEnumerator FadeInGameOver()

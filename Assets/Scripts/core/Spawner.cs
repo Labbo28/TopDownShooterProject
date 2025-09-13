@@ -67,7 +67,8 @@ public class Spawner : MonoBehaviour
     
     private void Update()
     {
-        if (!waveActive || currentWave == null) return;
+        if (!waveActive || currentWave == null ||
+         GameManager.Instance.CurrentGameState == GameState.GameOver) return;
         
         // Pulisci la lista dei nemici morti
         CleanupDeadEnemies();

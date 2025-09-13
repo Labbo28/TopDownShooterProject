@@ -105,7 +105,8 @@ public abstract class EnemyBase : MonoBehaviour
 
     protected virtual void Update()
     {
-        if (!IsAlive || player == null) return;
+        if (!IsAlive || GameManager.Instance.CurrentGameState==GameState.GameOver
+        || GameManager.Instance.CurrentGameState==GameState.Paused) return;
         
         // Sistema di riposizionamento
         if (enableRepositioning)

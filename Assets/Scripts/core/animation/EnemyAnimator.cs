@@ -35,6 +35,7 @@ public class EnemyAnimator : MonoBehaviour
         {
             enemy.OnEnemyhit.AddListener(OnEnemyHit);
             enemy.OnEnemyDead.AddListener(OnEnemyDead);
+
         }
         else
         {
@@ -114,15 +115,6 @@ public class EnemyAnimator : MonoBehaviour
         }
     }
 
-    // Metodo pubblico per verificare i parametri dell'animator (debug)
-    [ContextMenu("Debug Animator Parameters")]
-    public void DebugAnimatorParameters()
-    {
-        if (_enemyAnimator != null && _enemyAnimator.parameters != null)
-        {
-            foreach (var param in _enemyAnimator.parameters)
-            {
-            }
-        }
-    }
+    
+    
 }

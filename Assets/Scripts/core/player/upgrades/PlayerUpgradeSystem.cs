@@ -45,6 +45,9 @@ public class PlayerUpgradeSystem : MonoBehaviour
 
     private void ShowUpgradeOptions(int playerLevel)
     {
+        if (GameManager.Instance.CurrentGameState == GameState.GameOver ||
+            GameManager.Instance.CurrentGameState == GameState.Paused)
+            return;
         Time.timeScale = 0f;
 
         if (upgradeUIPanel != null)

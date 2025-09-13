@@ -113,6 +113,7 @@ public class Player : MonoBehaviour
         // Animazione di morte gestita da PlayerAnimator tramite eventi
         DisablePlayerControls();
         OnPlayerDead?.Invoke();
+        transform.Find("Weapons")?.gameObject.SetActive(false);
         
     }
 
@@ -243,6 +244,7 @@ public class Player : MonoBehaviour
     {
 
         isDead = false;
+        transform.Find("Weapons")?.gameObject.SetActive(true);
 
         // Reset HealthSystem usando il nuovo metodo
         if (healthSystem != null)

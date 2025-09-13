@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     public UnityEvent OnEnemyKilled;
     public UnityEvent OnGameTimeChanged;
     public static GameManager Instance { get; private set; }
-
+    public GameState CurrentGameState { get; private set; } = GameState.Playing;
     private GameTimeDisplay gameTimeDisplay;
 
     [SerializeField] private float gameTime = 0f;
@@ -115,6 +115,8 @@ public class GameManager : MonoBehaviour
         previousGameTime = 0f;
         formattedTime = "00:00";
         spawnerManagedWave = 0;
+        CurrentGameState = GameState.Playing;
+        Player.Instance.ResetPlayer();
         
         // Reset degli attributi drop
         attractRadius = 1.5f;
@@ -162,6 +164,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (CurrentGameState != GameState.Playing) return;
         gameTime += Time.deltaTime;
         if (Mathf.FloorToInt(gameTime) != Mathf.FloorToInt(previousGameTime))
         {
@@ -237,6 +240,8 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         OnGameOver?.Invoke();
+        CurrentGameState = GameState.GameOver;
+
     }
 
     public float GetGameTime()

@@ -235,13 +235,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8e35cb3eea65f444a9306aeae8732bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 0}
   canvas: {fileID: 8473172535340164032}
   TextKill: {fileID: 7611254465140624782}
   TextTime: {fileID: 1887462612154565315}
   TextLevel: {fileID: 1326546666844713888}
   SliderXP: {fileID: 7410271623993044027}
+  SliderPlayerHp: {fileID: 0}
   TextDead: {fileID: 1514047054152239388}
+  RetryButton: {fileID: 0}
+  QuitButton: {fileID: 0}
+  TextHealth: {fileID: 0}
 --- !u!1 &1514047054152239388
 GameObject:
   m_ObjectHideFlags: 0
