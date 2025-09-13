@@ -3026,14 +3026,11 @@ MonoBehaviour:
   - timeRatio: 0
     color: {r: 1, g: 1, b: 1, a: 0}
     intensity: 1
-  - timeRatio: 0.4
-    color: {r: 0.990566, g: 0.7932752, b: 0.5653702, a: 0}
-    intensity: 0.95
   - timeRatio: 0.5
-    color: {r: 0.2009167, g: 0.38420957, b: 0.990566, a: 0}
-    intensity: 0.5
+    color: {r: 0.20470342, g: 0.2028302, b: 1, a: 0}
+    intensity: 0.4
   - timeRatio: 0.9
-    color: {r: 0.2009167, g: 0.38420957, b: 0.990566, a: 0}
+    color: {r: 0.058479443, g: 0.054378804, b: 0.72156864, a: 0}
     intensity: 0.6
   _light: {fileID: 1352909054}
   _cycleLength: 24
