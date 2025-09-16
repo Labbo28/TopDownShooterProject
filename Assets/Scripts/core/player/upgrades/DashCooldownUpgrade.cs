@@ -9,6 +9,6 @@ public class DashCooldownUpgrade : PlayerUpgrade
     {
         float oldDashCooldown = player.GetDashCooldown();
         float newDashCooldown = oldDashCooldown * dashCooldownReducePercentage;
-        player.GetDashTimer().Reset(newDashCooldown);
+        player.SetDashCooldown(newDashCooldown);
     }
 }

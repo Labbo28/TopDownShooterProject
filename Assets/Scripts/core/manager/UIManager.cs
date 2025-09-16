@@ -14,6 +14,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject TextLevel;
     [SerializeField] GameObject SliderXP;
     [SerializeField] GameObject SliderPlayerHp;
+    [SerializeField] GameObject ammoImage;
+    [SerializeField] GameObject ammoText;
 
     [Header("Game Over Elements")]
     [SerializeField] GameObject TextDead;
@@ -68,6 +70,9 @@ public class UIManager : MonoBehaviour
             Player.Instance.GetComponent<HealthSystem>().onDamaged.AddListener(OnPlayerDamaged);
             Player.Instance.GetComponent<HealthSystem>().onHealed.AddListener(OnPlayerHealed);
 
+            //damn this shit is crazy
+            Player.Instance.transform.Find("Weapons").transform.Find("Assault_Rifle").GetComponent<Weapon>().OnAmmoChanged.AddListener(OnAmmoChanged);
+
             if (RetryButton != null)
                 RetryButton.GetComponent<Button>().onClick.AddListener(OnRetryButtonClicked);
             if (QuitButton != null)
@@ -116,6 +121,17 @@ public class UIManager : MonoBehaviour
             }
         }
     }
+
+  private void OnAmmoChanged(int currentAmmo, int maxAmmo)
+    {
+        
+        if (ammoText != null)
+        {
+            ammoText.GetComponent<TextMeshProUGUI>().text = $"{currentAmmo}/{maxAmmo}";
+        }
+    }
+
+
     private void OnPlayerDamaged()
     {
         UpdatePlayerHealth();
@@ -240,6 +256,11 @@ public class UIManager : MonoBehaviour
         cg.alpha = 1f; // Assicura che sia completamente visibile
     }
 
+
+    private void OnAmmoChanged(int currentAmmo)
+    {
+        // Implementa l'aggiornamento dell'UI per l'ammo se necessario
+    }
     private void OnPlayerLevelUp(int level)
     {
         AudioManager.Instance?.PlayLevelUpSound();

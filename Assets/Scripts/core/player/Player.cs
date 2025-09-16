@@ -340,6 +340,16 @@ public class Player : MonoBehaviour
 
         // Reset velocità di movimento al valore base
         SetMovementSpeed(4f); // Velocità base originale
+        
+        // Reset dash cooldown al valore base
+        SetDashCooldown(3f); // Cooldown base originale
+        
+        // Reset weapon unlocks
+        WeaponUnlockManager weaponUnlockManager = GetComponent<WeaponUnlockManager>();
+        if (weaponUnlockManager != null)
+        {
+            weaponUnlockManager.ResetUnlockedWeapons();
+        }
 
     }
 
@@ -374,5 +384,14 @@ public class Player : MonoBehaviour
     public CountdownTimer GetDashTimer() => dashTimer;
 
     public float GetDashCooldown() => dashCooldown;
+
+    public void SetDashCooldown(float newCooldown)
+    {
+        dashCooldown = newCooldown;
+        if (dashTimer != null)
+        {
+            dashTimer = new CountdownTimer(dashCooldown);
+        }
+    }
     
 }

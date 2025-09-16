@@ -19,18 +19,33 @@ public class AreaWeaponUpgrade : PlayerUpgrade
     // Applica l'upgrade tramite il modifier, come per le SpinWeapon
     public override void ApplyUpgrade(Player player, int currentLevel)
     {
-        // Gestisce tutto tramite AreaWeaponStatsModifier per evitare conflitti
-        AreaWeaponStatsModifier areaStats = player.GetComponent<AreaWeaponStatsModifier>();
-        if (areaStats == null)
+        // Unlock AreaWeapon on first upgrade
+        if (currentLevel == 1)
         {
-            areaStats = player.gameObject.AddComponent<AreaWeaponStatsModifier>();
+            WeaponUnlockManager unlockManager = player.GetComponent<WeaponUnlockManager>();
+            if (unlockManager == null)
+            {
+                unlockManager = player.gameObject.AddComponent<WeaponUnlockManager>();
+            }
+            unlockManager.UnlockWeapon("AreaWeapon");
         }
-
-        // Applica i modificatori (il modifier aggiorna le armi esistenti)
-        areaStats.AddDamageMultiplier(damageMultiplier);
-        areaStats.AddRangeMultiplier(rangeMultiplier);
-        areaStats.ReduceCooldown(cooldownReduction);
-        areaStats.AddDurationMultiplier(durationMultiplier);
+        
+            // Gestisce tutto tramite AreaWeaponStatsModifier per evitare conflitti
+            AreaWeaponStatsModifier areaStats = player.GetComponent<AreaWeaponStatsModifier>();
+            if (areaStats == null)
+            {
+                areaStats = player.gameObject.AddComponent<AreaWeaponStatsModifier>();
+            }
+            if(currentLevel != 0)
+            {
+                 // Applica i modificatori (il modifier aggiorna le armi esistenti)
+            areaStats.AddDamageMultiplier(damageMultiplier);
+            areaStats.AddRangeMultiplier(rangeMultiplier);
+            areaStats.ReduceCooldown(cooldownReduction);
+            areaStats.AddDurationMultiplier(durationMultiplier);
+        
+            }
+           
 
     }
 }

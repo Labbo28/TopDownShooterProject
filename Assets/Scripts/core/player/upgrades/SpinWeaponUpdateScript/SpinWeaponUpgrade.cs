@@ -16,18 +16,33 @@ public class SpinWeaponUpgrade : PlayerUpgrade
 
     public override void ApplyUpgrade(Player player, int currentLevel)
     {
-        // Gestisce tutto tramite SpinWeaponStatsModifier per evitare conflitti
-        SpinWeaponStatsModifier spinStats = player.GetComponent<SpinWeaponStatsModifier>();
-        if (spinStats == null)
+        // Unlock SpinWeapon on first upgrade
+        if (currentLevel == 0)
         {
-            spinStats = player.gameObject.AddComponent<SpinWeaponStatsModifier>();
+            WeaponUnlockManager unlockManager = player.GetComponent<WeaponUnlockManager>();
+            if (unlockManager == null)
+            {
+                unlockManager = player.gameObject.AddComponent<WeaponUnlockManager>();
+            }
+            unlockManager.UnlockWeapon("SpinWeapon");
         }
-        
-        // Applica i modificatori (il modificatore si occuperà di aggiornare le armi esistenti)
-        spinStats.AddBladeCount(additionalBlades);
-        spinStats.AddDamageMultiplier(damageMultiplier);
-        spinStats.AddSpeedMultiplier(speedMultiplier);
-    
+       
+
+            // Gestisce tutto tramite SpinWeaponStatsModifier per evitare conflitti
+            SpinWeaponStatsModifier spinStats = player.GetComponent<SpinWeaponStatsModifier>();
+            if (spinStats == null)
+            {
+                spinStats = player.gameObject.AddComponent<SpinWeaponStatsModifier>();
+            }
+
+        if (currentLevel != 0)
+        {
+            // Applica i modificatori (il modifier aggiorna le armi esistenti)
+            spinStats.AddBladeCount(additionalBlades);
+            spinStats.AddDamageMultiplier(damageMultiplier);
+            spinStats.AddSpeedMultiplier(speedMultiplier);
+        }
+
         
     }
 }

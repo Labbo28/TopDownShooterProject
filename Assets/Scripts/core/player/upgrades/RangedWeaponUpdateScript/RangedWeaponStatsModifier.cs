@@ -1,37 +1,40 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class RangedWeaponStatsModifier : MonoBehaviour
 {
-    private float damageMultiplier = 1f;
     private float fireRateMultiplier = 1f;
     private float reloadSpeedMultiplier = 1f;
+    private float maxAmmoMultiplier = 1f;
 
-    // Valori base delle armi ranged
-    private struct RangedWeaponBaseStats {
-        public float damage;
+    public float DamageMultiplier { get; private set; } = 1f; // serve solo per i Projectile
+
+    private struct RangedWeaponBaseStats
+    {
         public float fireRate;
         public float reloadTime;
+        public int maxAmmo;
     }
-    private System.Collections.Generic.Dictionary<Weapon, RangedWeaponBaseStats> baseStats = new System.Collections.Generic.Dictionary<Weapon, RangedWeaponBaseStats>();
 
-    public float DamageMultiplier => damageMultiplier;
+    private Dictionary<Weapon, RangedWeaponBaseStats> baseStats =
+        new Dictionary<Weapon, RangedWeaponBaseStats>();
+
     public float FireRateMultiplier => fireRateMultiplier;
     public float ReloadSpeedMultiplier => reloadSpeedMultiplier;
+    public float MaxAmmoMultiplier => maxAmmoMultiplier;
 
     private void Awake()
     {
-        // Salva i valori base delle armi ranged
         Weapon[] weapons = GetComponentsInChildren<Weapon>();
         foreach (Weapon weapon in weapons)
         {
-            if (!(weapon is SpinWeapon) && weapon.WeaponSo != null && !baseStats.ContainsKey(weapon))
+            if (!(weapon is SpinWeapon) && !baseStats.ContainsKey(weapon))
             {
-                float dmg = weapon.WeaponSo.projectile != null ? weapon.WeaponSo.projectile.damage : 0f;
                 baseStats[weapon] = new RangedWeaponBaseStats
                 {
-                    damage = dmg,
-                    fireRate = weapon.WeaponSo.fireRate,
-                    reloadTime = weapon.WeaponSo.reloadTime
+                    fireRate = weapon.FireRate,
+                    reloadTime = weapon.ReloadTime,
+                    maxAmmo = weapon.MaxAmmo
                 };
             }
         }
@@ -39,8 +42,8 @@ public class RangedWeaponStatsModifier : MonoBehaviour
 
     public void AddDamageMultiplier(float multiplier)
     {
-        damageMultiplier *= multiplier;
-        UpdateExistingWeapons();
+        DamageMultiplier *= multiplier;
+        // Non serve aggiornare Weapon, il danno viene letto dal Projectile
     }
 
     public void AddFireRateMultiplier(float multiplier)
@@ -55,64 +58,47 @@ public class RangedWeaponStatsModifier : MonoBehaviour
         UpdateExistingWeapons();
     }
 
+    public void AddMaxAmmoMultiplier(float multiplier)
+    {
+        maxAmmoMultiplier *= multiplier;
+        UpdateExistingWeapons();
+    }
+
     private void UpdateExistingWeapons()
     {
         Weapon[] weapons = GetComponentsInChildren<Weapon>();
         foreach (Weapon weapon in weapons)
         {
-            if (!(weapon is SpinWeapon) && weapon.WeaponSo != null)
-            {
-                if (baseStats.ContainsKey(weapon))
-                {
-                    var stats = baseStats[weapon];
-                    if (weapon.WeaponSo.projectile != null)
-                        weapon.WeaponSo.projectile.damage = stats.damage * damageMultiplier;
-                    weapon.WeaponSo.fireRate = stats.fireRate * fireRateMultiplier;
-                    weapon.WeaponSo.reloadTime = stats.reloadTime * reloadSpeedMultiplier;
-                }
-            }
-        }
-    }
-
-    public void ApplyToRangedWeapon(Weapon weapon)
-    {
-        if (weapon != null && !(weapon is SpinWeapon) && weapon.WeaponSo != null)
-        {
-            if (baseStats.ContainsKey(weapon))
+            if (!(weapon is SpinWeapon) && baseStats.ContainsKey(weapon))
             {
                 var stats = baseStats[weapon];
-                if (weapon.WeaponSo.projectile != null)
-                    weapon.WeaponSo.projectile.damage = stats.damage * damageMultiplier;
-                weapon.WeaponSo.fireRate = stats.fireRate * fireRateMultiplier;
-                weapon.WeaponSo.reloadTime = stats.reloadTime * reloadSpeedMultiplier;
-            }
-            else
-            {
-                if (weapon.WeaponSo.projectile != null)
-                    weapon.WeaponSo.projectile.damage *= damageMultiplier;
-                weapon.WeaponSo.fireRate *= fireRateMultiplier;
-                weapon.WeaponSo.reloadTime *= reloadSpeedMultiplier;
+
+                weapon.FireRate = stats.fireRate * fireRateMultiplier;
+                weapon.ReloadTime = stats.reloadTime * reloadSpeedMultiplier;
+                weapon.MaxAmmo = Mathf.RoundToInt(stats.maxAmmo * maxAmmoMultiplier);
+
+                weapon.UpdateTimersWithModifiers();
             }
         }
     }
 
     public void ResetModifiers()
     {
-        damageMultiplier = 1f;
+        DamageMultiplier = 1f;
         fireRateMultiplier = 1f;
         reloadSpeedMultiplier = 1f;
+        maxAmmoMultiplier = 1f;
 
-        // Ripristina i valori base su tutte le armi ranged
         Weapon[] weapons = GetComponentsInChildren<Weapon>();
         foreach (Weapon weapon in weapons)
         {
-            if (!(weapon is SpinWeapon) && weapon.WeaponSo != null && baseStats.ContainsKey(weapon))
+            if (!(weapon is SpinWeapon) && baseStats.ContainsKey(weapon))
             {
                 var stats = baseStats[weapon];
-                if (weapon.WeaponSo.projectile != null)
-                    weapon.WeaponSo.projectile.damage = stats.damage;
-                weapon.WeaponSo.fireRate = stats.fireRate;
-                weapon.WeaponSo.reloadTime = stats.reloadTime;
+
+                weapon.FireRate = stats.fireRate;
+                weapon.ReloadTime = stats.reloadTime;
+                weapon.MaxAmmo = stats.maxAmmo;
             }
         }
     }

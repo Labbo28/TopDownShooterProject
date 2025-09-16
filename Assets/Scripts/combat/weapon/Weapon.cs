@@ -1,17 +1,22 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Events;
 
 public abstract class Weapon : MonoBehaviour
 {
     [SerializeField] private WeaponSO weaponSo;
 
-    [SerializeField] Transform weaponPrefab;
-    [SerializeField] Transform shotPoint;
-
+    [SerializeField] private Transform weaponPrefab;
+    [SerializeField] private Transform shotPoint;
     [SerializeField] private Transform pivotPoint;
 
+    public UnityEvent<int, int> OnAmmoChanged;
+
     private int currentAmmo;
+    private float fireRate;
+    private float reloadTime;
+    private int maxAmmo;
     private float lastShotTime = 0f;
     private InputSystem_Actions inputActions;
 
@@ -45,6 +50,34 @@ public abstract class Weapon : MonoBehaviour
         set => currentAmmo = value;
     }
 
+    public float FireRate
+    {
+        get => fireRate;
+        set
+        {
+            fireRate = value;
+            if (fireRateTimer != null)
+                fireRateTimer = new CountdownTimer(fireRate);
+        }
+    }
+
+    public float ReloadTime
+    {
+        get => reloadTime;
+        set
+        {
+            reloadTime = value;
+            if (reloadTimer != null)
+                reloadTimer = new CountdownTimer(reloadTime);
+        }
+    }
+
+    public int MaxAmmo
+    {
+        get => maxAmmo;
+        set => maxAmmo = value;
+    }
+
     public float LastShotTime
     {
         get => lastShotTime;
@@ -53,24 +86,27 @@ public abstract class Weapon : MonoBehaviour
 
     private CountdownTimer reloadTimer;
     private CountdownTimer fireRateTimer;
+    private bool isReloading = false;
 
     private void Awake()
     {
         inputActions = new InputSystem_Actions();
-        
+
         if (this is SpinWeapon || this is AreaWeapon)
         {
-            // Per le armi Spin e Area, non fare nulla di speciale
             return;
         }
 
-        reloadTimer = new CountdownTimer(weaponSo.reloadTime);
-        fireRateTimer = new CountdownTimer(weaponSo.fireRate);
+        fireRate = weaponSo.fireRate;
+        reloadTime = weaponSo.reloadTime;
+        maxAmmo = weaponSo.maxAmmo;
+
+        reloadTimer = new CountdownTimer(reloadTime);
+        fireRateTimer = new CountdownTimer(fireRate);
     }
-    
+
     private void Start()
     {
-        // Solo per armi da fuoco
         if (!(this is SpinWeapon) && !(this is AreaWeapon))
         {
             GameObject shotPointObject = GameObject.Find("shotPoint");
@@ -82,8 +118,7 @@ public abstract class Weapon : MonoBehaviour
             {
                 Debug.LogWarning("shotPoint non trovato nella scena!");
             }
-            currentAmmo = weaponSo.maxAmmo;
-            // Apply modifiers after awake to ensure Player components exist
+            currentAmmo = maxAmmo;
             UpdateTimersWithModifiers();
         }
     }
@@ -97,18 +132,16 @@ public abstract class Weapon : MonoBehaviour
     {
         inputActions?.Disable();
     }
-    
+
     public void UpdateTimersWithModifiers()
     {
         if (Player.Instance != null && !(this is SpinWeapon))
         {
             RangedWeaponStatsModifier modifier = Player.Instance.GetComponent<RangedWeaponStatsModifier>();
-            if (modifier != null && weaponSo != null)
+            if (modifier != null)
             {
-                float modifiedFireRate = weaponSo.fireRate * modifier.FireRateMultiplier;
-                float modifiedReloadTime = weaponSo.reloadTime * modifier.ReloadSpeedMultiplier;
-                reloadTimer = new CountdownTimer(modifiedReloadTime);
-                fireRateTimer = new CountdownTimer(modifiedFireRate);
+                FireRate = weaponSo.fireRate * modifier.FireRateMultiplier;
+                ReloadTime = weaponSo.reloadTime * modifier.ReloadSpeedMultiplier;
             }
             else if (weaponSo == null)
             {
@@ -119,24 +152,21 @@ public abstract class Weapon : MonoBehaviour
 
     void Update()
     {
-         if (Player.Instance == null || !Player.Instance.GetComponent<HealthSystem>().IsAlive)
-    {
-        return; // Non fare nulla se il player è morto
-    }
+        if (Player.Instance == null || !Player.Instance.GetComponent<HealthSystem>().IsAlive)
+        {
+            return;
+        }
         HandleManualReload();
         HandleShooting();
         HandleWeaponRotation();
         UpdateReloading();
         UpdateTimers();
-         
     }
 
     private void UpdateTimers()
     {
-        if (reloadTimer != null)
-            reloadTimer.Tick(Time.deltaTime);
-        if (fireRateTimer != null)
-            fireRateTimer.Tick(Time.deltaTime);
+        reloadTimer?.Tick(Time.deltaTime);
+        fireRateTimer?.Tick(Time.deltaTime);
     }
 
     public Vector3 GetProjectileDirection()
@@ -166,17 +196,10 @@ public abstract class Weapon : MonoBehaviour
         SpriteRenderer weaponSprite = weaponPrefab.GetComponent<SpriteRenderer>();
         if (weaponSprite != null)
         {
-            if (mouseWorldPosition.x < pivotPoint.position.x)
-            {
-                weaponSprite.flipY = true;
-            }
-            else
-            {
-                weaponSprite.flipY = false;
-            }
+            weaponSprite.flipY = mouseWorldPosition.x < pivotPoint.position.x;
         }
     }
-    
+
     private void HandleManualReload()
     {
         if (inputActions.Player.Reload.WasPressedThisFrame())
@@ -184,7 +207,6 @@ public abstract class Weapon : MonoBehaviour
             Reload();
         }
     }
-    private bool isReloading = false;
 
     private void Reload()
     {
@@ -199,11 +221,10 @@ public abstract class Weapon : MonoBehaviour
     {
         if (isReloading && reloadTimer.IsFinished)
         {
-            currentAmmo = weaponSo.maxAmmo;
+            currentAmmo = maxAmmo;
             isReloading = false;
         }
     }
-   
 
     public void HandleShooting()
     {
@@ -213,6 +234,7 @@ public abstract class Weapon : MonoBehaviour
             {
                 Shoot();
                 currentAmmo--;
+                OnAmmoChanged?.Invoke(currentAmmo, maxAmmo);
                 fireRateTimer.Start();
             }
             else

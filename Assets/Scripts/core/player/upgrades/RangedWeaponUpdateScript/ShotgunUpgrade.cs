@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "RangedWeaponUpgrade", menuName = "Upgrades/RangedWeaponUpgrade")]
-public class RangedWeaponUpgrade : PlayerUpgrade
+[CreateAssetMenu(fileName = "ShotgunUpgrade", menuName = "Upgrades/ShotgunUpgrade")]
+public class ShotgunUpgrade : PlayerUpgrade
 {
     [Header("Damage Settings")]
     [SerializeField] private float damageMultiplier = 1.2f; // +20% damage per level
@@ -17,6 +17,17 @@ public class RangedWeaponUpgrade : PlayerUpgrade
 
     public override void ApplyUpgrade(Player player, int currentLevel)
     {
+        // Unlock Shotgun on first upgrade
+        if (currentLevel == 1)
+        {
+            WeaponUnlockManager unlockManager = player.GetComponent<WeaponUnlockManager>();
+            if (unlockManager == null)
+            {
+                unlockManager = player.gameObject.AddComponent<WeaponUnlockManager>();
+            }
+            unlockManager.UnlockWeapon("Shotgun");
+        }
+        
         // Aggiungi o aggiorna il componente modificatore per armi ranged
         RangedWeaponStatsModifier rangedStats = player.GetComponent<RangedWeaponStatsModifier>();
         if (rangedStats == null)
@@ -28,6 +39,5 @@ public class RangedWeaponUpgrade : PlayerUpgrade
         rangedStats.AddFireRateMultiplier(fireRateMultiplier);
         rangedStats.AddReloadSpeedMultiplier(reloadSpeedMultiplier);
         rangedStats.AddMaxAmmoMultiplier(maxAmmoMultiplier);
-        
     }
 }
