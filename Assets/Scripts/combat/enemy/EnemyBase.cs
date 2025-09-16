@@ -31,7 +31,6 @@ public abstract class EnemyBase : MonoBehaviour
     [SerializeField] protected float speed = 3f;
     [SerializeField] protected float damage = 5f;
     [SerializeField] protected float attackCooldown = 1f;
-    [SerializeField] protected float detectRadius = 10f;
     [SerializeField] protected float actionRadius = 0.5f;
     [SerializeField] protected Image HealthBar;
     [SerializeField] protected Image backgroundHealthBar;

@@ -262,9 +262,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   speed: 3
-  damage: 1000
+  damage: 7
   attackCooldown: 1
-  detectRadius: 10
   actionRadius: 0.5
   HealthBar: {fileID: 5333312199946071443}
   backgroundHealthBar: {fileID: 7022701402907246434}

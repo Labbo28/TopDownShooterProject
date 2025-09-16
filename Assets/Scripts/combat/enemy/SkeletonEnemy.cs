@@ -71,15 +71,10 @@ public class SkeletonEnemy : EnemyBase
         {
             HandleCircling();
         }
-        // Se è troppo lontano, avvicinati
-        else if (distanceToPlayer <= detectRadius)
-        {
-            Move(player.position, speed);
-            isCircling = false;
-        }
+        // Se è troppo lontano, avvicinati - always pursue player
         else
         {
-            HandleIdleBehavior();
+            Move(player.position, speed);
             isCircling = false;
         }
     }

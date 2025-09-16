@@ -61,14 +61,10 @@ public class ZombieFastEnemy : EnemyBase
         {
             StartCharge();
         }
-        // Altrimenti insegue normalmente
-        else if (distanceToPlayer <= detectRadius)
-        {
-            Move(player.position, speed);
-        }
+        // Altrimenti insegue normalmente - always pursue player
         else
         {
-            HandleIdleBehavior();
+            Move(player.position, speed);
         }
     }
 

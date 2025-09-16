@@ -27,18 +27,11 @@ public class ZombieEnemy : EnemyBase
     {
         float distanceToPlayer = DistanceToPlayer();
         
-        // Controlla se il player è nel raggio di rilevamento
-        bool playerDetected = distanceToPlayer <= detectRadius;
-        
-        if (playerDetected && !isPursuing)
+        // Vampire Survivors-like: Always pursue player
+        if (!isPursuing)
         {
             isPursuing = true;
-            speed = baseSpeed * pursuingSpeedMultiplier; // Diventa più veloce quando rileva il player
-        }
-        else if (!playerDetected && isPursuing)
-        {
-            isPursuing = false;
-            speed = baseSpeed; // Torna alla velocità normale
+            speed = baseSpeed * pursuingSpeedMultiplier;
         }
 
         // Se il player è nel raggio di attacco
@@ -57,15 +50,10 @@ public class ZombieEnemy : EnemyBase
                 StartCoroutine(AttackFlash());
             }
         }
-        else if (playerDetected)
-        {
-            // Insegue il player con determinazione zombie
-            Move(player.position, speed);
-        }
         else
         {
-            // Comportamento idle - movimento casuale lento
-            HandleIdleBehavior();
+            // Always move toward player
+            Move(player.position, speed);
         }
     }
     

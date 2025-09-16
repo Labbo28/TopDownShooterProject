@@ -6,6 +6,7 @@ public class Assault_Rifle : Weapon
     private float spreadAngle = 5f;
     protected override void Shoot()
     {
+        AudioManager.Instance?.PlayRangedSound();
         float angle = Random.Range(-spreadAngle / 2, spreadAngle / 2);
         Quaternion rotation = Quaternion.Euler(0f, 0f, angle);
 

@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
     private float healAmount = 0.3f; //valore percentuale della vita ripristinata
 
     private int PlayerLevel = 1;
-    private float xpNeededToLevelUp = 10;
+    private float xpNeededToLevelUp = 20f;
     
     private float previousGameTime = 0f;
     private string formattedTime = "00:00";
@@ -221,7 +221,7 @@ public class GameManager : MonoBehaviour
             PlayerLevel++;
             OnPlayerLevelUp?.Invoke(PlayerLevel);
             XP -= xpNeededToLevelUp;
-            xpNeededToLevelUp *= 1.1f;
+            xpNeededToLevelUp *= 1.36f;
         }
         OnXPChanged?.Invoke(XP);
     }

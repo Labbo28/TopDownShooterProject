@@ -343,10 +343,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waves:
-  - {fileID: 11400000, guid: c45df04d7acade949a48bff4be7d0e6a, type: 2}
-  - {fileID: 11400000, guid: c11bbc41b2fd495b984e2e40a8a349de, type: 2}
-  - {fileID: 11400000, guid: 5a8739b47cd07f314a7f2ca4d0e2bc1b, type: 2}
-  - {fileID: 11400000, guid: 4d739f0aaca8cb83dbb0b8f97103432c, type: 2}
+  - {fileID: 11400000, guid: 0e3ec1a997d882def85097a60a01d1c8, type: 2}
+  - {fileID: 11400000, guid: 021e361f039f988539eda7afca9468e9, type: 2}
+  - {fileID: 11400000, guid: db1d20074f6e5576b8421fb40ffc697e, type: 2}
+  - {fileID: 11400000, guid: 6fe515c0d278616be8f5c68018996b08, type: 2}
+  - {fileID: 11400000, guid: f81c6960f910bb409aeb14e61785f0a5, type: 2}
+  - {fileID: 11400000, guid: c9dbcf0626e3732d49c0558aaa572b42, type: 2}
+  - {fileID: 11400000, guid: dfc3721a592c88accb04fbac4e3671d7, type: 2}
+  - {fileID: 11400000, guid: b188abc31b6ff601698443a7d77231ed, type: 2}
+  - {fileID: 11400000, guid: 4f691063bf434b953a3b81182b44776c, type: 2}
+  - {fileID: 11400000, guid: ebcdbfcf63c30140cb615d040489bfc3, type: 2}
   spawnPoints:
   - {fileID: 1921689878}
   - {fileID: 578075862}
@@ -3495,21 +3501,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cee571b94ba45046b0bcc8f8a76a68d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  marks:
-  - timeRatio: 0
-    color: {r: 1, g: 1, b: 1, a: 0}
-    intensity: 1
-  - timeRatio: 0.5
-    color: {r: 0.20470342, g: 0.2028302, b: 1, a: 0}
-    intensity: 0.4
-  - timeRatio: 0.9
-    color: {r: 0.058479443, g: 0.054378804, b: 0.72156864, a: 0}
-    intensity: 0.6
-  - timeRatio: 0.9
-    color: {r: 0.05882353, g: 0.05490196, b: 0.72156864, a: 0}
-    intensity: 0.6
-  light2D: {fileID: 1075341211}
-  cycleLength: 24
+  _marks: []
+  _light: {fileID: 0}
+  _cycleLength: 24
 --- !u!1 &1352909053
 GameObject:
   m_ObjectHideFlags: 0
