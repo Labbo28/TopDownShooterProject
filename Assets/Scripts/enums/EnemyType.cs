@@ -4,6 +4,7 @@ public enum EnemyType
     Ranged,
     Sniper,
     Boss,
+    Tombstone,
     
     // Tipi specifici di zombie
     Zombie,

@@ -251,7 +251,14 @@ public class Player : MonoBehaviour
             }
         }
     }
-
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("EnemyProjectile"))
+        {
+            healthSystem?.TakeDamage(other.GetComponent<Projectile>().Damage);
+            Destroy(other.gameObject);
+        }
+    }
     // Metodo per resettare completamente il player
     public void ResetPlayer()
     {

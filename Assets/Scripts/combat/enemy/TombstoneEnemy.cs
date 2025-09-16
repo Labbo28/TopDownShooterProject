@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class RangedEnemy : EnemyBase
+public class TombstoneEnemy : EnemyBase
 {
     [SerializeField] private float minDistance = 3f;  // Distanza minima dal giocatore
     [SerializeField] private float maxDistance = 7f;  // Distanza massima dal giocatore
@@ -9,7 +9,7 @@ public class RangedEnemy : EnemyBase
 
     public override EnemyType GetEnemyType()
     {
-       return EnemyType.Ranged;
+       return EnemyType.Tombstone;
     }
 
     protected override void HandleBehavior()
@@ -63,6 +63,7 @@ public class RangedEnemy : EnemyBase
             transform.position, 
             Quaternion.Euler(0, 0, angle - 90f)
         );
+
         
         // Ricordiamo di cancellare lo stato di attacco dopo un breve periodo
         Invoke(nameof(ResetAttackState), 0.2f);

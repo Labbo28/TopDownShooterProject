@@ -334,6 +334,12 @@ public abstract class EnemyBase : MonoBehaviour
                 Destroy(other.gameObject);
             }
         }
+        else if (other.CompareTag("EnemyProjectile"))
+        {
+            //ignore collision
+            Physics2D.IgnoreCollision(other, GetComponent<Collider2D>());
+            
+        }
     }
 
     protected virtual void RaiseAttackEvent()
