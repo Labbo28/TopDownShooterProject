@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public abstract class Weapon : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public abstract class Weapon : MonoBehaviour
 
     private int currentAmmo;
     private float lastShotTime = 0f;
+    private InputSystem_Actions inputActions;
 
     public WeaponSO WeaponSo
     {
@@ -54,6 +56,8 @@ public abstract class Weapon : MonoBehaviour
 
     private void Awake()
     {
+        inputActions = new InputSystem_Actions();
+        
         if (this is SpinWeapon || this is AreaWeapon)
         {
             // Per le armi Spin e Area, non fare nulla di speciale
@@ -82,6 +86,16 @@ public abstract class Weapon : MonoBehaviour
             // Apply modifiers after awake to ensure Player components exist
             UpdateTimersWithModifiers();
         }
+    }
+
+    private void OnEnable()
+    {
+        inputActions?.Enable();
+    }
+
+    private void OnDisable()
+    {
+        inputActions?.Disable();
     }
     
     public void UpdateTimersWithModifiers()
@@ -165,7 +179,7 @@ public abstract class Weapon : MonoBehaviour
     
     private void HandleManualReload()
     {
-        if (Input.GetKeyDown(KeyCode.R))
+        if (inputActions.Player.Reload.WasPressedThisFrame())
         {
             Reload();
         }
@@ -193,7 +207,7 @@ public abstract class Weapon : MonoBehaviour
 
     public void HandleShooting()
     {
-        if (Input.GetMouseButton(0) && fireRateTimer.IsFinished)
+        if (inputActions.Player.Attack.IsPressed() && fireRateTimer.IsFinished)
         {
             if (currentAmmo > 0)
             {
