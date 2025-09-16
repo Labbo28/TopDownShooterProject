@@ -7,7 +7,8 @@ public enum DropType
 {
     XP,
     Medikit,
-    Magnet
+    Magnet,
+    Chest
 }
 
 public class DropManager : MonoBehaviour
@@ -31,6 +32,8 @@ public class DropManager : MonoBehaviour
         public float medikitWeight = 0.5f;
         [Range(0f, 1f)]
         public float magnetWeight = 0.5f;
+        [Range(0f, 1f)]
+        public float chestWeight = 0.05f; // Chest drops are rare
     }
     
     [System.Serializable]
@@ -138,17 +141,24 @@ public class DropManager : MonoBehaviour
     // Determina quale tipo di drop speciale generare in base alle probabilità configurate
     private DropType DetermineSpecialDropType(EnemyDropConfig config)
     {
-        float totalWeight = config.medikitWeight + config.magnetWeight;
-        float normalizedMedikitWeight = config.medikitWeight / totalWeight;
-        
+        float totalWeight = config.medikitWeight + config.magnetWeight + config.chestWeight;
+        float random = UnityEngine.Random.value;
+
+        float medikitThreshold = config.medikitWeight / totalWeight;
+        float magnetThreshold = medikitThreshold + (config.magnetWeight / totalWeight);
+
         // Determina il tipo di drop speciale
-        if (UnityEngine.Random.value <= normalizedMedikitWeight)
+        if (random <= medikitThreshold)
         {
             return DropType.Medikit;
         }
-        else
+        else if (random <= magnetThreshold)
         {
             return DropType.Magnet;
+        }
+        else
+        {
+            return DropType.Chest;
         }
     }
 
@@ -163,6 +173,8 @@ public class DropManager : MonoBehaviour
                 return 0; // Per ora c'è solo un tipo di medikit
             case DropType.Magnet:
                 return 0; // Per ora c'è solo un tipo di magnete
+            case DropType.Chest:
+                return 0; // Per ora c'è solo un tipo di chest
             default:
                 return 0;
         }
@@ -195,9 +207,34 @@ public class DropManager : MonoBehaviour
                 return UnityEngine.Random.Range(1, 3); // XP d'argento o oro
             case EnemyType.SkeletonBoss:
                 return 2; // XP d'oro
-                
+
+            // Nuovo nemico TombstoneEnemy
+            case EnemyType.Tombstone:
+                return UnityEngine.Random.Range(1, 2); // XP d'argento (nemico a distanza)
+
             default:
                 return 0; // XP di bronzo come fallback
+        }
+    }
+
+    /// <summary>
+    /// Force spawn a chest drop at a specific position (useful for boss defeats, special events, etc.)
+    /// </summary>
+    public void SpawnChestDrop(Vector3 position)
+    {
+        GenerateDrop(DropType.Chest, EnemyType.SkeletonBoss, position);
+    }
+
+    /// <summary>
+    /// Force spawn multiple chest drops (for special occasions)
+    /// </summary>
+    public void SpawnChestDrops(Vector3 centerPosition, int count, float spreadRadius = 2f)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            Vector2 randomOffset = UnityEngine.Random.insideUnitCircle * spreadRadius;
+            Vector3 spawnPosition = centerPosition + new Vector3(randomOffset.x, randomOffset.y, 0);
+            SpawnChestDrop(spawnPosition);
         }
     }
 

@@ -26,6 +26,11 @@ public class Spawner : MonoBehaviour
     // Enemy tracking
     private List<GameObject> aliveEnemies = new List<GameObject>();
     private Dictionary<SpawnData, float> lastSpawnTimes = new Dictionary<SpawnData, float>();
+
+    // Boss tracking
+    private GameObject currentBoss;
+    private bool bossSpawned = false;
+    private bool HasInvokedBossDefeated = false;
     
     // Player reference
     private Transform playerTransform;
@@ -34,6 +39,10 @@ public class Spawner : MonoBehaviour
     public System.Action<int> OnWaveStarted;
     public System.Action<int> OnWaveCompleted;
     public System.Action OnAllWavesCompleted;
+    public System.Action<GameObject> OnBossSpawned;
+    public System.Action OnBossWaveStarted;
+    public System.Action OnBossDefeated;
+    public System.Action<string> OnBossIntro;
     
     private void Start()
     {
@@ -101,29 +110,64 @@ public class Spawner : MonoBehaviour
             OnAllWavesCompleted?.Invoke();
             return;
         }
-        
+
         currentWaveIndex = waveIndex;
         currentWave = waves[waveIndex];
         waveStartTime = Time.time;
         waveActive = true;
-        
-        // Reset spawn timers
+
+        // Reset spawn timers and boss state
         lastSpawnTimes.Clear();
-        
+        bossSpawned = false;
+        currentBoss = null;
+        HasInvokedBossDefeated = false;
+
         if (debugMode)
         {
         }
-        
+
+        // Special handling for boss waves
+        if (currentWave.isBossWave)
+        {
+            OnBossWaveStarted?.Invoke();
+
+            // Show boss intro if enabled
+            if (currentWave.ShowBossIntro)
+            {
+                StartCoroutine(ShowBossIntroAfterDelay(currentWave.BossIntroText, 1f));
+            }
+
+            if (debugMode)
+            {
+            }
+        }
+
         OnWaveStarted?.Invoke(currentWave.waveNumber);
     }
     
     private void ProcessCurrentWaveSpawning()
     {
         float waveTime = Time.time - waveStartTime;
-        List<SpawnData> activeSpawnData = currentWave.GetActiveSpawnData(waveTime);
-        foreach (SpawnData spawnData in activeSpawnData)
+
+        // Handle boss spawning for boss waves
+        if (currentWave.isBossWave && !bossSpawned && waveTime >= currentWave.BossSpawnDelay)
         {
-            ProcessSpawnData(spawnData, waveTime);
+            SpawnBoss();
+        }
+
+        // Regular enemy spawning (pause if boss wave setting is enabled and boss is alive)
+        bool shouldPauseRegularSpawning = currentWave.isBossWave &&
+                                          currentWave.PauseRegularSpawningDuringBoss &&
+                                          currentBoss != null &&
+                                          currentBoss.GetComponent<HealthSystem>()?.IsAlive == true;
+
+        if (!shouldPauseRegularSpawning)
+        {
+            List<SpawnData> activeSpawnData = currentWave.GetActiveSpawnData(waveTime);
+            foreach (SpawnData spawnData in activeSpawnData)
+            {
+                ProcessSpawnData(spawnData, waveTime);
+            }
         }
     }
     
@@ -265,19 +309,43 @@ public class Spawner : MonoBehaviour
     private bool IsWaveComplete()
     {
         float waveTime = Time.time - waveStartTime;
-        
-        // Controlla se la wave è finita per tempo
+
+        // Special handling for boss waves
+        if (currentWave.isBossWave)
+        {
+            // Boss wave completes when boss is defeated
+            if (bossSpawned && (currentBoss == null || currentBoss.GetComponent<HealthSystem>()?.IsAlive != true))
+            {
+                if (!HasInvokedBossDefeated)
+                {
+                    // Spawn chest drops when boss is defeated
+                    if (currentBoss != null && DropManager.Instance != null)
+                    {
+                        // Spawn 2-3 chest drops around the boss position
+                        int chestCount = Random.Range(2, 4);
+                        DropManager.Instance.SpawnChestDrops(currentBoss.transform.position, chestCount, 2f);
+                    }
+
+                    OnBossDefeated?.Invoke();
+                    HasInvokedBossDefeated = true;
+                }
+                // Also check if all other enemies are dead for boss waves
+                return aliveEnemies.Count == 0;
+            }
+            return false;
+        }
+
+        // Regular wave completion logic
         if (waveTime >= currentWave.waveDuration)
         {
             return true;
         }
-        
-        // Controlla se serve che tutti i nemici siano morti
+
         if (currentWave.requireAllEnemiesDead)
         {
             return aliveEnemies.Count == 0 && !HasActiveSpawning(waveTime);
         }
-        
+
         return false;
     }
     
@@ -312,6 +380,82 @@ public class Spawner : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         StartWave(waveIndex);
+    }
+
+    /// <summary>
+    /// Spawns the boss for boss waves
+    /// </summary>
+    private void SpawnBoss()
+    {
+        if (currentWave.bossPrefab == null)
+        {
+            return;
+        }
+
+        Vector3 bossSpawnPosition = GetBossSpawnPosition();
+
+        if (bossSpawnPosition == Vector3.zero)
+        {
+            return;
+        }
+
+        currentBoss = Instantiate(currentWave.bossPrefab, bossSpawnPosition, Quaternion.identity);
+        bossSpawned = true;
+
+        // Register boss to alive enemies for tracking
+        aliveEnemies.Add(currentBoss);
+
+        // Register boss to DropManager if available
+        if (DropManager.Instance != null)
+        {
+            EnemyBase bossEnemyBase = currentBoss.GetComponent<EnemyBase>();
+            if (bossEnemyBase != null)
+            {
+                DropManager.Instance.RegisterEnemy(bossEnemyBase);
+            }
+        }
+
+        OnBossSpawned?.Invoke(currentBoss);
+
+        if (debugMode)
+        {
+        }
+    }
+
+    /// <summary>
+    /// Gets a suitable spawn position for the boss (center of player area)
+    /// </summary>
+    private Vector3 GetBossSpawnPosition()
+    {
+        if (playerTransform == null)
+        {
+            // Fallback to center of spawn points
+            if (spawnPoints.Length > 0)
+            {
+                Vector3 center = Vector3.zero;
+                foreach (Transform spawnPoint in spawnPoints)
+                {
+                    center += spawnPoint.position;
+                }
+                return center / spawnPoints.Length;
+            }
+            return Vector3.zero;
+        }
+
+        // Spawn boss at a good distance from player but not too far
+        Vector2 direction = Random.insideUnitCircle.normalized;
+        Vector3 bossSpawnPosition = playerTransform.position + (Vector3)(direction * 8f);
+
+        return bossSpawnPosition;
+    }
+
+    /// <summary>
+    /// Shows boss introduction text after a delay
+    /// </summary>
+    private IEnumerator ShowBossIntroAfterDelay(string introText, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        OnBossIntro?.Invoke(introText);
     }
     
     // Metodi di utilità per debugging

@@ -45,6 +45,10 @@ public class SkeletonBossEnemy : EnemyBase
     private bool hasUsedPhase2Ability = false;
     private bool hasUsedPhase3Ability = false;
 
+    // Boss wave integration
+    public System.Action OnBossPhaseChanged;
+    public System.Action<BossPhase> OnBossPhaseTransition;
+
     protected override void Start()
     {
         base.Start();
@@ -134,19 +138,26 @@ public class SkeletonBossEnemy : EnemyBase
     {
         currentPhase = newPhase;
         phaseTransitionTime = Time.time;
-        
+
+        // Notify listeners about phase transition
+        OnBossPhaseChanged?.Invoke();
+        OnBossPhaseTransition?.Invoke(currentPhase);
+
         switch (currentPhase)
         {
             case BossPhase.Phase2:
                 speed = baseSpeed * 1.3f; // Diventa più veloce
                 damage = baseDamage * 1.2f; // Più danno
+                summonCooldown *= 0.8f; // Evoca più spesso
                 StartCoroutine(PhaseTransitionEffect(Color.yellow));
                 break;
-                
+
             case BossPhase.Phase3:
                 speed = baseSpeed * 1.6f; // Ancora più veloce
                 damage = baseDamage * 1.5f; // Danno massimo
                 attackCooldown *= 0.7f; // Attacca più spesso
+                summonCooldown *= 0.6f; // Evoca molto più spesso
+                maxMinions = 30; // Più minions nella fase finale
                 StartCoroutine(PhaseTransitionEffect(Color.red));
                 break;
         }
@@ -460,6 +471,22 @@ public class SkeletonBossEnemy : EnemyBase
     public override EnemyType GetEnemyType()
     {
         return EnemyType.SkeletonBoss;
+    }
+
+    /// <summary>
+    /// Get current boss phase for external systems
+    /// </summary>
+    public BossPhase GetCurrentPhase()
+    {
+        return currentPhase;
+    }
+
+    /// <summary>
+    /// Get boss health percentage
+    /// </summary>
+    public float GetHealthPercentage()
+    {
+        return healthSystem?.GetHealthPercentage() ?? 0f;
     }
 
     /// <summary>

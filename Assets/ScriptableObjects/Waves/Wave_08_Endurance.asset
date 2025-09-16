@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: Wave_08_Endurance
   m_EditorClassIdentifier: 
   waveNumber: 8
-  waveName: "Endurance Test - Overwhelming Numbers"
+  waveName: Endurance Test - Overwhelming Numbers
   waveDuration: 75
   spawnData:
-  - enemyPrefab: {fileID: 2372909403197453248, guid: fb4d4d81774a74e4a8fc129406bc1cc0, type: 3}
+  - enemyPrefab: {fileID: 2372909403197453248, guid: fb4d4d81774a74e4a8fc129406bc1cc0,
+      type: 3}
     spawnCount: 150
     spawnRate: 5
     startTime: 0
@@ -26,7 +27,8 @@ MonoBehaviour:
     healthMultiplier: 1.2
     damageMultiplier: 1.1
     speedMultiplier: 1.1
-  - enemyPrefab: {fileID: 2372909403197453248, guid: ac3ced40651686dd3908d525794a369a, type: 3}
+  - enemyPrefab: {fileID: 2372909403197453248, guid: ac3ced40651686dd3908d525794a369a,
+      type: 3}
     spawnCount: 120
     spawnRate: 6
     startTime: 10
@@ -36,19 +38,35 @@ MonoBehaviour:
     healthMultiplier: 1
     damageMultiplier: 1.2
     speedMultiplier: 1.3
-  - enemyPrefab: {fileID: 2372909403197453248, guid: 87e7590eeee3d1bf6bc5699063a5ec67, type: 3}
-    spawnCount: 80
+  - enemyPrefab: {fileID: 2372909403197453248, guid: 87e7590eeee3d1bf6bc5699063a5ec67,
+      type: 3}
+    spawnCount: 60
     spawnRate: 4
     startTime: 20
-    duration: 45
+    duration: 40
     spawnContinuously: 1
     delayBetweenSpawns: 0.25
     healthMultiplier: 1.5
     damageMultiplier: 1.3
     speedMultiplier: 1.2
+  - enemyPrefab: {fileID: 2372909403197453248, guid: e241c6d8ccfda9c0aae6b4f5d9531e37,
+      type: 3}
+    spawnCount: 50
+    spawnRate: 3.5
+    startTime: 5
+    duration: 65
+    spawnContinuously: 1
+    delayBetweenSpawns: 0.3
+    healthMultiplier: 1.3
+    damageMultiplier: 1.2
+    speedMultiplier: 1.1
   requireAllEnemiesDead: 1
-  maxEnemiesAlive: 200
+  maxEnemiesAlive: 210
   xpMultiplier: 1.3
   dropRateMultiplier: 1.2
   isBossWave: 0
   bossPrefab: {fileID: 0}
+  bossSpawnDelay: 3
+  showBossIntro: 1
+  bossIntroText: 
+  pauseRegularSpawningDuringBoss: 0

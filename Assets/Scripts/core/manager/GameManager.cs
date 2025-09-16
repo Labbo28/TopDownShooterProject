@@ -46,6 +46,12 @@ public class GameManager : MonoBehaviour
     public UnityEvent<int> OnWaveCompleted;
     public UnityEvent OnAllWavesCompleted;
 
+    // Boss wave events
+    public UnityEvent OnBossWaveStarted;
+    public UnityEvent<GameObject> OnBossSpawned;
+    public UnityEvent OnBossDefeated;
+    public UnityEvent<string> OnBossIntro;
+
     // Flag per sapere se dobbiamo reinizializzare
     private bool needsReinitialization = false;
 
@@ -90,6 +96,12 @@ public class GameManager : MonoBehaviour
         OnWaveStarted = new UnityEvent<int>();
         OnWaveCompleted = new UnityEvent<int>();
         OnAllWavesCompleted = new UnityEvent();
+
+        // Initialize boss wave events
+        OnBossWaveStarted = new UnityEvent();
+        OnBossSpawned = new UnityEvent<GameObject>();
+        OnBossDefeated = new UnityEvent();
+        OnBossIntro = new UnityEvent<string>();
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -141,6 +153,12 @@ public class GameManager : MonoBehaviour
             spawner.OnWaveStarted += OnSpawnerWaveStarted;
             spawner.OnWaveCompleted += OnSpawnerWaveCompleted;
             spawner.OnAllWavesCompleted += OnSpawnerAllWavesCompleted;
+
+            // Connect boss wave events
+            spawner.OnBossWaveStarted += () => OnBossWaveStarted?.Invoke();
+            spawner.OnBossSpawned += (boss) => OnBossSpawned?.Invoke(boss);
+            spawner.OnBossDefeated += () => OnBossDefeated?.Invoke();
+            spawner.OnBossIntro += (intro) => OnBossIntro?.Invoke(intro);
         }
 
     }
@@ -159,6 +177,12 @@ public class GameManager : MonoBehaviour
             spawner.OnWaveStarted += OnSpawnerWaveStarted;
             spawner.OnWaveCompleted += OnSpawnerWaveCompleted;
             spawner.OnAllWavesCompleted += OnSpawnerAllWavesCompleted;
+
+            // Connect boss wave events
+            spawner.OnBossWaveStarted += () => OnBossWaveStarted?.Invoke();
+            spawner.OnBossSpawned += (boss) => OnBossSpawned?.Invoke(boss);
+            spawner.OnBossDefeated += () => OnBossDefeated?.Invoke();
+            spawner.OnBossIntro += (intro) => OnBossIntro?.Invoke(intro);
         }
     }
 
@@ -257,6 +281,16 @@ public class GameManager : MonoBehaviour
     public float GetXPToLevelUp()
     {
         return xpNeededToLevelUp;
+    }
+
+    public float GetXP()
+    {
+        return XP;
+    }
+
+    public float GetXPNeededToLevelUp()
+    {
+        return xpNeededToLevelUp - XP;
     }
 
     public float GetAttractSpeed()

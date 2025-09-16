@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: Wave_02_FirstChallenge
   m_EditorClassIdentifier: 
   waveNumber: 2
-  waveName: "First Challenge - Mixed Enemies"
+  waveName: First Challenge - Mixed Enemies
   waveDuration: 60
   spawnData:
-  - enemyPrefab: {fileID: 2372909403197453248, guid: fb4d4d81774a74e4a8fc129406bc1cc0, type: 3}
+  - enemyPrefab: {fileID: 2372909403197453248, guid: fb4d4d81774a74e4a8fc129406bc1cc0,
+      type: 3}
     spawnCount: 40
     spawnRate: 2
     startTime: 0
@@ -26,7 +27,8 @@ MonoBehaviour:
     healthMultiplier: 1
     damageMultiplier: 1
     speedMultiplier: 1
-  - enemyPrefab: {fileID: 2372909403197453248, guid: ac3ced40651686dd3908d525794a369a, type: 3}
+  - enemyPrefab: {fileID: 2372909403197453248, guid: ac3ced40651686dd3908d525794a369a,
+      type: 3}
     spawnCount: 25
     spawnRate: 1.8
     startTime: 15
@@ -36,13 +38,25 @@ MonoBehaviour:
     healthMultiplier: 1
     damageMultiplier: 1
     speedMultiplier: 1
-  - enemyPrefab: {fileID: 2372909403197453248, guid: 87e7590eeee3d1bf6bc5699063a5ec67, type: 3}
-    spawnCount: 20
+  - enemyPrefab: {fileID: 2372909403197453248, guid: 87e7590eeee3d1bf6bc5699063a5ec67,
+      type: 3}
+    spawnCount: 15
     spawnRate: 1.5
     startTime: 25
-    duration: 35
+    duration: 30
     spawnContinuously: 1
     delayBetweenSpawns: 0.8
+    healthMultiplier: 1
+    damageMultiplier: 1
+    speedMultiplier: 1
+  - enemyPrefab: {fileID: 2372909403197453248, guid: e241c6d8ccfda9c0aae6b4f5d9531e37,
+      type: 3}
+    spawnCount: 8
+    spawnRate: 1
+    startTime: 35
+    duration: 20
+    spawnContinuously: 1
+    delayBetweenSpawns: 1
     healthMultiplier: 1
     damageMultiplier: 1
     speedMultiplier: 1
@@ -52,3 +66,7 @@ MonoBehaviour:
   dropRateMultiplier: 1.2
   isBossWave: 0
   bossPrefab: {fileID: 0}
+  bossSpawnDelay: 3
+  showBossIntro: 1
+  bossIntroText: 
+  pauseRegularSpawningDuringBoss: 0

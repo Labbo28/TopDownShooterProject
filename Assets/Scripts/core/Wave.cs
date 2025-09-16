@@ -23,6 +23,12 @@ public class Wave : ScriptableObject
     [Header("Boss Wave")]
     public bool isBossWave = false;
     public GameObject bossPrefab;
+
+    [Header("Boss Wave Settings")]
+    [SerializeField] private float bossSpawnDelay = 3f; // Delay before boss spawns
+    [SerializeField] private bool showBossIntro = true; // Show boss introduction
+    [SerializeField] private string bossIntroText = ""; // Custom boss intro text
+    [SerializeField] private bool pauseRegularSpawningDuringBoss = false; // Pause regular enemies when boss is alive
     
     // Metodo per ottenere tutti i tipi di nemici in questa wave
     public List<GameObject> GetAllEnemyTypes()
@@ -56,4 +62,10 @@ public class Wave : ScriptableObject
         
         return activeData;
     }
+
+    // Boss wave property accessors
+    public float BossSpawnDelay => bossSpawnDelay;
+    public bool ShowBossIntro => showBossIntro;
+    public string BossIntroText => string.IsNullOrEmpty(bossIntroText) ? $"{waveName} approaches!" : bossIntroText;
+    public bool PauseRegularSpawningDuringBoss => pauseRegularSpawningDuringBoss;
 }
