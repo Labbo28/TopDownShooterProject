@@ -15,4 +15,4 @@ MonoBehaviour:
   projectile: {fileID: 11400000, guid: 8f8b26a940ca0814d89776e8bca4c5da, type: 2}
   maxAmmo: 30
   fireRate: 0.1
-  reloadTime: 2.4
+  reloadTime: 3
