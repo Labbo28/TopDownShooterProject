@@ -264,7 +264,6 @@ MonoBehaviour:
   speed: 3
   damage: 5
   attackCooldown: 1
-  detectRadius: 10
   actionRadius: 0.5
   HealthBar: {fileID: 5333312199946071443}
   backgroundHealthBar: {fileID: 7022701402907246434}
@@ -277,9 +276,9 @@ MonoBehaviour:
   chargeAttackRange: 8
   areaAttackRange: 4
   summonRange: 10
-  minionPrefab: {fileID: 2372909403197453248, guid: fb4d4d81774a74e4a8fc129406bc1cc0,
+  minionPrefab: {fileID: 2372909403197453248, guid: ac3ced40651686dd3908d525794a369a,
     type: 3}
-  maxMinions: 3
+  maxMinions: 20
   summonCooldown: 15
   chargeAttackCooldown: 8
   areaAttackCooldown: 12

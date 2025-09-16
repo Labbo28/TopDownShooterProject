@@ -121,7 +121,6 @@ public class Spawner : MonoBehaviour
     {
         float waveTime = Time.time - waveStartTime;
         List<SpawnData> activeSpawnData = currentWave.GetActiveSpawnData(waveTime);
-        
         foreach (SpawnData spawnData in activeSpawnData)
         {
             ProcessSpawnData(spawnData, waveTime);

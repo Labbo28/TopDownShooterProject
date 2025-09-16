@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 885ca30da7b436540bd3ff03b604c745, type: 3}
   m_Name: shotgun_pellet
   m_EditorClassIdentifier: 
-  speed: 20
+  speed: 4
   damage: 5
   lifeTime: 0.5
   projectilePrefab: {fileID: 4838925836734502132, guid: 3a786196ff8912944a36b47672c60330,

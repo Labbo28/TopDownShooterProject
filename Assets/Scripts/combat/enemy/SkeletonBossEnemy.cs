@@ -15,7 +15,7 @@ public class SkeletonBossEnemy : EnemyBase
     
     [Header("Boss Abilities")]
     [SerializeField] private GameObject minionPrefab; // Prefab dei nemici da evocare
-    [SerializeField] private int maxMinions = 3;
+    [SerializeField] private int maxMinions = 20;
     [SerializeField] private float summonCooldown = 15f;
     [SerializeField] private float chargeAttackCooldown = 8f;
     [SerializeField] private float areaAttackCooldown = 12f;
@@ -321,24 +321,18 @@ public class SkeletonBossEnemy : EnemyBase
         yield return new WaitForSeconds(2f);
         
         // Evoca minions
-        int minionsToSummon = Mathf.Min(maxMinions - summonedMinions.Count, currentPhase == BossPhase.Phase3 ? 3 : 2);
+        int minionsToSummon = maxMinions;
+        float angleStep = 360f / minionsToSummon;
+        float radius = 6f;
         
         for (int i = 0; i < minionsToSummon; i++)
         {
-            if (minionPrefab != null)
-            {
-                // Posizione casuale attorno al boss
-                Vector2 randomOffset = Random.insideUnitCircle.normalized * 3f;
-                Vector3 summonPosition = transform.position + (Vector3)randomOffset;
-                
-                GameObject minion = Instantiate(minionPrefab, summonPosition, Quaternion.identity);
-                summonedMinions.Add(minion);
-                
-                // Effetto di evocazione
-                StartCoroutine(SummonEffect(summonPosition));
-                
-                yield return new WaitForSeconds(0.5f);
-            }
+            float angle = i * angleStep * Mathf.Deg2Rad; // converti in radianti
+            float x = player.position.x + Mathf.Cos(angle) * radius;
+            float y = player.position.y + Mathf.Sin(angle) * radius;
+
+            Vector2 spawnPos = new Vector2(x, y);
+            Instantiate(minionPrefab, spawnPos, Quaternion.identity);
         }
         
         // Pulizia dei minions morti
