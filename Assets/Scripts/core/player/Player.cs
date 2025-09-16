@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
@@ -28,6 +29,7 @@ public class Player : MonoBehaviour
     private Vector2 movementDirection;
     private Vector3 initialPosition = Vector3.zero;
     private bool isDead = false;
+    private InputSystem_Actions inputActions;
     // Animator gestito da PlayerAnimator component
 
     private void Awake()
@@ -59,6 +61,7 @@ public class Player : MonoBehaviour
     private void InitializePlayer()
     {
         dashTimer = new CountdownTimer(dashCooldown);
+        inputActions = new InputSystem_Actions();
 
         // Animator gestito da PlayerAnimator component
 
@@ -85,6 +88,16 @@ public class Player : MonoBehaviour
         {
             dashTimer.OnTimerStop += ResetDashTimer;
         }
+    }
+
+    private void OnEnable()
+    {
+        inputActions?.Enable();
+    }
+
+    private void OnDisable()
+    {
+        inputActions?.Disable();
     }
 
     private void Update()
@@ -152,7 +165,7 @@ public class Player : MonoBehaviour
 
     private void HandleMovement()
     {
-        movementDirection = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        movementDirection = inputActions.Player.Move.ReadValue<Vector2>();
         if (movementDirection.magnitude > 0)
         {
             OnPlayerMoving?.Invoke();
@@ -167,7 +180,7 @@ public class Player : MonoBehaviour
 
     private void HandleDash()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (inputActions.Player.Sprint.WasPressedThisFrame())
         {
             Vector3 dashDirection = new Vector3(movementDirection.x, movementDirection.y).normalized;
             Vector3 dashTarget = transform.position + dashDirection * DashDistance;

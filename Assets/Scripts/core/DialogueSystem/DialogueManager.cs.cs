@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
+using UnityEngine.InputSystem;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -47,8 +48,12 @@ public class DialogueManager : MonoBehaviour
 	public TextMeshProUGUI dialogueArea;
 
 	public GameObject dialoguePanel; // UI panel da attivare/disattivare
-
+	
 	private Queue<DialogueLine> lines;
+	private InputSystem_Actions inputActions;
+	private bool waitingForInput = false;
+	private bool isTyping = false;
+	private DialogueLine currentLine;
 
 	public bool isDialogueActive = false;
 
@@ -60,10 +65,29 @@ public class DialogueManager : MonoBehaviour
 			Instance = this;
 
 		lines = new Queue<DialogueLine>();
+		inputActions = new InputSystem_Actions();
 
 		if (dialoguePanel != null)
 			dialoguePanel.SetActive(false); // Assicura che il pannello sia nascosto all'avvio
     }
+
+	private void OnEnable()
+	{
+		inputActions?.Enable();
+		inputActions.UI.Submit.performed += OnSubmitPressed;
+	}
+
+	private void OnDisable()
+	{
+		inputActions?.Disable();
+		if (inputActions != null)
+			inputActions.UI.Submit.performed -= OnSubmitPressed;
+	}
+
+	private void OnDestroy()
+	{
+		inputActions?.Dispose();
+	}
 
 	public void StartDialogue(Dialogue dialogue)
 	{
@@ -90,7 +114,7 @@ public class DialogueManager : MonoBehaviour
 			return;
 		}
 
-		DialogueLine currentLine = lines.Dequeue();
+		currentLine = lines.Dequeue();
 
 		characterIcon.sprite = currentLine.character.icon;
 		characterName.text = currentLine.character.name;
@@ -102,11 +126,46 @@ public class DialogueManager : MonoBehaviour
 
 	IEnumerator TypeSentence(DialogueLine dialogueLine)
 	{
+		isTyping = true;
+		waitingForInput = false;
 		dialogueArea.text = "";
+		
 		foreach (char letter in dialogueLine.line.ToCharArray())
 		{
 			dialogueArea.text += letter;
 			yield return new WaitForSeconds(typingSpeed);
+		}
+		
+		isTyping = false;
+		waitingForInput = true;
+	}
+
+	private void OnSubmitPressed(InputAction.CallbackContext context)
+	{
+		if (!isDialogueActive) return;
+
+		if (isTyping)
+		{
+			// Se sta scrivendo, completa immediatamente la linea
+			CompleteCurrentLine();
+		}
+		else if (waitingForInput)
+		{
+			// Se aspetta input, vai alla prossima linea
+			DisplayNextDialogueLine();
+		}
+	}
+
+	private void CompleteCurrentLine()
+	{
+		StopAllCoroutines();
+		isTyping = false;
+		waitingForInput = true;
+		
+		// Mostra l'intera linea immediatamente
+		if (currentLine != null)
+		{
+			dialogueArea.text = currentLine.line;
 		}
 	}
 
