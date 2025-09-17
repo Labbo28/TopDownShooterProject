@@ -3407,7 +3407,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1217335317}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &688350843
 MonoBehaviour:
@@ -4654,6 +4654,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9060932166925476516, guid: 3b6a366fe4a6fb243a5f71328e0e732f,
         type: 3}
+      propertyPath: m_Constraints
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 9060932166925476516, guid: 3b6a366fe4a6fb243a5f71328e0e732f,
+        type: 3}
       propertyPath: m_GravityScale
       value: 0
       objectReference: {fileID: 0}
@@ -4670,6 +4675,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1384590559}
+    - targetCorrespondingSourceObject: {fileID: 4654683942288321607, guid: 3b6a366fe4a6fb243a5f71328e0e732f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 688350842}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 7378342022886914370, guid: 3b6a366fe4a6fb243a5f71328e0e732f,
         type: 3}
@@ -5251,4 +5260,3 @@ SceneRoots:
   - {fileID: 479662310}
   - {fileID: 259307256}
   - {fileID: 927708102}
-  - {fileID: 688350842}
