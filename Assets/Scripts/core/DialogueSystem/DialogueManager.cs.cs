@@ -93,6 +93,9 @@ public class DialogueManager : MonoBehaviour
 	{
 		isDialogueActive = true;
 
+		// Blocca il gioco
+		Time.timeScale = 0f;
+
 		if (dialoguePanel != null)
 			dialoguePanel.SetActive(true); // Mostra il pannello
 
@@ -133,7 +136,7 @@ public class DialogueManager : MonoBehaviour
 		foreach (char letter in dialogueLine.line.ToCharArray())
 		{
 			dialogueArea.text += letter;
-			yield return new WaitForSeconds(typingSpeed);
+			yield return new WaitForSecondsRealtime(typingSpeed);
 		}
 		
 		isTyping = false;
@@ -174,5 +177,8 @@ public class DialogueManager : MonoBehaviour
 		isDialogueActive = false;
 		if (dialoguePanel != null)
 			dialoguePanel.SetActive(false); // Nasconde il pannello
+
+		// Riprendi il gioco
+		Time.timeScale = 1f;
 	}
 }

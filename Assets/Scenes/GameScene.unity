@@ -181,6 +181,18 @@ MonoBehaviour:
   OnAllWavesCompleted:
     m_PersistentCalls:
       m_Calls: []
+  OnBossWaveStarted:
+    m_PersistentCalls:
+      m_Calls: []
+  OnBossSpawned:
+    m_PersistentCalls:
+      m_Calls: []
+  OnBossDefeated:
+    m_PersistentCalls:
+      m_Calls: []
+  OnBossIntro:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &22042734
 Transform:
   m_ObjectHideFlags: 0
@@ -314,7 +326,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &112712860
 Transform:
   m_ObjectHideFlags: 0
@@ -2241,7 +2253,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 70, y: -5.0000305}
+  m_AnchoredPosition: {x: 70, y: -5}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &558359921
@@ -2825,6 +2837,7 @@ MonoBehaviour:
     specialDropChance: 0.1
     medikitWeight: 0.5
     magnetWeight: 0.5
+    chestWeight: 0.05
   - enemyType: 5
     xpDropChance: 1
     minXPDrops: 1
@@ -2832,6 +2845,7 @@ MonoBehaviour:
     specialDropChance: 0.1
     medikitWeight: 0.5
     magnetWeight: 0.5
+    chestWeight: 0.05
   - enemyType: 6
     xpDropChance: 1
     minXPDrops: 1
@@ -2839,6 +2853,7 @@ MonoBehaviour:
     specialDropChance: 0.1
     medikitWeight: 0.5
     magnetWeight: 0.5
+    chestWeight: 0.05
   - enemyType: 7
     xpDropChance: 1
     minXPDrops: 15
@@ -2846,6 +2861,7 @@ MonoBehaviour:
     specialDropChance: 0.1
     medikitWeight: 0.5
     magnetWeight: 0.5
+    chestWeight: 0.05
 --- !u!4 &836013277
 Transform:
   m_ObjectHideFlags: 0
@@ -2978,6 +2994,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SkeletonBossEnemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2372909403197453248, guid: dc578a454a04468b7bc85c8be8aab8ff,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3618,7 +3639,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -1, y: -5.0000305}
+  m_AnchoredPosition: {x: -0.9999924, y: -5}
   m_SizeDelta: {x: -2, y: -1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1216164186
@@ -3721,8 +3742,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cee571b94ba45046b0bcc8f8a76a68d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _marks: []
-  _light: {fileID: 0}
+  _marks:
+  - timeRatio: 1
+    color: {r: 1, g: 1, b: 1, a: 0}
+    intensity: 1
+  - timeRatio: 0.5
+    color: {r: 0.19339623, g: 0.3015619, b: 0.7735849, a: 0}
+    intensity: 0.5
+  - timeRatio: 0.6
+    color: {r: 0.05540227, g: 0.075651236, b: 0.7830189, a: 0}
+    intensity: 0.5
+  _light: {fileID: 1352909054}
   _cycleLength: 24
 --- !u!1001 &1271511753
 PrefabInstance:
@@ -3786,6 +3816,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TombstoneEnemy 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2372909403197453248, guid: e241c6d8ccfda9c0aae6b4f5d9531e37,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4584,7 +4619,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -72, y: -5.0000305}
+  m_AnchoredPosition: {x: -72, y: -5}
   m_SizeDelta: {x: -2, y: -1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1660151426
@@ -5521,7 +5556,7 @@ MonoBehaviour:
   dialogueArea: {fileID: 220294929}
   dialoguePanel: {fileID: 2002168949}
   isDialogueActive: 0
-  typingSpeed: 0.2
+  typingSpeed: 0.05
 --- !u!1 &2002699870
 GameObject:
   m_ObjectHideFlags: 0

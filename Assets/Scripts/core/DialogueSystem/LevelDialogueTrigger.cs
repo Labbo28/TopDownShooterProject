@@ -30,16 +30,15 @@ public class LevelDialogueTrigger : MonoBehaviour
 
     void Start()
     {
-        GameManager.Instance.OnPlayerLevelUp.AddListener(OnPlayerLevelUp);
+        PlayerUpgradeSystem.OnUpgradePanelClosed += OnUpgradePanelClosed;
     }
 
     void OnDestroy()
     {
-        if (GameManager.Instance != null)
-            GameManager.Instance.OnPlayerLevelUp.RemoveListener(OnPlayerLevelUp);
+        PlayerUpgradeSystem.OnUpgradePanelClosed -= OnUpgradePanelClosed;
     }
 
-    private void OnPlayerLevelUp(int newLevel)
+    private void OnUpgradePanelClosed(int newLevel)
     {
         // Dialogo ogni N livelli
         if (triggerEveryNLevels > 0 && newLevel % triggerEveryNLevels == 0 && newLevel != lastTriggeredLevel)

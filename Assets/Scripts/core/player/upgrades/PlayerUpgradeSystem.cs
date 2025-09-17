@@ -1,3 +1,4 @@
+
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -5,6 +6,8 @@ using System.Linq;
 
 public class PlayerUpgradeSystem : MonoBehaviour
 {
+    // Evento statico per segnalare la chiusura del pannello upgrade
+    public static System.Action<int> OnUpgradePanelClosed;
     public static PlayerUpgradeSystem Instance { get; private set; }
 
     [SerializeField] private List<PlayerUpgrade> availableUpgrades;
@@ -124,10 +127,12 @@ public class PlayerUpgradeSystem : MonoBehaviour
     public void SelectUpgrade(RuntimeUpgrade runtimeUpgrade)
     {
         runtimeUpgrade.ApplyUpgrade(Player.Instance);
-        
 
         upgradeUIPanel.SetActive(false);
         Time.timeScale = 1f;
+
+        // Lancia evento statico con il nuovo livello del player
+        OnUpgradePanelClosed?.Invoke(GameManager.Instance.GetPlayerLevel());
     }
 
     private void ResetUpgrades()
