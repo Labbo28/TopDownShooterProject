@@ -7,6 +7,16 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    // Enum per stati UI più chiari
+    public enum UIState
+    {
+        GamePlaying,
+        GamePaused,
+        UpgradeMenuOpen,
+        SettingsOpen,
+        GameOver
+    }
+
     [Header("UI Elements")]
     [SerializeField] Canvas canvas;
     [SerializeField] GameObject TextKill;
@@ -16,6 +26,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject SliderPlayerHp;
     [SerializeField] GameObject ammoImage;
     [SerializeField] GameObject ammoText;
+    [SerializeField] GameObject settingsPanel;
 
     [Header("Game Over Elements")]
     [SerializeField] GameObject TextDead;
@@ -24,9 +35,18 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] GameObject TextHealth;
 
-    // Rimuoviamo il campo serializzato e usiamo sempre l'istanza Singleton
+    // Gestione stato UI
+    private UIState currentUIState = UIState.GamePlaying;
+    private bool wasGamePausedBeforeSettings = false;
+
+    // Riferimenti principali
     private GameManager gameManager;
+    private InputSystem_Actions inputActions;
     private bool eventsRegistered = false;
+    private bool isUpgradePanelOpen = false;
+
+    // Eventi per comunicazione stato UI
+    public static event Action<UIState> OnUIStateChanged;
 
     private void Awake()
     {
@@ -38,12 +58,234 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
+        PlayerUpgradeSystem.OnUpgradePanelClosed += OnUpgradePanelClosed;
+        PlayerUpgradeSystem.OnUpgradePanelOpened += OnUpgradePanelOpened;
         InitializeUI();
+        InitializeInput();
     }
+
+    private void InitializeInput()
+    {
+        inputActions = new InputSystem_Actions();
+        inputActions.UI.Cancel.performed += OpenSettingsPanel;
+        inputActions.UI.Enable();
+    }
+
+    #region Gestione Stati UI
+
+    private void ChangeUIState(UIState newState)
+    {
+        if (currentUIState != newState)
+        {
+            UIState previousState = currentUIState;
+            currentUIState = newState;
+            
+            OnUIStateChanged?.Invoke(newState);
+            Debug.Log($"UI State changed: {previousState} -> {newState}");
+        }
+    }
+
+    public UIState GetCurrentUIState() => currentUIState;
+    public bool IsGameInteractionAllowed() => currentUIState == UIState.GamePlaying;
+
+    #endregion
+
+    #region Gestione Pannello Settings
+
+    private void OpenSettingsPanel(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    {
+        if (!CanOpenSettings())
+        {
+            Debug.Log("Cannot open settings in current state: " + currentUIState);
+            return;
+        }
+
+        if (IsSettingsOpen())
+        {
+            CloseSettingsPanel();
+        }
+        else
+        {
+            ShowSettingsPanel();
+        }
+    }
+
+    private bool CanOpenSettings()
+    {
+        // Controlli di base
+        if (currentUIState == UIState.GameOver)
+        {
+            Debug.Log("Cannot open settings: Game is over");
+            return false;
+        }
+        
+        if (gameManager == null)
+        {
+            Debug.LogError("Cannot open settings: GameManager is null");
+            return false;
+        }
+        
+        if (settingsPanel == null)
+        {
+            Debug.LogError("Cannot open settings: Settings panel is not assigned");
+            return false;
+        }
+        
+        // Verifica che il parent del settings panel sia attivo
+        Transform parent = settingsPanel.transform.parent;
+        while (parent != null)
+        {
+            if (!parent.gameObject.activeInHierarchy)
+            {
+                Debug.LogError($"Cannot open settings: Parent '{parent.name}' is inactive");
+                return false;
+            }
+            parent = parent.parent;
+        }
+        
+        return true;
+    }
+
+    private bool IsSettingsOpen()
+    {
+        return settingsPanel != null && settingsPanel.activeSelf;
+    }
+
+    private void ShowSettingsPanel()
+    {
+        // Prova ad attivare il pannello
+        settingsPanel.SetActive(true);
+        
+        // Verifica se il pannello è effettivamente attivo
+        if (!settingsPanel.activeInHierarchy)
+        {
+            Debug.LogError("Settings panel could not be activated! Check if parent is active.");
+            return;
+        }
+        
+        // Salva lo stato corrente solo se il pannello è stato attivato con successo
+        wasGamePausedBeforeSettings = (currentUIState == UIState.GamePaused || 
+                                     currentUIState == UIState.UpgradeMenuOpen);
+        
+        // Pausa solo se necessario
+        if (currentUIState == UIState.GamePlaying)
+        {
+            PauseGame();
+        }
+        
+        ChangeUIState(UIState.SettingsOpen);
+        Debug.Log("Settings panel opened successfully");
+    }
+
+    private void CloseSettingsPanel()
+    {
+        settingsPanel.SetActive(false);
+        
+        UIState targetState = DetermineStateAfterSettingsClosure();
+        HandleGameStateAfterSettings(targetState);
+        ChangeUIState(targetState);
+        
+        Debug.Log($"Settings panel closed, returning to state: {targetState}");
+    }
+
+    private UIState DetermineStateAfterSettingsClosure()
+    {
+        if (isUpgradePanelOpen)
+        {
+            return UIState.UpgradeMenuOpen;
+        }
+        
+        if (gameManager?.CurrentGameState == GameState.GameOver)
+        {
+            return UIState.GameOver;
+        }
+        
+        return wasGamePausedBeforeSettings ? UIState.GamePaused : UIState.GamePlaying;
+    }
+
+    private void HandleGameStateAfterSettings(UIState targetState)
+    {
+        switch (targetState)
+        {
+            case UIState.GamePlaying:
+                ResumeGame();
+                break;
+                
+            case UIState.GamePaused:
+                break;
+                
+            case UIState.UpgradeMenuOpen:
+                break;
+                
+            case UIState.GameOver:
+                Time.timeScale = 0f;
+                break;
+        }
+    }
+
+    public void OnSettingsPanelClosed()
+    {
+        if (IsSettingsOpen())
+        {
+            CloseSettingsPanel();
+        }
+    }
+
+    #endregion
+
+    #region Gestione Pause/Resume
+
+    private void PauseGame()
+    {
+        if (gameManager != null && gameManager.CurrentGameState != GameState.Paused)
+        {
+            gameManager.PauseGame();
+            Time.timeScale = 0f;
+            UnregisterEvents();
+            Debug.Log("Game paused by UI");
+        }
+    }
+
+    private void ResumeGame()
+    {
+        if (gameManager != null && gameManager.CurrentGameState == GameState.Paused)
+        {
+            gameManager.ResumeGame();
+            Time.timeScale = 1f;
+            RegisterEvents();
+            Debug.Log("Game resumed by UI");
+        }
+    }
+
+    #endregion
+
+    #region Eventi Upgrade Panel
+
+    private void OnUpgradePanelOpened(int level)
+    {
+        isUpgradePanelOpen = true;
+        if (!IsSettingsOpen())
+        {
+            ChangeUIState(UIState.UpgradeMenuOpen);
+        }
+    }
+
+    private void OnUpgradePanelClosed(int level)
+    {
+        isUpgradePanelOpen = false;
+        
+        if (!IsSettingsOpen())
+        {
+            ChangeUIState(UIState.GamePlaying);
+        }
+    }
+
+    #endregion
+
+    #region Inizializzazione UI
 
     private void InitializeUI()
     {
-        // Aspetta che il GameManager sia pronto
         if (GameManager.Instance == null)
         {
             Invoke(nameof(InitializeUI), 0.1f);
@@ -53,7 +295,6 @@ public class UIManager : MonoBehaviour
         gameManager = GameManager.Instance;
         RegisterEvents();
         UpdateAllUI();
-
     }
 
     private void RegisterEvents()
@@ -67,79 +308,95 @@ public class UIManager : MonoBehaviour
             gameManager.OnXPChanged.AddListener(OnXPChanged);
             gameManager.OnPlayerLevelUp.AddListener(OnPlayerLevelUp);
             gameManager.OnGameOver.AddListener(OnGameOver);
-            Player.Instance.GetComponent<HealthSystem>().onDamaged.AddListener(OnPlayerDamaged);
-            Player.Instance.GetComponent<HealthSystem>().onHealed.AddListener(OnPlayerHealed);
 
-            //damn this shit is crazy
-            Player.Instance.transform.Find("Weapons").transform.Find("Assault_Rifle").GetComponent<Weapon>().OnAmmoChanged.AddListener(OnAmmoChanged);
+            if (Player.Instance != null)
+            {
+                var healthSystem = Player.Instance.GetComponent<HealthSystem>();
+                if (healthSystem != null)
+                {
+                    healthSystem.onDamaged.AddListener(OnPlayerDamaged);
+                    healthSystem.onHealed.AddListener(OnPlayerHealed);
+                }
 
-            if (RetryButton != null)
-                RetryButton.GetComponent<Button>().onClick.AddListener(OnRetryButtonClicked);
-            if (QuitButton != null)
-                QuitButton.GetComponent<Button>().onClick.AddListener(OnQuitButtonClicked);
+                // Gestione più robusta per l'arma
+                RegisterWeaponEvents();
+            }
+
+            // Eventi bottoni
+            RegisterButtonEvents();
 
             eventsRegistered = true;
+            Debug.Log("UI Events registered successfully");
         }
         catch (System.Exception e)
         {
+            Debug.LogError($"Error in RegisterEvents: {e.Message}");
         }
     }
-    
-    /// <summary>
-    /// Disabilita tutti gli elementi UI principali (non quelli di Game Over).
-    /// </summary>
-    public void DisableUIElements()
+
+    private void RegisterWeaponEvents()
     {
-        if (TextKill != null) TextKill.SetActive(false);
-        if (TextTime != null) TextTime.SetActive(false);
-        if (TextLevel != null) TextLevel.SetActive(false);
-        if (SliderXP != null) SliderXP.SetActive(false);
-        if (SliderPlayerHp != null) SliderPlayerHp.SetActive(false);
-        if (TextHealth != null) TextHealth.SetActive(false);
-        
-    }
-
-    private void UpdatePlayerHealth()
-    {
-        if (SliderPlayerHp == null || Player.Instance == null) return;
-
-        Slider hpSlider = SliderPlayerHp.GetComponent<Slider>();
-        HealthSystem healthSystem = Player.Instance.GetComponent<HealthSystem>();
-
-        if (hpSlider == null || healthSystem == null) return;
-
-        // Corretto: usa le proprietà invece dei metodi inesistenti
-        hpSlider.value = healthSystem.Health / healthSystem.MaxHealth;
-
-        if (TextHealth != null)
+        try
         {
-            Text healthText = TextHealth.GetComponent<Text>();
-            if (healthText != null)
+            var weaponHolder = Player.Instance?.transform.Find("Weapons");
+            if (weaponHolder != null)
             {
-                // Corretto: usa Health invece di GetCurrentHealth e MaxHealth invece di maxHealth
-                healthText.text = $"{Mathf.CeilToInt(healthSystem.Health)}/{Mathf.CeilToInt(healthSystem.MaxHealth)}";
+                var assaultRifle = weaponHolder.Find("Assault_Rifle");
+                if (assaultRifle != null)
+                {
+                    var weapon = assaultRifle.GetComponent<Weapon>();
+                    if (weapon != null)
+                    {
+                        weapon.OnAmmoChanged.AddListener(OnAmmoChanged);
+                        Debug.Log("Weapon events registered");
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Weapon component not found on Assault_Rifle");
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning("Assault_Rifle not found in Weapons");
+                }
+            }
+            else
+            {
+                Debug.LogWarning("Weapons holder not found");
             }
         }
-    }
-
-  private void OnAmmoChanged(int currentAmmo, int maxAmmo)
-    {
-        
-        if (ammoText != null)
+        catch (System.Exception e)
         {
-            ammoText.GetComponent<TextMeshProUGUI>().text = $"{currentAmmo}/{maxAmmo}";
+            Debug.LogError($"Error registering weapon events: {e.Message}");
         }
     }
 
+    private void RegisterButtonEvents()
+    {
+        try
+        {
+            if (RetryButton != null)
+            {
+                var retryBtn = RetryButton.GetComponent<Button>();
+                if (retryBtn != null)
+                {
+                    retryBtn.onClick.AddListener(OnRetryButtonClicked);
+                }
+            }
 
-    private void OnPlayerDamaged()
-    {
-        UpdatePlayerHealth();
-    }
-    
-    private void OnPlayerHealed()
-    {
-        UpdatePlayerHealth();
+            if (QuitButton != null)
+            {
+                var quitBtn = QuitButton.GetComponent<Button>();
+                if (quitBtn != null)
+                {
+                    quitBtn.onClick.AddListener(OnQuitButtonClicked);
+                }
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Error registering button events: {e.Message}");
+        }
     }
 
     private void UnregisterEvents()
@@ -154,24 +411,59 @@ public class UIManager : MonoBehaviour
             gameManager.OnPlayerLevelUp.RemoveListener(OnPlayerLevelUp);
             gameManager.OnGameOver.RemoveListener(OnGameOver);
 
-            if (RetryButton != null)
-                RetryButton.GetComponent<Button>().onClick.RemoveListener(OnRetryButtonClicked);
-            if (QuitButton != null)
-                QuitButton.GetComponent<Button>().onClick.RemoveListener(OnQuitButtonClicked);
+            if (Player.Instance != null)
+            {
+                var healthSystem = Player.Instance.GetComponent<HealthSystem>();
+                if (healthSystem != null)
+                {
+                    healthSystem.onDamaged.RemoveListener(OnPlayerDamaged);
+                    healthSystem.onHealed.RemoveListener(OnPlayerHealed);
+                }
+            }
+
+            // Rimuovi eventi bottoni
+            UnregisterButtonEvents();
 
             eventsRegistered = false;
+            Debug.Log("UI Events unregistered successfully");
         }
         catch (System.Exception e)
         {
+            Debug.LogError($"Error in UnregisterEvents: {e.Message}");
         }
     }
 
+    private void UnregisterButtonEvents()
+    {
+        try
+        {
+            if (RetryButton != null)
+            {
+                var retryBtn = RetryButton.GetComponent<Button>();
+                retryBtn?.onClick.RemoveListener(OnRetryButtonClicked);
+            }
+
+            if (QuitButton != null)
+            {
+                var quitBtn = QuitButton.GetComponent<Button>();
+                quitBtn?.onClick.RemoveListener(OnQuitButtonClicked);
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Error unregistering button events: {e.Message}");
+        }
+    }
+
+    #endregion
+
+    #region Aggiornamenti UI
+
     private void UpdateAllUI()
     {
-        if(GameManager.Instance.CurrentGameState==GameState.GameOver) return;
+        if (gameManager?.CurrentGameState == GameState.GameOver) return;
         if (gameManager == null) return;
 
-        // Aggiorna tutti gli elementi UI con i valori correnti
         OnEnemyKilled();
         OnGameTimeChanged();
         OnXPChanged(gameManager.GetCurrentXP());
@@ -179,38 +471,159 @@ public class UIManager : MonoBehaviour
         UpdatePlayerHealth();
     }
 
-    private void OnRetryButtonClicked()
+    private void UpdatePlayerHealth()
     {
-        AudioManager.Instance?.PlayButtonClick();
+        if (SliderPlayerHp == null || Player.Instance == null) return;
 
-        // Nascondi l'UI di game over prima di ricaricare
-        if (TextDead != null) TextDead.SetActive(false);
-        if (RetryButton != null) RetryButton.SetActive(false);
-        if (QuitButton != null) QuitButton.SetActive(false);
+        var hpSlider = SliderPlayerHp.GetComponent<Slider>();
+        var healthSystem = Player.Instance.GetComponent<HealthSystem>();
 
-        // Ricarica la scena
+        if (hpSlider == null || healthSystem == null) return;
 
-        UnityEngine.SceneManagement.SceneManager.LoadScene("GameScene");
-        Player.Instance.gameObject.SetActive(true);
+        hpSlider.value = healthSystem.Health / healthSystem.MaxHealth;
+
+        if (TextHealth != null)
+        {
+            var healthText = TextHealth.GetComponent<Text>();
+            if (healthText != null)
+            {
+                healthText.text = $"{Mathf.CeilToInt(healthSystem.Health)}/{Mathf.CeilToInt(healthSystem.MaxHealth)}";
+            }
+        }
     }
 
-    private void OnQuitButtonClicked()
+    private void OnAmmoChanged(int currentAmmo, int maxAmmo)
     {
-        AudioManager.Instance?.PlayButtonClick();
-        Player.Instance.gameObject.SetActive(false);
-        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+        if (ammoText != null)
+        {
+            var ammoTextComponent = ammoText.GetComponent<TextMeshProUGUI>();
+            if (ammoTextComponent != null)
+            {
+                ammoTextComponent.text = $"{currentAmmo}/{maxAmmo}";
+            }
+        }
+    }
+
+    private void OnPlayerDamaged()
+    {
+        UpdatePlayerHealth();
+    }
+    
+    private void OnPlayerHealed()
+    {
+        UpdatePlayerHealth();
+    }
+
+    private void OnPlayerLevelUp(int level)
+    {
+        AudioManager.Instance?.PlayLevelUpSound();
+        if (TextLevel != null)
+        {
+            var levelText = TextLevel.GetComponent<Text>();
+            if (levelText != null)
+            {
+                levelText.text = "Lv." + level.ToString();
+            }
+            else
+            {
+                Debug.LogWarning("Text component not found on TextLevel");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("TextLevel is null");
+        }
+    }
+
+    private void OnXPChanged(float xp)
+    {
+        if (SliderXP != null && gameManager != null)
+        {
+            var xpSlider = SliderXP.GetComponent<Slider>();
+            if (xpSlider != null)
+            {
+                xpSlider.value = xp / gameManager.GetXPToLevelUp();
+            }
+            else
+            {
+                Debug.LogWarning("Slider component not found on SliderXP");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("SliderXP or gameManager is null");
+        }
+    }
+
+    private void OnGameTimeChanged()
+    {
+        if (TextTime != null && gameManager != null)
+        {
+            var timeText = TextTime.GetComponent<Text>();
+            if (timeText != null)
+            {
+                timeText.text = gameManager.getFormattedGameTime();
+            }
+            else
+            {
+                Debug.LogWarning("Text component not found on TextTime");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("TextTime or gameManager is null");
+        }
+    }
+
+    private void OnEnemyKilled()
+    {
+        if (TextKill != null && gameManager != null)
+        {
+            var killText = TextKill.GetComponent<Text>();
+            if (killText != null)
+            {
+                killText.text = gameManager.getEnemiesKilled().ToString();
+            }
+            else
+            {
+                Debug.LogWarning("Text component not found on TextKill");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("TextKill or gameManager is null");
+        }
+    }
+
+    #endregion
+
+    #region Game Over
+
+    public void DisableUIElements()
+    {
+        if (TextKill != null) TextKill.SetActive(false);
+        if (TextTime != null) TextTime.SetActive(false);
+        if (TextLevel != null) TextLevel.SetActive(false);
+        if (SliderXP != null) SliderXP.SetActive(false);
+        if (SliderPlayerHp != null) SliderPlayerHp.SetActive(false);
+        if (TextHealth != null) TextHealth.SetActive(false);
+        if (ammoText != null) ammoText.SetActive(false);
+        if (ammoImage != null) ammoImage.SetActive(false);
     }
 
     private void OnGameOver()
     {
+        ChangeUIState(UIState.GameOver);
         DisableUIElements();
         AudioManager.Instance?.PlayLooseSound();
+        
         if (TextDead != null)
         {
             StartCoroutine(FadeInGameOver());
         }
         else
         {
+            Debug.LogWarning("TextDead is null");
         }
 
         if (RetryButton != null)
@@ -219,23 +632,24 @@ public class UIManager : MonoBehaviour
         }
         else
         {
+            Debug.LogWarning("RetryButton is null");
         }
 
         if (QuitButton != null)
         {
             QuitButton.SetActive(true);
         }
-
-        
-        
+        else
+        {
+            Debug.LogWarning("QuitButton is null");
+        }
     }
 
     private IEnumerator FadeInGameOver()
     {
-        CanvasGroup cg = TextDead.GetComponent<CanvasGroup>();
+        var cg = TextDead.GetComponent<CanvasGroup>();
         if (cg == null)
         {
-            // Se non c'è CanvasGroup, mostra subito
             TextDead.SetActive(true);
             yield break;
         }
@@ -253,90 +667,141 @@ public class UIManager : MonoBehaviour
             yield return null;
         }
         
-        cg.alpha = 1f; // Assicura che sia completamente visibile
+        cg.alpha = 1f;
     }
 
+    #endregion
 
-    private void OnAmmoChanged(int currentAmmo)
+    #region Eventi Bottoni
+
+    private void OnRetryButtonClicked()
     {
-        // Implementa l'aggiornamento dell'UI per l'ammo se necessario
+        AudioManager.Instance?.PlayButtonClick();
+
+        // Nascondi l'UI di game over
+        if (TextDead != null) TextDead.SetActive(false);
+        if (RetryButton != null) RetryButton.SetActive(false);
+        if (QuitButton != null) QuitButton.SetActive(false);
+
+        // Reset time scale e ricarica scena
+        Time.timeScale = 1f;
+        UnityEngine.SceneManagement.SceneManager.LoadScene("GameScene");
+        
+        // Rimuovi la linea problematica che accedeva a Player.Instance dopo scene reload
+        Debug.Log("Scene reloaded for retry");
     }
-    private void OnPlayerLevelUp(int level)
+
+    public void OnQuitButtonClicked()
     {
-        AudioManager.Instance?.PlayLevelUpSound();
-        if (TextLevel != null)
+        AudioManager.Instance?.PlayButtonClick();
+        Time.timeScale = 1f;
+        
+        if (Player.Instance != null)
         {
-            Text levelText = TextLevel.GetComponent<Text>();
-            if (levelText != null)
+            Player.Instance.gameObject.SetActive(false);
+        }
+        
+        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+    }
+
+    #endregion
+
+    #region Debug e Validazione
+
+    [ContextMenu("Validate UI State")]
+    private void ValidateUIState()
+    {
+        bool settingsActive = IsSettingsOpen();
+        bool upgradeActive = isUpgradePanelOpen;
+        bool gameOver = gameManager?.CurrentGameState == GameState.GameOver;
+
+        Debug.Log($"=== UI State Validation ===");
+        Debug.Log($"Current State: {currentUIState}");
+        Debug.Log($"Settings Active: {settingsActive}");
+        Debug.Log($"Upgrade Active: {upgradeActive}");
+        Debug.Log($"Game Over: {gameOver}");
+        Debug.Log($"Time Scale: {Time.timeScale}");
+        Debug.Log($"Events Registered: {eventsRegistered}");
+        
+        // Controlla consistenza
+        if (currentUIState == UIState.SettingsOpen && !settingsActive)
+        {
+            Debug.LogWarning("State inconsistency: SettingsOpen but panel not active!");
+        }
+        
+        if (currentUIState == UIState.UpgradeMenuOpen && !upgradeActive)
+        {
+            Debug.LogWarning("State inconsistency: UpgradeMenuOpen but panel not active!");
+        }
+
+        if (currentUIState == UIState.GameOver && !gameOver)
+        {
+            Debug.LogWarning("State inconsistency: UI thinks game is over but GameManager doesn't!");
+        }
+    }
+
+    [ContextMenu("Debug Settings Panel")]
+    private void DebugSettingsPanel()
+    {
+        Debug.Log($"=== Settings Panel Debug ===");
+        Debug.Log($"Settings Panel assigned: {settingsPanel != null}");
+        
+        if (settingsPanel != null)
+        {
+            Debug.Log($"Panel active: {settingsPanel.activeSelf}");
+            Debug.Log($"Panel activeInHierarchy: {settingsPanel.activeInHierarchy}");
+            Debug.Log($"Panel name: {settingsPanel.name}");
+            
+            // Controlla la gerarchia dei parent
+            Transform parent = settingsPanel.transform.parent;
+            int level = 0;
+            while (parent != null && level < 5)
             {
-                levelText.text = "Lv." + level.ToString();
+                Debug.Log($"Parent {level}: {parent.name} (active: {parent.gameObject.activeInHierarchy})");
+                parent = parent.parent;
+                level++;
+            }
+            
+            // Controlla Canvas
+            Canvas parentCanvas = settingsPanel.GetComponentInParent<Canvas>();
+            if (parentCanvas != null)
+            {
+                Debug.Log($"Parent Canvas: {parentCanvas.name} (enabled: {parentCanvas.enabled})");
             }
             else
             {
+                Debug.LogWarning("No Canvas found in parents!");
             }
         }
-        else
-        {
-        }
+        
+        Debug.Log($"Can open settings: {CanOpenSettings()}");
+        Debug.Log($"Is settings open: {IsSettingsOpen()}");
     }
 
-    private void OnXPChanged(float xp)
+    [ContextMenu("Force UI Refresh")]
+    private void ForceUIRefresh()
     {
-        if (SliderXP != null && gameManager != null)
-        {
-            Slider xpSlider = SliderXP.GetComponent<Slider>();
-            if (xpSlider != null)
-            {
-                xpSlider.value = xp / gameManager.GetXPToLevelUp();
-            }
-            else
-            {
-            }
-        }
-        else
-        {
-        }
+        UpdateAllUI();
+        Debug.Log("UI manually refreshed");
     }
 
-    private void OnGameTimeChanged()
-    {
-        if (TextTime != null && gameManager != null)
-        {
-            Text timeText = TextTime.GetComponent<Text>();
-            if (timeText != null)
-            {
-                timeText.text = gameManager.getFormattedGameTime();
-            }
-            else
-            {
-            }
-        }
-        else
-        {
-        }
-    }
+    #endregion
 
-    private void OnEnemyKilled()
-    {
-        if (TextKill != null && gameManager != null)
-        {
-            Text killText = TextKill.GetComponent<Text>();
-            if (killText != null)
-            {
-                killText.text = gameManager.getEnemiesKilled().ToString();
-            }
-            else
-            {
-            }
-        }
-        else
-        {
-        }
-    }
+    #region Unity Lifecycle
 
     private void OnDestroy()
     {
         UnregisterEvents();
+        
+        if (inputActions != null)
+        {
+            inputActions.UI.Cancel.performed -= OpenSettingsPanel;
+            inputActions.UI.Disable();
+            inputActions.Dispose();
+        }
+        
+        PlayerUpgradeSystem.OnUpgradePanelClosed -= OnUpgradePanelClosed;
+        PlayerUpgradeSystem.OnUpgradePanelOpened -= OnUpgradePanelOpened;
     }
 
     private void OnApplicationPause(bool pauseStatus)
@@ -350,4 +815,15 @@ public class UIManager : MonoBehaviour
             RegisterEvents();
         }
     }
+
+    private void OnApplicationFocus(bool hasFocus)
+    {
+        if (!hasFocus && currentUIState == UIState.GamePlaying)
+        {
+            // Auto-pausa quando l'app perde il focus
+            ShowSettingsPanel();
+        }
+    }
+
+    #endregion
 }
