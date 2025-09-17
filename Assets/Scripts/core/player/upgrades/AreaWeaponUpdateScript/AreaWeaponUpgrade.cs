@@ -20,7 +20,7 @@ public class AreaWeaponUpgrade : PlayerUpgrade
     public override void ApplyUpgrade(Player player, int currentLevel)
     {
         // Unlock AreaWeapon on first upgrade
-        if (currentLevel == 1)
+        if (currentLevel == 0)
         {
             WeaponUnlockManager unlockManager = player.GetComponent<WeaponUnlockManager>();
             if (unlockManager == null)
