@@ -360,6 +360,28 @@ public class GameManager : MonoBehaviour
     {
         return XP;
     }
+
+    // Metodi per gestire la pausa
+    public void PauseGame()
+    {
+        if (CurrentGameState == GameState.Playing)
+        {
+            CurrentGameState = GameState.Paused;
+        }
+    }
+
+    public void ResumeGame()
+    {
+        if (CurrentGameState == GameState.Paused)
+        {
+            CurrentGameState = GameState.Playing;
+        }
+    }
+
+    public bool IsGamePaused()
+    {
+        return CurrentGameState == GameState.Paused;
+    }
     
     private void OnDestroy()
     {

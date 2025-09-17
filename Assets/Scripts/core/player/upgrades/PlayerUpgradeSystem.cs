@@ -8,6 +8,7 @@ public class PlayerUpgradeSystem : MonoBehaviour
 {
     // Evento statico per segnalare la chiusura del pannello upgrade
     public static System.Action<int> OnUpgradePanelClosed;
+    public static System.Action<int> OnUpgradePanelOpened;
     public static PlayerUpgradeSystem Instance { get; private set; }
 
     [SerializeField] private List<PlayerUpgrade> availableUpgrades;
@@ -55,6 +56,7 @@ public class PlayerUpgradeSystem : MonoBehaviour
 
         if (upgradeUIPanel != null)
         {
+            OnUpgradePanelOpened?.Invoke(playerLevel);
             upgradeUIPanel.SetActive(true);
             PopulateUpgradeOptions();
         }

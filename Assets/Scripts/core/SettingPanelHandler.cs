@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class SettingPanelHandler : MonoBehaviour 
 {
@@ -31,53 +32,192 @@ public class SettingPanelHandler : MonoBehaviour
     private float lastEffectsVolume = 1f;
     private float lastMusicVolume = 1f;
     
+    private bool hasBeenInitialized = false;
+    
     void Awake()
     {
-        gameObject.SetActive(false);
+        // RIMOSSA la linea problematica: gameObject.SetActive(false);
+        // Il pannello deve rimanere nello stato in cui è stato configurato nell'editor
         
-      
+        // Carica sprite se necessario
         if (mutedSprite == null)
             mutedSprite = Resources.Load<Sprite>("Assets/static_assets/Undead Survivor/Sprites/muted.png");
-            
+
         if (unmutedSprite == null)
             unmutedSprite = Resources.Load<Sprite>("Assets/static_assets/Undead Survivor/Sprites/unmuted.png");
+            
+        Debug.Log($"SettingPanelHandler Awake - Panel active: {gameObject.activeSelf}");
+    }
+
+    void OnEnable()
+    {
+        // Inizializza solo la prima volta che il pannello viene attivato
+        if (!hasBeenInitialized)
+        {
+            InitializePanel();
+            hasBeenInitialized = true;
+        }
+        
+        Debug.Log("Settings panel enabled");
+    }
+
+    void OnDisable()
+    {
+        Debug.Log("Settings panel disabled");
+        
+        // Se siamo in GameScene e il pannello viene disattivato, notifica l'UIManager
+        if (!SceneManager.GetActiveScene().name.Equals("MainMenu"))
+        {
+            UIManager uiManager = FindObjectOfType<UIManager>();
+            if (uiManager != null)
+            {
+                uiManager.OnSettingsPanelClosed();
+            }
+        }
     }
     
     void Start()
     {
-       
-        quitPanelButton.onClick.AddListener(OnQuitPanelButtonClicked);
-        muteMainButton.onClick.AddListener(OnMuteMainButtonClicked);
-        muteEffectsButton.onClick.AddListener(OnMuteEffectsButtonClicked);
-        muteMusicButton.onClick.AddListener(OnMuteMusicButtonClicked);
+        // Inizializza se non è già stato fatto (nel caso il pannello sia attivo dall'inizio)
+        if (!hasBeenInitialized)
+        {
+            InitializePanel();
+            hasBeenInitialized = true;
+        }
+    }
+    
+    private void InitializePanel()
+    {
+        Debug.Log("Initializing settings panel...");
         
+        // Configurazione bottoni basata sulla scena
+        ConfigureButtonsForScene();
+        
+        // Setup listeners
+        SetupEventListeners();
+        
+        // Setup valori iniziali
+        SetupInitialValues();
+        
+        // Aggiungi effetti sonori
+        AddSoundEffectsToButtons();
+        
+        Debug.Log("Settings panel initialization complete");
+    }
+    
+    private void ConfigureButtonsForScene()
+    {
+        bool isMainMenu = SceneManager.GetActiveScene().name.Equals("MainMenu");
+        
+        if (isMainMenu)
+        {
+            // MainMenu: mostra quit button
+            if (quitPanelButton != null)
+            {
+                quitPanelButton.gameObject.SetActive(true);
+                quitPanelButton.onClick.AddListener(OnQuitPanelButtonClicked);
+            }
+        }
+        else
+        {
+            // GameScene: nascondi quit button
+            if (quitPanelButton != null)
+            {
+                quitPanelButton.gameObject.SetActive(false);
+            }
+        }
+    }
+    
+    private void SetupEventListeners()
+    {
+        // Rimuovi listener esistenti per evitare duplicati
+        if (muteMainButton != null)
+        {
+            muteMainButton.onClick.RemoveAllListeners();
+            muteMainButton.onClick.AddListener(OnMuteMainButtonClicked);
+        }
+        
+        if (muteEffectsButton != null)
+        {
+            muteEffectsButton.onClick.RemoveAllListeners();
+            muteEffectsButton.onClick.AddListener(OnMuteEffectsButtonClicked);
+        }
+        
+        if (muteMusicButton != null)
+        {
+            muteMusicButton.onClick.RemoveAllListeners();
+            muteMusicButton.onClick.AddListener(OnMuteMusicButtonClicked);
+        }
       
-        sliderMainVolume.onValueChanged.AddListener(OnSliderMainVolumeChanged);
-        sliderEffectsVolume.onValueChanged.AddListener(OnSliderEffectsVolumeChanged);
-        sliderMusicVolume.onValueChanged.AddListener(OnSliderMusicVolumeChanged);
+        // Slider listeners
+        if (sliderMainVolume != null)
+        {
+            sliderMainVolume.onValueChanged.RemoveAllListeners();
+            sliderMainVolume.onValueChanged.AddListener(OnSliderMainVolumeChanged);
+        }
+        
+        if (sliderEffectsVolume != null)
+        {
+            sliderEffectsVolume.onValueChanged.RemoveAllListeners();
+            sliderEffectsVolume.onValueChanged.AddListener(OnSliderEffectsVolumeChanged);
+        }
+        
+        if (sliderMusicVolume != null)
+        {
+            sliderMusicVolume.onValueChanged.RemoveAllListeners();
+            sliderMusicVolume.onValueChanged.AddListener(OnSliderMusicVolumeChanged);
+        }
+    }
+    
+    private void SetupInitialValues()
+    {
+        // Setup valori iniziali slider
+        if (sliderMainVolume != null)
+        {
+            sliderMainVolume.value = 1f;
+            lastMainVolume = sliderMainVolume.value;
+        }
+        
+        if (sliderEffectsVolume != null)
+        {
+            sliderEffectsVolume.value = 1f; 
+            lastEffectsVolume = sliderEffectsVolume.value;
+        }
+        
+        if (sliderMusicVolume != null)
+        {
+            sliderMusicVolume.value = 1f;
+            lastMusicVolume = sliderMusicVolume.value;
+        }
+    }
+    
+    private void AddSoundEffectsToButtons()
+    {
+        bool isMainMenu = SceneManager.GetActiveScene().name.Equals("MainMenu");
+        
+        // Solo nel MainMenu aggiungiamo gli effetti sonori al quit button
+        if (isMainMenu && quitPanelButton != null)
+        {
+            AddSoundEffectsToButton(quitPanelButton);
+        }
 
-       
-        sliderMainVolume.value = 1f;
-        sliderEffectsVolume.value = 1f; 
-        sliderMusicVolume.value = 1f;
-        
-        lastMainVolume = sliderMainVolume.value;
-        lastEffectsVolume = sliderEffectsVolume.value;
-        lastMusicVolume = sliderMusicVolume.value;
-        
-      
-        AddSoundEffectsToButton(quitPanelButton);
-        AddSoundEffectsToButton(muteMainButton);
-        AddSoundEffectsToButton(muteEffectsButton);
-        AddSoundEffectsToButton(muteMusicButton);
+        // Aggiungi effetti agli altri bottoni
+        if (muteMainButton != null) AddSoundEffectsToButton(muteMainButton);
+        if (muteEffectsButton != null) AddSoundEffectsToButton(muteEffectsButton);
+        if (muteMusicButton != null) AddSoundEffectsToButton(muteMusicButton);
     }
     
     private void AddSoundEffectsToButton(Button button)
     {
+        if (button == null) return;
+        
         // Add hover sound
         EventTrigger eventTrigger = button.gameObject.GetComponent<EventTrigger>();
         if (eventTrigger == null)
             eventTrigger = button.gameObject.AddComponent<EventTrigger>();
+        
+        // Rimuovi trigger esistenti dello stesso tipo per evitare duplicati
+        eventTrigger.triggers.RemoveAll(entry => entry.eventID == EventTriggerType.PointerEnter);
             
         // Setup pointer enter event (hover)
         EventTrigger.Entry pointerEnterEntry = new EventTrigger.Entry();
@@ -128,18 +268,17 @@ public class SettingPanelHandler : MonoBehaviour
         
         if (isMusicMuted)
         {
-            lastMusicVolume = sliderMusicVolume.value;
+            lastMusicVolume = sliderMusicVolume != null ? sliderMusicVolume.value : lastMusicVolume;
             UpdateMusicVolume(0f);
-            musicVolumeImage.sprite = mutedSprite;
+            if (musicVolumeImage != null) musicVolumeImage.sprite = mutedSprite;
         }
         else
         {
-            sliderMusicVolume.value = lastMusicVolume;
+            if (sliderMusicVolume != null) sliderMusicVolume.value = lastMusicVolume;
             UpdateMusicVolume(lastMusicVolume);
-            musicVolumeImage.sprite = unmutedSprite;
+            if (musicVolumeImage != null) musicVolumeImage.sprite = unmutedSprite;
         }
         
-      
         if (AudioManager.Instance != null)
             AudioManager.Instance.SetMuted(AudioManager.AudioSourceType.Music, isMusicMuted);
     }
@@ -150,17 +289,16 @@ public class SettingPanelHandler : MonoBehaviour
         
         if (isEffectsMuted)
         {
-            lastEffectsVolume = sliderEffectsVolume.value;
+            lastEffectsVolume = sliderEffectsVolume != null ? sliderEffectsVolume.value : lastEffectsVolume;
             UpdateEffectsVolume(0f);
-            effectsVolumeImage.sprite = mutedSprite;
+            if (effectsVolumeImage != null) effectsVolumeImage.sprite = mutedSprite;
         }
         else
         {
-            sliderEffectsVolume.value = lastEffectsVolume;
+            if (sliderEffectsVolume != null) sliderEffectsVolume.value = lastEffectsVolume;
             UpdateEffectsVolume(lastEffectsVolume);
-            effectsVolumeImage.sprite = unmutedSprite;
+            if (effectsVolumeImage != null) effectsVolumeImage.sprite = unmutedSprite;
         }
-        
         
         if (AudioManager.Instance != null)
             AudioManager.Instance.SetMuted(AudioManager.AudioSourceType.SFX, isEffectsMuted);
@@ -172,15 +310,15 @@ public class SettingPanelHandler : MonoBehaviour
         
         if (isMainMuted)
         {
-            lastMainVolume = sliderMainVolume.value;
+            lastMainVolume = sliderMainVolume != null ? sliderMainVolume.value : lastMainVolume;
             UpdateMainVolume(0f);
-            mainVolumeImage.sprite = mutedSprite;
+            if (mainVolumeImage != null) mainVolumeImage.sprite = mutedSprite;
         }
         else
         {
-            sliderMainVolume.value = lastMainVolume;
+            if (sliderMainVolume != null) sliderMainVolume.value = lastMainVolume;
             UpdateMainVolume(lastMainVolume);
-            mainVolumeImage.sprite = unmutedSprite;
+            if (mainVolumeImage != null) mainVolumeImage.sprite = unmutedSprite;
         }
        
         if (AudioManager.Instance != null)
@@ -189,7 +327,10 @@ public class SettingPanelHandler : MonoBehaviour
     
     private void OnQuitPanelButtonClicked()
     {
-        optionButtonGameObject.SetActive(true);
+        // Questo metodo viene chiamato solo dal MainMenu
+        if (optionButtonGameObject != null)
+            optionButtonGameObject.SetActive(true);
+            
         gameObject.SetActive(false);
     }
     
