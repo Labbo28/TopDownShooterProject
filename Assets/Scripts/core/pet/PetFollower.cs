@@ -13,13 +13,20 @@ public class PetFollower : MonoBehaviour
     [Tooltip("Distanza dalla destinazione oltre la quale il pet riprende a muoversi verso il player")]
     [SerializeField] private float resumeDistance = 5.6f;
     [SerializeField] private float catchUpDistance = 4f;
-    [SerializeField] private float rotationLerp = 10f;
-
+    
     [Header("Offset Around Player")]
     [SerializeField] private Vector2 followOffset = new Vector2(0.8f, -0.6f);
 
+    private Animator animator;
+    private SpriteRenderer spriteRenderer;
     private Transform playerTransform;
     private bool isMoving = true;
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
 
     private void Start()
     {
@@ -62,21 +69,23 @@ public class PetFollower : MonoBehaviour
         }
 
         Vector3 desiredPosition = playerTransform.position + (Vector3)followOffset;
-
         float distanceToDesired = Vector2.Distance(transform.position, desiredPosition);
-
+        spriteRenderer.flipX = (followOffset.x < 0) ? (playerTransform.position.x > transform.position.x) : (playerTransform.position.x < transform.position.x);
         // Hysteresis: if currently stopped, only start when sufficiently far; if moving, stop when close enough
         if (!isMoving && distanceToDesired >= resumeDistance)
         {
             isMoving = true;
+            animator?.SetBool("isRunning", true);
         }
         else if (isMoving && distanceToDesired <= stopDistance)
         {
             isMoving = false;
+           
         }
 
         if (!isMoving)
         {
+            
             return;
         }
 
@@ -86,15 +95,5 @@ public class PetFollower : MonoBehaviour
         // Move towards the desired position
         Vector3 direction = (desiredPosition - transform.position).normalized;
         transform.position += direction * (speed * Time.deltaTime);
-
-        // Optional rotation to face movement direction
-        if (direction.sqrMagnitude > 0.0001f)
-        {
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
-            Quaternion targetRotation = Quaternion.Euler(0, 0, angle);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationLerp * Time.deltaTime);
-        }
     }
 }
-
-
