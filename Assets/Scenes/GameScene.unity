@@ -2809,18 +2809,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2116a3d0c57d2e9418cc2c800beb61ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogue:
-    dialogueLines:
-    - character:
-        name: pierino
-        icon: {fileID: -230449131, guid: ff2f12d0c1d616742a807c701855de77, type: 3}
-      line: sei un cazzone!
-    - character:
-        name: ersto detto er Cazzone
-        icon: {fileID: -230449131, guid: ff2f12d0c1d616742a807c701855de77, type: 3}
-      line: cazzo di gatto !
-  triggerEveryNLevels: 0
-  triggerOnLevels: 020000000a000000
+  levelDialogues:
+  - level: 2
+    dialogues:
+    - dialogueLines:
+      - character:
+          name: GAtto
+          icon: {fileID: 0}
+        line: 'CAzzo dove vado '
+      - character:
+          name: ernesto
+          icon: {fileID: 0}
+        line: cazzo di gatto!!!!
 --- !u!4 &733379219
 Transform:
   m_ObjectHideFlags: 0
@@ -3830,7 +3830,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -1, y: -5}
+  m_AnchoredPosition: {x: -0.9999924, y: -5}
   m_SizeDelta: {x: -2, y: -1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1216164186
@@ -4074,9 +4074,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
-  followDistance: 1.5
+  stopDistance: 1.6
+  resumeDistance: 5.6
   catchUpDistance: 4
-  rotationLerp: 10
   followOffset: {x: 0.8, y: -0.6}
 --- !u!212 &1341299343
 SpriteRenderer:
@@ -5770,6 +5770,7 @@ MonoBehaviour:
   dialoguePanel: {fileID: 2002168949}
   isDialogueActive: 0
   typingSpeed: 0.05
+  holdTime: 1
 --- !u!1 &2002699870
 GameObject:
   m_ObjectHideFlags: 0

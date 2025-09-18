@@ -8,23 +8,27 @@ using System.Collections.Generic;
 
 Aggiungi questo script a un GameObject vuoto nella scena (es. "LevelDialogueTrigger").
 
-IMPOSTA DA INSPECTOR:
+IMPOSTA DA INSPECTOR: 
 - dialogue: Il Dialogue da mostrare (puoi crearne uno nuovo nell'Inspector).
 - triggerEveryNLevels: Ogni quanti livelli mostrare il dialogo (es. 5).
 
 Il dialogo verrà mostrato automaticamente ogni volta che il player raggiunge un livello multiplo di N.
 */
 
+// Classe per gestire i dialoghi per livello direttamente da Inspector
+// Classe per gestire i dialoghi per livello direttamente da Inspector
+[System.Serializable]
+public class LevelDialogue
+{
+    public int level;
+    public List<Dialogue> dialogues; // Usa Dialogue invece di string
+}
+
 public class LevelDialogueTrigger : MonoBehaviour
 {
-    [Header("Imposta il Dialogue da mostrare")]
-    public Dialogue dialogue;
-
-    [Header("Mostra dialogo ogni N livelli (0 = disattivato)")]
-    public int triggerEveryNLevels = 0;
-
-    [Header("Mostra dialogo su questi livelli specifici")]
-    public List<int> triggerOnLevels = new List<int>();
+    [Header("Lista di dialoghi per livello")]
+    [SerializeField]
+    private List<LevelDialogue> levelDialogues = new List<LevelDialogue>();
 
     private int lastTriggeredLevel = 0;
 
@@ -40,18 +44,21 @@ public class LevelDialogueTrigger : MonoBehaviour
 
     private void OnUpgradePanelClosed(int newLevel)
     {
-        // Dialogo ogni N livelli
-        if (triggerEveryNLevels > 0 && newLevel % triggerEveryNLevels == 0 && newLevel != lastTriggeredLevel)
+        if (newLevel != lastTriggeredLevel)
         {
-            lastTriggeredLevel = newLevel;
-            DialogueManager.Instance.StartDialogue(dialogue);
-            return;
-        }
-        // Dialogo su livelli specifici
-        if (triggerOnLevels.Contains(newLevel) && newLevel != lastTriggeredLevel)
-        {
-            lastTriggeredLevel = newLevel;
-            DialogueManager.Instance.StartDialogue(dialogue);
+            foreach (var ld in levelDialogues)
+            {
+                if (ld.level == newLevel && ld.dialogues != null && ld.dialogues.Count > 0)
+                {
+                    lastTriggeredLevel = newLevel;
+                    // Qui puoi mostrare tutti i dialoghi della lista, oppure solo il primo
+                    foreach (var dialogue in ld.dialogues)
+                    {
+                        DialogueManager.Instance.StartDialogue(dialogue);
+                    }
+                    break;
+                }
+            }
         }
     }
 }
