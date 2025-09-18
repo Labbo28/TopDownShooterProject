@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 // Assicurati che il RectTransform abbia anchorMin, anchorMax e pivot a (0.5, 0.5) per il centro
 // ScrollingTypewriterText
@@ -37,6 +38,8 @@ public class ScrollingTypewriterText : MonoBehaviour
     [Tooltip("Componente TMP_Text da animare (TextMeshPro)")]
     public TMP_Text tmpText;
 
+    public string nextSceneName;
+
     private float startX;
     private Coroutine typeCoroutine;
     private bool isFading = false;
@@ -44,6 +47,20 @@ public class ScrollingTypewriterText : MonoBehaviour
     private string[] lines;
     private int currentLine = 0;
 
+    /// <summary>
+/// Cambia alla scena successiva. Assicurati di impostare il nome della scena nel campo nextSceneName.
+/// </summary>
+private void ChangeToNextScene()
+{
+    if (!string.IsNullOrEmpty(nextSceneName))
+    {
+        SceneManager.LoadScene(nextSceneName);
+    }
+    else
+    {
+        Debug.LogWarning("Nome della scena successiva non specificato in nextSceneName!");
+    }
+}
     void Awake()
     {
         if (tmpText == null)
@@ -88,6 +105,7 @@ public class ScrollingTypewriterText : MonoBehaviour
             currentLine++;
         }
         tmpText.text = "";
+        ChangeToNextScene();
     }
 
     IEnumerator TypeText(string line)

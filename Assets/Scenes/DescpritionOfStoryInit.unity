@@ -1877,15 +1877,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc4206c00414ec4488f0c2e2ad71a30c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fullText: "Lorem ipsum dolor sit amet, \nconsectetur adipiscing \naximus nisi,
-    sit amet porttitor\nmagna neque vitae elit. Integer ultricies quis dolor eget
-    gravida. Nam ligula leo,\ncommodo et nunc in, volutpat suscipit quam\nOrci varius
-    natoque penatibus et magnis dis parturient montes, \nnascetur ri\\n diculus mus.
-    Pellentesque a justo sed metus molestie ultrices sit amet et nulla."
+  fullText: "Lorem ipsum dolor sit amet, \nconsectetur adipiscing \n"
   typeSpeed: 0.09
   holdTime: 1
   textRect: {fileID: 1004981404}
   tmpText: {fileID: 1492407659}
+  nextSceneName: GameScene
 --- !u!1 &1612316551
 GameObject:
   m_ObjectHideFlags: 0
