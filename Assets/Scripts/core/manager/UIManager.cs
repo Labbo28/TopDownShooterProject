@@ -48,6 +48,10 @@ public class UIManager : PersistentObject
     // Eventi per comunicazione stato UI
     public static event Action<UIState> OnUIStateChanged;
 
+    protected override void Setup()
+    {
+        // Implementazione vuota, non necessaria per UIManager
+    }
     private void Awake()
     {
         // Assicurati che l'UI di game over sia nascosta all'inizio

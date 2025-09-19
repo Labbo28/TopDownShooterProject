@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PersistentObject : MonoBehaviour
+public abstract class PersistentObject : MonoBehaviour
 {
     void Awake()
     {
@@ -16,6 +16,8 @@ public class PersistentObject : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        Setup();
+        
         if (scene.name == "PlainToForest")
         {
             gameObject.SetActive(false); // Nasconde l'oggetto
@@ -25,4 +27,6 @@ public class PersistentObject : MonoBehaviour
             gameObject.SetActive(true); // Riappare nelle scene di gioco
         }
     }
+
+    protected abstract void Setup();
 }

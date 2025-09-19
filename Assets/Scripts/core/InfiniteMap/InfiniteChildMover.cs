@@ -20,6 +20,8 @@ public class InfiniteChildMover : MonoBehaviour
     [Header("Modalità Operativa")]
     [SerializeField] private bool repositionWholeObject = false; // Se true, riposiziona l'intero GameObject invece dei figli
 
+
+   
     /// <summary>
     /// Metodo chiamato una volta al momento dell'inizializzazione.
     /// </summary>

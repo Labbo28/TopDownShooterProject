@@ -9,6 +9,8 @@ TagManager:
   - Enemy
   - NonFireArms
   - EnemyProjectile
+  - Ground
+  - Undefined
   layers:
   - Default
   - TransparentFX
