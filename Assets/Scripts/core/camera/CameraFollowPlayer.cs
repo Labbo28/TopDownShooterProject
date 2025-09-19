@@ -21,7 +21,7 @@ public class CameraFollowPlayer : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         // Quando una scena viene caricata, cerca di nuovo il player
-        if (scene.name == "GameScene")
+        if (scene.name == "GameScene_second" || scene.name == "GameScene")
         {
             FindPlayer();
         }

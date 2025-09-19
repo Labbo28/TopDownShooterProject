@@ -56,6 +56,10 @@ public class Player : MonoBehaviour
         {
             ResetPlayer();
         }
+        if (scene.name == "GameScene_second" || "PlainToForest" == scene.name || scene.name == "ForestToPlain")
+        {
+            FindSpawnPosition();
+        }
     }
 
     private void InitializePlayer()

@@ -79,6 +79,7 @@ public class PetFollower : MonoBehaviour
         }
         else if (isMoving && distanceToDesired <= stopDistance)
         {
+            animator?.SetBool("isRunning", false);
             isMoving = false;
            
         }

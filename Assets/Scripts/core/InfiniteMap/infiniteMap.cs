@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class infiniteMap : MonoBehaviour
 {
     [Header("Element")]
@@ -11,7 +11,9 @@ public class infiniteMap : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        
         GenerateMap();
+        
     }
 
     /// <summary>
@@ -27,6 +29,7 @@ public class infiniteMap : MonoBehaviour
             }
         }
     }
+  
 
     /// <summary>
     /// Genera un singolo chunk della mappa in base agli indici della griglia.

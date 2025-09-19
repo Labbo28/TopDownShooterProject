@@ -5,6 +5,7 @@ public enum EnemyType
     Sniper,
     Boss,
     Tombstone,
+    ZombieBoss,
     
     // Tipi specifici di zombie
     Zombie,

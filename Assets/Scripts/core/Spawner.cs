@@ -44,6 +44,27 @@ public class Spawner : MonoBehaviour
     public System.Action OnBossDefeated;
     public System.Action<string> OnBossIntro;
     
+    private void FindPlayer()
+    {
+        if (Player.Instance != null)
+        {
+            playerTransform = Player.Instance.transform;
+        }
+        else
+        {
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            if (playerObj != null)
+            {
+                playerTransform = playerObj.transform;
+            }
+            else
+            {
+                Invoke(nameof(FindPlayer), 0.1f);
+            }
+        }
+    }
+
+    
     private void Start()
     {
         playerTransform = FindObjectOfType<Player>()?.transform;

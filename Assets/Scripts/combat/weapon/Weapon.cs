@@ -140,8 +140,8 @@ public abstract class Weapon : MonoBehaviour
             RangedWeaponStatsModifier modifier = Player.Instance.GetComponent<RangedWeaponStatsModifier>();
             if (modifier != null)
             {
-                FireRate = weaponSo.fireRate * modifier.FireRateMultiplier;
-                ReloadTime = weaponSo.reloadTime * modifier.ReloadSpeedMultiplier;
+                FireRate = fireRate * modifier.FireRateMultiplier;
+                ReloadTime = reloadTime * modifier.ReloadSpeedMultiplier;
             }
             else if (weaponSo == null)
             {

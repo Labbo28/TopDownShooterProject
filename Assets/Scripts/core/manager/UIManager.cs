@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour
+public class UIManager : PersistentObject
 {
     // Enum per stati UI più chiari
     public enum UIState
@@ -48,6 +48,10 @@ public class UIManager : MonoBehaviour
     // Eventi per comunicazione stato UI
     public static event Action<UIState> OnUIStateChanged;
 
+    protected override void Setup()
+    {
+        // Implementazione vuota, non necessaria per UIManager
+    }
     private void Awake()
     {
         // Assicurati che l'UI di game over sia nascosta all'inizio
