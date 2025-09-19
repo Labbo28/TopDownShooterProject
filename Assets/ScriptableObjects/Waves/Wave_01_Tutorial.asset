@@ -13,32 +13,34 @@ MonoBehaviour:
   m_Name: Wave_01_Tutorial
   m_EditorClassIdentifier: 
   waveNumber: 1
-  waveName: "Tutorial Wave - Learning the Basics"
-  waveDuration: 45
+  waveName: Tutorial Wave - Learning the Basics
+  waveDuration: 10
   spawnData:
-  - enemyPrefab: {fileID: 2372909403197453248, guid: fb4d4d81774a74e4a8fc129406bc1cc0, type: 3}
-    spawnCount: 25
-    spawnRate: 1.5
+  - enemyPrefab: {fileID: 2372909403197453248, guid: fb4d4d81774a74e4a8fc129406bc1cc0,
+      type: 3}
+    spawnCount: 1
+    spawnRate: 0
     startTime: 0
-    duration: 30
-    spawnContinuously: 1
+    duration: 0
+    spawnContinuously: 0
     delayBetweenSpawns: 0.8
     healthMultiplier: 0.7
     damageMultiplier: 0.8
     speedMultiplier: 0.9
-  - enemyPrefab: {fileID: 2372909403197453248, guid: fb4d4d81774a74e4a8fc129406bc1cc0, type: 3}
-    spawnCount: 15
-    spawnRate: 1.2
-    startTime: 20
-    duration: 25
-    spawnContinuously: 1
-    delayBetweenSpawns: 1
-    healthMultiplier: 0.7
-    damageMultiplier: 0.8
-    speedMultiplier: 0.9
   requireAllEnemiesDead: 1
-  maxEnemiesAlive: 30
+  maxEnemiesAlive: 10
   xpMultiplier: 1.2
   dropRateMultiplier: 1.5
   isBossWave: 0
   bossPrefab: {fileID: 0}
+  bossSpawnDelay: 3
+  showBossIntro: 1
+  bossIntroText: 
+  pauseRegularSpawningDuringBoss: 0
+  dialogues:
+    dialogueLines:
+    - character:
+        name: puzzi
+        icon: {fileID: 0}
+      line: a
+  DialoguesAtEndWave: 0

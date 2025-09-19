@@ -29,7 +29,10 @@ public class Wave : ScriptableObject
     [SerializeField] private bool showBossIntro = true; // Show boss introduction
     [SerializeField] private string bossIntroText = ""; // Custom boss intro text
     [SerializeField] private bool pauseRegularSpawningDuringBoss = false; // Pause regular enemies when boss is alive
-    
+    [SerializeField] public Dialogue dialogues;
+
+    [SerializeField] public bool DialoguesAtEndWave;
+
     // Metodo per ottenere tutti i tipi di nemici in questa wave
     public List<GameObject> GetAllEnemyTypes()
     {

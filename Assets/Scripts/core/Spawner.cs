@@ -12,6 +12,8 @@ public class Spawner : MonoBehaviour
     
     [Header("Spawn Limits")]
     [SerializeField] private int maxEnemiesAlive = 50;
+    
+    
     [SerializeField] private float minDistanceFromPlayer = 5f;
     
     [Header("Debug")]
@@ -385,7 +387,12 @@ public class Spawner : MonoBehaviour
         }
         
         OnWaveCompleted?.Invoke(currentWave.waveNumber);
-        
+
+        if(currentWave.DialoguesAtEndWave && currentWave.dialogues != null)
+        {
+            DialogueManager.Instance.StartDialogue(currentWave.dialogues);
+        }
+
         // Passa alla wave successiva
         if (currentWaveIndex + 1 < waves.Count)
         {
