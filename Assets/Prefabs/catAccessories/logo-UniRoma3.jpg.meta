@@ -186,7 +186,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      logo-UniRoma3_0: -652186365450396855
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

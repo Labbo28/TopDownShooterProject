@@ -177,7 +177,6 @@ MonoBehaviour:
   speed: 3
   damage: 5
   attackCooldown: 1
-  detectRadius: 10
   actionRadius: 0.5
   HealthBar: {fileID: 5333312199946071443}
   backgroundHealthBar: {fileID: 7022701402907246434}
@@ -186,6 +185,8 @@ MonoBehaviour:
   maxDistanceFromPlayer: 25
   repositionDistance: 15
   debugRepositioning: 0
+  enemyDeathDialogue:
+    dialogueLines: []
   attackRange: 1
   pursuingSpeedMultiplier: 1.2
   isPursuing: 0

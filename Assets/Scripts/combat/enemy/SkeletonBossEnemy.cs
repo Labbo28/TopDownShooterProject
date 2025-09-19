@@ -20,6 +20,7 @@ public class SkeletonBossEnemy : EnemyBase
     [SerializeField] private float chargeAttackCooldown = 8f;
     [SerializeField] private float areaAttackCooldown = 12f;
     
+   
     // Boss phases
     public enum BossPhase { Phase1, Phase2, Phase3 }
     private BossPhase currentPhase = BossPhase.Phase1;
@@ -525,4 +526,6 @@ public class SkeletonBossEnemy : EnemyBase
             Gizmos.DrawSphere(chargeTarget, 0.5f);
         }
     }
+
+
 }

@@ -186,7 +186,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      cucciaGatto_0: 1180236713528107920
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -44,6 +44,11 @@ public abstract class EnemyBase : MonoBehaviour
     [SerializeField] private float maxDistanceFromPlayer = 25f;
     [SerializeField] private float repositionDistance = 15f;
     [SerializeField] private bool debugRepositioning = false;
+
+    [Header("Dialogue on enemy Death")]
+    [Tooltip("⚠️ Se assegni un Dialogue qui, il dialogo verrà mostrato alla morte di TUTTI i nemici di questo tipo (tutti i prefab/istanze che usano questo script). Usa questo campo SOLO per nemici unici che appaiono una sola volta (es: boss o mini-boss unici).")]
+    [SerializeField] private Dialogue enemyDeathDialogue; // Assegna da Inspector
+    
     
     // Common components
     protected Transform player;
@@ -68,14 +73,14 @@ public abstract class EnemyBase : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
-        
+
         // Get or add HealthSystem component
         healthSystem = GetComponent<HealthSystem>();
         if (healthSystem == null)
         {
             healthSystem = gameObject.AddComponent<HealthSystem>();
         }
-        
+
         // Setup health events
         healthSystem.onDamaged.AddListener(OnDamaged);
         healthSystem.onDeath.AddListener(Die);
@@ -94,6 +99,7 @@ public abstract class EnemyBase : MonoBehaviour
         {
             backgroundHealthBar.gameObject.SetActive(false);
         }
+
     }
 
     protected virtual void Start()
@@ -295,14 +301,21 @@ public abstract class EnemyBase : MonoBehaviour
         OnEnemyDead?.Invoke(GetEnemyType(), transform.position);
         StartCoroutine(HandleDeath());
         DisableHealthBar();
+
     }
 
     private IEnumerator HandleDeath()
     {
         GetComponent<Collider2D>().enabled = false;
         yield return new WaitForSeconds(1f);
-        spriteRenderer.enabled = false; 
+        spriteRenderer.enabled = false;
         Destroy(gameObject);
+        // Avvia il dialogo solo se assegnato
+        if (enemyDeathDialogue != null && DialogueManager.Instance != null)
+        {   
+            
+            DialogueManager.Instance.StartDialogue(enemyDeathDialogue);
+        }
     }
 
     // Deal damage to player
