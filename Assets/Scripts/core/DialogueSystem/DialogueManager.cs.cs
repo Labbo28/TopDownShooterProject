@@ -85,8 +85,8 @@ public class DialogueManager : MonoBehaviour
 	[Tooltip("Velocità di scrittura (secondi per carattere). Più basso = più veloce.")]
 	public float typingSpeed = 0.2f;
 
-	[Tooltip("Secondi di attesa dopo la scrittura della riga, prima che venga cancellata e appaia la successiva.")]
-	public float holdTime = 1.0f;
+	[Tooltip("Secondi di attesa dopo la scrittura della riga, prima che venga cancellata e appaia la successiva.ATTENZIONE ->ritarda pure quanto tempo dalla fine della scrittura al prossimo input.per il bottone avanti")]
+	public float holdTime = 0.2f;
 
 	// RectTransform del campo testo (per calcolare larghezza)
 	private RectTransform dialogueRect;

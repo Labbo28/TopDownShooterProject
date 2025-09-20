@@ -5029,7 +5029,7 @@ MonoBehaviour:
   dialoguePanel: {fileID: 2002168949}
   isDialogueActive: 0
   typingSpeed: 0.05
-  holdTime: 1
+  holdTime: 0.2
 --- !u!1 &2002699870
 GameObject:
   m_ObjectHideFlags: 0

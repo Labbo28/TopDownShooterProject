@@ -2575,7 +2575,7 @@ MonoBehaviour:
   dialoguePanel: {fileID: 8007355108295533059}
   isDialogueActive: 0
   typingSpeed: 0.05
-  holdTime: 1
+  holdTime: 0.2
 --- !u!1 &8349386250910517013
 GameObject:
   m_ObjectHideFlags: 0
