@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6572147570808162834}
   - component: {fileID: 703763679197006765}
   m_Layer: 0
-  m_Name: baseplain
+  m_Name: BlackvoidSpot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
