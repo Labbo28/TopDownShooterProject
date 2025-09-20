@@ -4971,7 +4971,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2002168955}
         m_TargetAssemblyTypeName: DialogueManager, Assembly-CSharp
-        m_MethodName: DisplayNextDialogueLine
+        m_MethodName: OnDialogueAdvanceButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

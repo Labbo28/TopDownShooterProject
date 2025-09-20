@@ -2547,7 +2547,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 258933991559567025}
         m_TargetAssemblyTypeName: DialogueManager, Assembly-CSharp
-        m_MethodName: DisplayNextDialogueLine
+        m_MethodName: OnDialogueAdvanceButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2575,6 +2575,7 @@ MonoBehaviour:
   dialoguePanel: {fileID: 8007355108295533059}
   isDialogueActive: 0
   typingSpeed: 0.05
+  holdTime: 1
 --- !u!1 &8349386250910517013
 GameObject:
   m_ObjectHideFlags: 0
@@ -2716,18 +2717,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2116a3d0c57d2e9418cc2c800beb61ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogue:
-    dialogueLines:
-    - character:
-        name: pierino
-        icon: {fileID: -230449131, guid: ff2f12d0c1d616742a807c701855de77, type: 3}
-      line: sei un cazzone!
-    - character:
-        name: ersto detto er Cazzone
-        icon: {fileID: -230449131, guid: ff2f12d0c1d616742a807c701855de77, type: 3}
-      line: cazzo di gatto !
-  triggerEveryNLevels: 0
-  triggerOnLevels: 020000000a000000
+  levelDialogues: []
 --- !u!1 &8816615236214937845
 GameObject:
   m_ObjectHideFlags: 0

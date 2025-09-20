@@ -196,70 +196,62 @@ public class DialogueManager : MonoBehaviour
 	/// </summary>
 	IEnumerator TypeSentence(DialogueLine dialogueLine)
 	{
-		isTyping = true;
-		waitingForInput = false;
-		dialogueArea.text = "";
+    isTyping = true;
+    waitingForInput = false;
+    dialogueArea.text = "";
 
-		// Reset posizione X (centro) -- ora non serve più, il testo resta fermo
+    string[] lines = dialogueLine.line.Replace("\\n", "\n").Split('\n');
+    for (int l = 0; l < lines.Length; l++)
+    {
+        dialogueArea.text = "";
+        if (dialogueRect != null)
+            dialogueRect.anchoredPosition = new Vector2(0, dialogueRect.anchoredPosition.y);
 
-		string[] lines = dialogueLine.line.Replace("\\n", "\n").Split('\n');
-		for (int l = 0; l < lines.Length; l++)
-		{
-			dialogueArea.text = "";
-			if (dialogueRect != null)
-				dialogueRect.anchoredPosition = new Vector2(0, dialogueRect.anchoredPosition.y);
+        string line = lines[l];
+        foreach (char letter in line)
+        {
+            dialogueArea.text += letter;
+            yield return new WaitForSecondsRealtime(typingSpeed);
+        }
+        // Attendi il tempo impostato dopo la scrittura della riga, prima di cancellarla
+        float timer = 0f;
+        while (timer < holdTime)
+        {
+            timer += Time.unscaledDeltaTime;
+            yield return null;
+        }
+    }
 
-			string line = lines[l];
-			foreach (char letter in line)
-			{
-				dialogueArea.text += letter;
-				yield return new WaitForSecondsRealtime(typingSpeed);
-			}
-			// Attendi il tempo impostato prima di cancellare la riga (se non è l'ultima)
-			if (l < lines.Length - 1)
-			{
-				yield return new WaitForSecondsRealtime(holdTime);
-			}
-		}
-
-		isTyping = false;
-		waitingForInput = true;
-	}
+    isTyping = false; // <-- Spostato qui, DOPO la pausa!
+    waitingForInput = true;
+}
 
 	/// <summary>
 	/// Gestisce l'input di submit: se sta scrivendo completa la riga, altrimenti avanza.
 	/// </summary>
 	private void OnSubmitPressed(InputAction.CallbackContext context)
 	{
-		if (!isDialogueActive) return;
+    if (!isDialogueActive) return;
 
-		if (isTyping)
-		{
-			// Se sta scrivendo, completa immediatamente la linea
-			CompleteCurrentLine();
-		}
-		else if (waitingForInput)
-		{
-			// Se aspetta input, vai alla prossima linea
-			DisplayNextDialogueLine();
-		}
-	}
+    // Se sta scrivendo, ignora l'input!
+    if (isTyping)
+    {
+        // Ignora input durante la scrittura
+        return;
+    }
+    else if (waitingForInput)
+    {
+        // Solo ora si può andare avanti
+        DisplayNextDialogueLine();
+    }
+}
 
-	/// <summary>
-	/// Mostra immediatamente tutta la riga corrente, saltando l'effetto macchina da scrivere.
-	/// </summary>
-	private void CompleteCurrentLine()
+	public void OnDialogueAdvanceButton()
 	{
-		StopAllCoroutines();
-		isTyping = false;
-		waitingForInput = true;
-
-		// Mostra l'intera linea immediatamente
-		if (currentLine != null)
-		{
-			dialogueArea.text = currentLine.line;
-			// Nessuno spostamento: il testo resta fermo anche se supera la maschera
-		}
+		if (!isDialogueActive) return;
+		if (isTyping) return;
+		if (waitingForInput)
+			DisplayNextDialogueLine();
 	}
 
 	/// <summary>

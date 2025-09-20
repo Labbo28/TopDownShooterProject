@@ -160,6 +160,7 @@ MonoBehaviour:
   XP: 0
   useTimeBasedWaves: 1
   waveInterval: 60
+  timeToSaveTheCat: 10
   OnWaveChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -5518,7 +5519,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2002168955}
         m_TargetAssemblyTypeName: DialogueManager, Assembly-CSharp
-        m_MethodName: DisplayNextDialogueLine
+        m_MethodName: OnDialogueAdvanceButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
