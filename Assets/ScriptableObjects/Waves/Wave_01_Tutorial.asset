@@ -43,4 +43,4 @@ MonoBehaviour:
         name: puzzi
         icon: {fileID: 0}
       line: a
-  DialoguesAtEndWave: 0
+  DialoguesAtEndWave: 1
