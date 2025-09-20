@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using static UnityEngine.SceneManagement.SceneManager;
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -73,8 +74,7 @@ public class MainMenuManager : MonoBehaviour
     {
         onButtonClicked?.Invoke();
         // Carica la scena di gioco
-        LoadingManager.Instance.LoadScene("GameScene");
-        if(Player.Instance!= null)
-        Player.Instance.gameObject.SetActive(true);
+        UnityEngine.SceneManagement.SceneManager.LoadScene("DescriptionOfStoryInit");
+        Player.Instance?.gameObject.SetActive(true);
     }
 }

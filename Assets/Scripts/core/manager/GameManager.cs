@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     [Header("Wave System")]
     [SerializeField] private bool useTimeBasedWaves = true;
     [SerializeField] private float waveInterval = 60f; // secondi per wave se time-based
-    [SerializeField] private float timeToSaveTheCat = 10f;
+    [SerializeField] private float timeToSaveTheCat = 10f 
     private int spawnerManagedWave = 0; // wave gestita dallo spawner
     
     //attrtributi della classe MagnetDrop
@@ -175,6 +175,7 @@ public class GameManager : MonoBehaviour
             spawner.OnBossDefeated += () => OnBossDefeated?.Invoke();
             spawner.OnBossIntro += (intro) => OnBossIntro?.Invoke(intro);
         }
+        
 
     }
 

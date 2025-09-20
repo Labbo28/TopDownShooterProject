@@ -197,7 +197,7 @@ MonoBehaviour:
           name: "Pap\xE0"
           icon: {fileID: 0}
         line: "Brava figliola l\u2019hai salvato\n ce ne occuperemo noi\ntutti insieme"
-    nextSceneName: GameScene
+    nextSceneName: House
     loopVideo: 0
     advanceOnDialogueEnd: 1
   startSequenceIndex: 0
@@ -504,11 +504,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameObjectForOnlyNoEnemyscenes
       objectReference: {fileID: 0}
-    - target: {fileID: 3076403028175883731, guid: d9cabd02f18ae7e4eaf8923cb63d4d62,
-        type: 3}
-      propertyPath: typingSpeed
-      value: 0.09
-      objectReference: {fileID: 0}
     - target: {fileID: 6502046834153266618, guid: 46fef7667d6f8bf42a25f2ba7b9f2909,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -558,6 +553,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3076403028175883731, guid: d9cabd02f18ae7e4eaf8923cb63d4d62,
+        type: 3}
+      propertyPath: typingSpeed
+      value: 0.09
       objectReference: {fileID: 0}
     - target: {fileID: 6790912970338609331, guid: d9cabd02f18ae7e4eaf8923cb63d4d62,
         type: 3}
