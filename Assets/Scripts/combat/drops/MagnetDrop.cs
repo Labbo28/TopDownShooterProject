@@ -33,6 +33,7 @@ public class MagnetDrop : Drop
         {
             GameManager.Instance.SetAttractRadius(GameManager.Instance.GetAttractRadius() * attractRadiusMultiplier);
             GameManager.Instance.SetAttractSpeed(GameManager.Instance.GetAttractSpeed() * attractSpeedMultiplier);
+            Player.Instance.SetCollectedMagnets(Player.Instance.GetCollectedMagnets() + 1);
             Destroy(gameObject);
         }
     }

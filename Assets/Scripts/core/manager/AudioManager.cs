@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
@@ -57,12 +58,33 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
+        SceneManager.sceneLoaded += OnSceneLoaded;
         if (menuMusic != null && musicSource != null)
         {
             musicSource.clip = menuMusic;
             musicSource.loop = true;
             musicSource.Play();
         }
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+      if(scene.name != "GameScene" && scene.name != "GameScene_second"){
+        musicSource.Stop();
+      } 
+      else{
+        if (menuMusic != null && musicSource != null)
+        {
+            if(scene.name == "GameScene_second")
+                musicSource.pitch = 0.8f;
+                else
+                musicSource.pitch = 1f;
+            musicSource.clip = menuMusic;
+            musicSource.loop = true;
+            musicSource.Play();
+        }
+      }
+
     }
 
     private void PlaySFX(AudioClip clip)

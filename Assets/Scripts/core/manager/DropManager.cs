@@ -154,6 +154,10 @@ public class DropManager : MonoBehaviour
         }
         else if (random <= magnetThreshold)
         {
+            if(Player.Instance.GetCollectedMagnets() >= Player.Instance.MaxMagnets)
+            {
+                return DropType.Chest; // Se il giocatore ha già il massimo dei magneti
+            }
             return DropType.Magnet;
         }
         else
@@ -187,30 +191,25 @@ public class DropManager : MonoBehaviour
         switch (enemyType)
         {
             // Tipi generici
-            case EnemyType.Melee:
-                return 0; // XP di bronzo
+           
             case EnemyType.Ranged:
-                return UnityEngine.Random.Range(0, 2); // XP di bronzo o argento
-            case EnemyType.Sniper:
-                return 1; // XP d'argento 
-            case EnemyType.Boss:
-                return 2; // XP d'oro 
+                return UnityEngine.Random.Range(1, 2); // XP di bronzo o argento
                 
             // Tipi specifici di zombie
             case EnemyType.Zombie:
-                return UnityEngine.Random.Range(0, 2); // XP di bronzo o argento
+                return 0; // XP di bronzo o argento
             case EnemyType.ZombieFast:
-                return 1; // XP d'argento (più veloce = più prezioso)
+                return UnityEngine.Random.Range(1,2); // XP d'argento (più veloce = più prezioso)
                 
             // Tipi specifici di scheletri
             case EnemyType.Skeleton:
-                return UnityEngine.Random.Range(1, 3); // XP d'argento o oro
+                return 1; // XP d'argento o oro
             case EnemyType.SkeletonBoss:
                 return 2; // XP d'oro
 
             // Nuovo nemico TombstoneEnemy
             case EnemyType.Tombstone:
-                return UnityEngine.Random.Range(1, 2); // XP d'argento (nemico a distanza)
+                return 2; // XP d'argento (nemico a distanza)
 
             default:
                 return 0; // XP di bronzo come fallback

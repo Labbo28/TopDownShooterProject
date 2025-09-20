@@ -58,17 +58,6 @@ public class SkeletonBossEnemy : EnemyBase
         baseSpeed = speed;
         baseDamage = damage;
         
-        if (damage <= 5f) damage = 15f;       // Danno alto
-        if (attackCooldown <= 1f) attackCooldown = 2f;  // Attacco più lento ma potente
-        if (speed <= 3f) speed = 2f; // Più lento ma imponente
-
-        // Scale health for boss
-        if (healthSystem != null)
-        {
-            healthSystem.ScaleHealth(5f);
-            healthSystem.Heal(400);// 5x vita normale
-        }
-        
     }
 
     protected override void HandleBehavior()

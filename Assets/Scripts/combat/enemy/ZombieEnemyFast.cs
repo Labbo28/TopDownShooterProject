@@ -22,10 +22,7 @@ public class ZombieFastEnemy : EnemyBase
         base.Start();
         baseSpeed = speed;
         
-        // Fast Zombie settings - più veloci ma meno resistenti
-        if (damage <= 5f) damage = 6f;       // Danno medio
-        if (attackCooldown <= 1f) attackCooldown = 0.8f;  // Attacco più veloce
-        if (speed <= 3f) speed = 4.5f; // Più veloce del zombie normale
+        // Fast Zombie settings - più veloci ma meno resistenti// Più veloce del zombie normale
     }
 
     protected override void HandleBehavior()

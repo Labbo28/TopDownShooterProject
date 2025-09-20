@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     [Header("Wave System")]
     [SerializeField] private bool useTimeBasedWaves = true;
     [SerializeField] private float waveInterval = 60f; // secondi per wave se time-based
-    [SerializeField] private float timeToSaveTheCat = 10f 
+    [SerializeField] private float timeToSaveTheCat = 10f; 
     private int spawnerManagedWave = 0; // wave gestita dallo spawner
     
     //attrtributi della classe MagnetDrop
@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
     private float healAmount = 0.3f; //valore percentuale della vita ripristinata
 
     private int PlayerLevel = 1;
-    private float xpNeededToLevelUp = 20f;
+    private float xpNeededToLevelUp = 50f;
     
     private float previousGameTime = 0f;
     private string formattedTime = "00:00";
@@ -261,7 +261,7 @@ public class GameManager : MonoBehaviour
             PlayerLevel++;
             OnPlayerLevelUp?.Invoke(PlayerLevel);
             XP -= xpNeededToLevelUp;
-            xpNeededToLevelUp *= 1.36f;
+            xpNeededToLevelUp *= 1.2f;
         }
         OnXPChanged?.Invoke(XP);
     }

@@ -520,7 +520,7 @@ public class UIManager : PersistentObject
 
     private void OnPlayerLevelUp(int level)
     {
-        AudioManager.Instance?.PlayLevelUpSound();
+       
         if (TextLevel != null)
         {
             var levelText = TextLevel.GetComponent<Text>();

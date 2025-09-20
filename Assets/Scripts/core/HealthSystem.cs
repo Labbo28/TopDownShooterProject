@@ -121,8 +121,10 @@ public class HealthSystem : MonoBehaviour, IDamageable
         return currentHealth / maxHealth;
     }
 
-    // Metodo per ottenere informazioni debug
-    public void LogHealthStatus()
-    {
-    }
+   public void SetMaxHealth(float newMaxHealth)
+   {
+       baseMaxHealth = newMaxHealth;
+       maxHealth = newMaxHealth;
+       currentHealth = maxHealth; // Reset current health to new max
+   }
 }

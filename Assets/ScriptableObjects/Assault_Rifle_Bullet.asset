@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 885ca30da7b436540bd3ff03b604c745, type: 3}
   m_Name: Assault_Rifle_Bullet
   m_EditorClassIdentifier: 
-  speed: 15
-  damage: 15
-  lifeTime: 3
+  speed: 9
+  damage: 25
+  lifeTime: 5
   projectilePrefab: {fileID: 4838925836734502132, guid: 6e6da3e4e9465b744931624ae26bb664,
     type: 3}

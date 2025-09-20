@@ -6,6 +6,7 @@ using UnityEngine;
 /// </summary>
 public class SpinWeaponPrefab : MonoBehaviour
 {
+    private float audioCooldown=0;
     private float angle; // Angolo corrente della lama rispetto al centro
     public SpinWeapon weapon; // Riferimento all'arma principale per accedere ai parametri
 
@@ -25,6 +26,9 @@ public class SpinWeaponPrefab : MonoBehaviour
     /// </summary>
     void Update()
     {
+        if (audioCooldown > 0)
+        audioCooldown -= Time.deltaTime;
+
         if (weapon == null) return; // Se non c'è riferimento all'arma, esci
 
         // Incrementa l'angolo in base alla velocità dell'arma
@@ -55,7 +59,12 @@ public class SpinWeaponPrefab : MonoBehaviour
         {
             if (collider.TryGetComponent<IDamageable>(out var target))
             {
-                AudioManager.Instance?.PlayMeleeSound();
+                if(audioCooldown<=0)
+                {
+                    AudioManager.Instance?.PlayMeleeSound();
+                    audioCooldown=0.3f;
+                }
+               
                 target.TakeDamage(weapon.weaponDamage); // Infligge danno usando il valore dell'arma
             }
         }

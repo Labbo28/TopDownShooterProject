@@ -17,10 +17,6 @@ public class ZombieEnemy : EnemyBase
     {
         base.Start();
         baseSpeed = speed;
-        
-        // Zombie settings - più lenti ma più resistenti
-        if (damage <= 5f) damage = 8f;       // Più danno del melee base
-        if (attackCooldown <= 1f) attackCooldown = 1.5f;  // Attacco più lento
     }
 
     protected override void HandleBehavior()

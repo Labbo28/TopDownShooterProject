@@ -262,8 +262,9 @@ MonoBehaviour:
   OnEnemyhit:
     m_PersistentCalls:
       m_Calls: []
-  speed: 3
-  damage: 5
+  speed: 2
+  damage: 3
+  health: 120
   attackCooldown: 8
   actionRadius: 0.5
   HealthBar: {fileID: 5333312199946071443}
@@ -273,6 +274,8 @@ MonoBehaviour:
   maxDistanceFromPlayer: 25
   repositionDistance: 15
   debugRepositioning: 0
+  enemyDeathDialogue:
+    dialogueLines: []
   boulderPrefab: {fileID: 4838925836734502132, guid: e5dfaedbd46792431867e913475b037e,
     type: 3}
   fragmentPrefab: {fileID: 4838925836734502132, guid: 0e75fff326d8274a3828f549ed8d9dde,

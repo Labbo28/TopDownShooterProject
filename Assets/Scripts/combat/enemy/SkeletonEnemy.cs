@@ -24,10 +24,6 @@ public class SkeletonEnemy : EnemyBase
     {
         base.Start();
         
-        // Skeleton settings - equilibrato ma agile
-        if (damage <= 5f) damage = 7f;       // Danno buono
-        if (attackCooldown <= 1f) attackCooldown = 1.0f;  // Attacco normale
-        if (speed <= 3f) speed = 4f; // Più veloce del melee base
         
         // Inizializza angolo casuale per il movimento circolare
         circleAngle = Random.Range(0f, 360f);

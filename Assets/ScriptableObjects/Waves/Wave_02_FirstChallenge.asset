@@ -18,22 +18,22 @@ MonoBehaviour:
   spawnData:
   - enemyPrefab: {fileID: 2372909403197453248, guid: fb4d4d81774a74e4a8fc129406bc1cc0,
       type: 3}
-    spawnCount: 40
+    spawnCount: 20
     spawnRate: 2
-    startTime: 0
+    startTime: 20
     duration: 35
-    spawnContinuously: 1
+    spawnContinuously: 0
     delayBetweenSpawns: 0.6
     healthMultiplier: 1
     damageMultiplier: 1
     speedMultiplier: 1
   - enemyPrefab: {fileID: 2372909403197453248, guid: ac3ced40651686dd3908d525794a369a,
       type: 3}
-    spawnCount: 25
+    spawnCount: 10
     spawnRate: 1.8
     startTime: 15
     duration: 30
-    spawnContinuously: 1
+    spawnContinuously: 0
     delayBetweenSpawns: 0.7
     healthMultiplier: 1
     damageMultiplier: 1
@@ -44,7 +44,7 @@ MonoBehaviour:
     spawnRate: 1.5
     startTime: 25
     duration: 30
-    spawnContinuously: 1
+    spawnContinuously: 0
     delayBetweenSpawns: 0.8
     healthMultiplier: 1
     damageMultiplier: 1
@@ -63,10 +63,13 @@ MonoBehaviour:
   requireAllEnemiesDead: 1
   maxEnemiesAlive: 50
   xpMultiplier: 1.1
-  dropRateMultiplier: 1.2
+  dropRateMultiplier: 0.7
   isBossWave: 0
   bossPrefab: {fileID: 0}
   bossSpawnDelay: 3
   showBossIntro: 1
   bossIntroText: 
   pauseRegularSpawningDuringBoss: 0
+  dialogues:
+    dialogueLines: []
+  DialoguesAtEndWave: 0

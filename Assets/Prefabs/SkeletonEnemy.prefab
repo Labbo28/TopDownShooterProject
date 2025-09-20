@@ -261,9 +261,10 @@ MonoBehaviour:
   OnEnemyhit:
     m_PersistentCalls:
       m_Calls: []
-  speed: 3
-  damage: 7
-  attackCooldown: 1
+  speed: 3.2
+  damage: 9
+  health: 60
+  attackCooldown: 0.8
   actionRadius: 0.5
   HealthBar: {fileID: 5333312199946071443}
   backgroundHealthBar: {fileID: 7022701402907246434}
@@ -272,6 +273,8 @@ MonoBehaviour:
   maxDistanceFromPlayer: 25
   repositionDistance: 15
   debugRepositioning: 0
+  enemyDeathDialogue:
+    dialogueLines: []
   attackRange: 1.5
   dodgeRange: 2
   dodgeSpeed: 6

@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 //
 // Mostra una riga di testo alla volta (separata da \n), con effetto typewriter e scorrimento orizzontale.
 // Quando una riga termina di scorrere, scompare e appare la successiva.
-//
+// 
 // COME USARE:
 // - Per andare a capo, inserisci '\n' (senza virgolette) nel campo fullText.
 //   Esempio: "Ciao mondo!\nQuesta è la seconda riga."

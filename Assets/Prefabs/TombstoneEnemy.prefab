@@ -263,7 +263,8 @@ MonoBehaviour:
       m_Calls: []
   speed: 3
   damage: 5
-  attackCooldown: 1
+  health: 100
+  attackCooldown: 1.5
   actionRadius: 0.5
   HealthBar: {fileID: 5333312199946071443}
   backgroundHealthBar: {fileID: 7022701402907246434}
@@ -272,9 +273,11 @@ MonoBehaviour:
   maxDistanceFromPlayer: 25
   repositionDistance: 15
   debugRepositioning: 0
+  enemyDeathDialogue:
+    dialogueLines: []
   minDistance: 3
   maxDistance: 7
-  shootingRange: 10
+  shootingRange: 8
   projectilePrefab: {fileID: 4838925836734502132, guid: 3a786196ff8912944a36b47672c60330,
     type: 3}
 --- !u!1 &4815355251459302377

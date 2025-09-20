@@ -17,6 +17,5 @@ MonoBehaviour:
   icon: {fileID: 143021600, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}
   maxLevel: 5
   additionalBlades: 1
-  damageMultiplier: 1.25
-  speedMultiplier: 1.15
-  rangeMultiplier: 1.1
+  damageMultiplier: 1.2
+  speedMultiplier: 1.05

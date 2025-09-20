@@ -30,6 +30,22 @@ public class Player : MonoBehaviour
     private Vector3 initialPosition = Vector3.zero;
     private bool isDead = false;
     private InputSystem_Actions inputActions;
+
+    private int collectedMagnets = 0;
+    private int maxMagnets = 6;
+
+   public int GetCollectedMagnets(){
+        return collectedMagnets;
+   }
+    public void SetCollectedMagnets(int value){
+          collectedMagnets = Mathf.Clamp(value, 0, maxMagnets);
+    }
+
+    public int MaxMagnets
+    {
+        get => maxMagnets;
+        set => maxMagnets = Mathf.Max(0, value);
+    }
     // Animator gestito da PlayerAnimator component
 
     private void Awake()

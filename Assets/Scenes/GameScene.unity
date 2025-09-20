@@ -2930,7 +2930,7 @@ MonoBehaviour:
     medikitWeight: 0.5
     magnetWeight: 0.5
     chestWeight: 0.05
-  - enemyType: 5
+  - enemyType: 8
     xpDropChance: 1
     minXPDrops: 1
     maxXPDrops: 3
@@ -2940,12 +2940,28 @@ MonoBehaviour:
     chestWeight: 0.05
   - enemyType: 6
     xpDropChance: 1
-    minXPDrops: 1
+    minXPDrops: 2
     maxXPDrops: 3
     specialDropChance: 0.1
     medikitWeight: 0.5
     magnetWeight: 0.5
     chestWeight: 0.05
+  - enemyType: 7
+    xpDropChance: 1
+    minXPDrops: 15
+    maxXPDrops: 20
+    specialDropChance: 0.1
+    medikitWeight: 0.5
+    magnetWeight: 0.5
+    chestWeight: 0.05
+  - enemyType: 9
+    xpDropChance: 1
+    minXPDrops: 15
+    maxXPDrops: 20
+    specialDropChance: 1
+    medikitWeight: 0
+    magnetWeight: 0
+    chestWeight: 1
   - enemyType: 7
     xpDropChance: 1
     minXPDrops: 15
@@ -3108,9 +3124,9 @@ MonoBehaviour:
       m_Calls: []
   prefab: {fileID: 5785520162873480696, guid: 908c955acedfe054e88a0dae5e9f18de, type: 3}
   speed: 1
-  range: 1.5
+  range: 2.4
   amount: 1
-  weaponDamage: 3
+  weaponDamage: 13
 --- !u!1001 &961156348
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3799,7 +3815,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.9999924, y: -5}
+  m_AnchoredPosition: {x: -1, y: -5}
   m_SizeDelta: {x: -2, y: -1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1216164186
@@ -4416,10 +4432,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   prefab: {fileID: 6804826553281151105, guid: 40a92ec3fde603d478f78b8ab14f4da4, type: 3}
-  rotationSpeed: 1
-  weaponDamage: 40
-  range: 0.2
-  cooldown: 5
+  rotationSpeed: 1.4
+  weaponDamage: 8
+  range: 0.1
+  cooldown: 8
   duration: 3
 --- !u!1 &1622874958
 GameObject:

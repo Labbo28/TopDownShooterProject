@@ -17,5 +17,6 @@ MonoBehaviour:
   icon: {fileID: -144335857, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}
   maxLevel: 5
   damageMultiplier: 1.2
-  fireRateMultiplier: 0.85
+  fireRateMultiplier: 0.95
   reloadSpeedMultiplier: 0.9
+  maxAmmoMultiplier: 1.3
