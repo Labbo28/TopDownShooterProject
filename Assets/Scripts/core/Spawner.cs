@@ -28,6 +28,7 @@ public class Spawner : MonoBehaviour
     // Enemy tracking
     private List<GameObject> aliveEnemies = new List<GameObject>();
     private Dictionary<SpawnData, float> lastSpawnTimes = new Dictionary<SpawnData, float>();
+    private HashSet<SpawnData> spawnedBatches = new HashSet<SpawnData>();
 
     // Boss tracking
     private GameObject currentBoss;
@@ -141,12 +142,15 @@ public class Spawner : MonoBehaviour
 
         // Reset spawn timers and boss state
         lastSpawnTimes.Clear();
+        spawnedBatches.Clear();
         bossSpawned = false;
         currentBoss = null;
         HasInvokedBossDefeated = false;
 
         if (debugMode)
         {
+            Debug.Log($"Starting Wave {currentWave.waveNumber}: {currentWave.waveName}");
+            Debug.Log($"Wave duration: {currentWave.waveDuration}s, Spawn data count: {currentWave.spawnData.Count}");
         }
 
         // Special handling for boss waves
@@ -223,8 +227,8 @@ public class Spawner : MonoBehaviour
         }
         else
         {
-            // Spawning a batch
-            if (timeSinceLastSpawn >= spawnData.delayBetweenSpawns && !HasSpawnedBatch(spawnData))
+            // Spawning a batch - spawn only once per wave
+            if (!HasSpawnedBatch(spawnData))
             {
                 StartCoroutine(SpawnBatch(spawnData));
             }
@@ -233,23 +237,34 @@ public class Spawner : MonoBehaviour
     
     private bool HasSpawnedBatch(SpawnData spawnData)
     {
-        // Logica per determinare se il batch è già stato spawnato
-        // Puoi implementare questo con un Dictionary<SpawnData, bool> se necessario
-        return false;
+        return spawnedBatches.Contains(spawnData);
     }
     
     private IEnumerator SpawnBatch(SpawnData spawnData)
     {
+        // Marca il batch come spawnato PRIMA di iniziare
+        spawnedBatches.Add(spawnData);
+        
+        if (debugMode)
+        {
+            Debug.Log($"Spawning batch: {spawnData.spawnCount} enemies of type {spawnData.enemyPrefab.name}");
+        }
+        
         for (int i = 0; i < spawnData.spawnCount; i++)
         {
             if (aliveEnemies.Count >= maxEnemiesAlive) break;
             
             SpawnEnemy(spawnData);
             
-            if (spawnData.delayBetweenSpawns > 0)
+            if (spawnData.delayBetweenSpawns > 0 && i < spawnData.spawnCount - 1)
             {
                 yield return new WaitForSeconds(spawnData.delayBetweenSpawns);
             }
+        }
+        
+        if (debugMode)
+        {
+            Debug.Log($"Batch spawn completed for {spawnData.enemyPrefab.name}");
         }
     }
     
