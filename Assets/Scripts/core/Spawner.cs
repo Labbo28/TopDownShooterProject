@@ -392,18 +392,18 @@ public class Spawner : MonoBehaviour
         List<SpawnData> activeSpawnData = currentWave.GetActiveSpawnData(waveTime);
         return activeSpawnData.Count > 0;
     }
-    
+
     private void CompleteCurrentWave()
     {
         waveActive = false;
-        
+
         if (debugMode)
         {
         }
-        
+
         OnWaveCompleted?.Invoke(currentWave.waveNumber);
 
-        if(currentWave.DialoguesAtEndWave && currentWave.dialogues != null)
+        if (currentWave.DialoguesAtEndWave && currentWave.dialogues != null)
         {
             DialogueManager.Instance.StartDialogue(currentWave.dialogues);
         }
@@ -411,12 +411,13 @@ public class Spawner : MonoBehaviour
         // Passa alla wave successiva
         if (currentWaveIndex + 1 < waves.Count)
         {
-            StartCoroutine(DelayedWaveStart(currentWaveIndex + 1, 10f));
+            StartCoroutine(DelayedWaveStart(currentWaveIndex + 1, 0.1f));
         }
         else
         {
             OnAllWavesCompleted?.Invoke();
         }
+        
     }
     
     private IEnumerator DelayedWaveStart(int waveIndex, float delay)
