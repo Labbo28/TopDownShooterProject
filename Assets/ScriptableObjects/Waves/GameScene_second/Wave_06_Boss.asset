@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c89fa1be678b004eb6070d2412a8327, type: 3}
+  m_Name: Wave_06_Boss
+  m_EditorClassIdentifier: 
+  waveNumber: 6
+  waveName: Boss Finale - Signore degli Scheletri
+  waveDuration: 120
+  spawnData:
+  - enemyPrefab: {fileID: 2372909403197453248, guid: fb4d4d81774a74e4a8fc129406bc1cc0, type: 3}
+    spawnCount: 8
+    spawnRate: 0
+    startTime: 30
+    duration: 90
+    spawnContinuously: 0
+    delayBetweenSpawns: 8
+    healthMultiplier: 1.5
+    damageMultiplier: 1.5
+    speedMultiplier: 1.3
+  - enemyPrefab: {fileID: 2372909403197453248, guid: e241c6d8ccfda9c0aae6b4f5d9531e37, type: 3}
+    spawnCount: 4
+    spawnRate: 0
+    startTime: 60
+    duration: 60
+    spawnContinuously: 0
+    delayBetweenSpawns: 12
+    healthMultiplier: 1.8
+    damageMultiplier: 1.8
+    speedMultiplier: 1.2
+  requireAllEnemiesDead: 1
+  maxEnemiesAlive: 15
+  xpMultiplier: 2
+  dropRateMultiplier: 3
+  isBossWave: 1
+  bossPrefab: {fileID: 2372909403197453248, guid: dc578a454a04468b7bc85c8be8aab8ff, type: 3}
+  bossSpawnDelay: 5
+  showBossIntro: 1
+  bossIntroText: Il Signore degli Scheletri si risveglia dal sonno eterno!
+  pauseRegularSpawningDuringBoss: 0
+  dialogues:
+    dialogueLines: []
+  DialoguesAtEndWave: 0

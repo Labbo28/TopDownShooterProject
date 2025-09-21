@@ -356,20 +356,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waves:
-  - {fileID: 11400000, guid: 0e3ec1a997d882def85097a60a01d1c8, type: 2}
-  - {fileID: 11400000, guid: 021e361f039f988539eda7afca9468e9, type: 2}
-  - {fileID: 11400000, guid: db1d20074f6e5576b8421fb40ffc697e, type: 2}
-  - {fileID: 11400000, guid: 6fe515c0d278616be8f5c68018996b08, type: 2}
-  - {fileID: 11400000, guid: f81c6960f910bb409aeb14e61785f0a5, type: 2}
-  - {fileID: 11400000, guid: c9dbcf0626e3732d49c0558aaa572b42, type: 2}
-  - {fileID: 11400000, guid: dfc3721a592c88accb04fbac4e3671d7, type: 2}
-  - {fileID: 11400000, guid: b188abc31b6ff601698443a7d77231ed, type: 2}
-  - {fileID: 11400000, guid: 4f691063bf434b953a3b81182b44776c, type: 2}
-  - {fileID: 11400000, guid: ebcdbfcf63c30140cb615d040489bfc3, type: 2}
+  - {fileID: 11400000, guid: 1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d, type: 2}
+  - {fileID: 11400000, guid: 2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e, type: 2}
+  - {fileID: 11400000, guid: 3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f, type: 2}
   spawnPoints:
-  - {fileID: 1921689878}
   - {fileID: 578075862}
   - {fileID: 2045230101}
+  - {fileID: 1921689878}
   - {fileID: 1200787166}
   - {fileID: 1808063089}
   - {fileID: 1403761646}

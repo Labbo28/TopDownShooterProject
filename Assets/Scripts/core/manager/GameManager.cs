@@ -249,7 +249,7 @@ public class GameManager : MonoBehaviour
     private void OnSpawnerAllWavesCompleted()
     {
         OnAllWavesCompleted?.Invoke();
-        // Potresti voler triggerare una vittoria qui
+        SceneManager.LoadScene("PlainToForest");
     }
 
     public void AddXP(float xp)
