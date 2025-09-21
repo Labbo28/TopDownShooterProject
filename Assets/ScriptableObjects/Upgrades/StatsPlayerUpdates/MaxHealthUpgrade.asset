@@ -15,6 +15,6 @@ MonoBehaviour:
   upgradeName: Max health increase
   description: 'increase max health '
   icon: {fileID: 927338625, guid: d71a3dc7aa20fad4f9a99fc76a9254ba, type: 3}
-  maxLevel: 5
+  maxLevel: 8
   currentLevel: 0
-  healthIncreasePercentage: 1.2
+  healthIncreasePercentage: 1.3

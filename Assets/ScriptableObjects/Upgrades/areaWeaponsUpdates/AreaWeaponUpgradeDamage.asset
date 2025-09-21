@@ -15,5 +15,5 @@ MonoBehaviour:
   upgradeName: Panic!
   description: spinnnnn!
   icon: {fileID: 21300000, guid: 47f5bf48a94594a4ca2527f935665c59, type: 3}
-  maxLevel: 5
-  damageMultiplier: 1.25
+  maxLevel: 7
+  damageMultiplier: 1.4

@@ -1,6 +1,7 @@
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.Video;
-
+using UnityEngine.SceneManagement;
 public class VideoEndHandler : MonoBehaviour
 {
     public VideoPlayer videoPlayer;
@@ -12,6 +13,12 @@ public class VideoEndHandler : MonoBehaviour
             videoPlayer = GetComponent<VideoPlayer>();
 
         // Registriamo il metodo da chiamare quando il video finisce
+        if(videoPlayer.clip == null)
+        {
+            Debug.LogError("Nessun video assegnato al VideoPlayer.");
+            SceneManager.LoadScene("GameScene");
+            return;
+        }
         videoPlayer.loopPointReached += OnVideoEnd;
     }
 

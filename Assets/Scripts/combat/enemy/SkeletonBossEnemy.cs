@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 /// <summary>
 /// Skeleton Boss - Boss finale con multiple fasi, attacchi speciali e capacità di evocazione
@@ -19,6 +20,7 @@ public class SkeletonBossEnemy : EnemyBase
     [SerializeField] private float summonCooldown = 15f;
     [SerializeField] private float chargeAttackCooldown = 8f;
     [SerializeField] private float areaAttackCooldown = 12f;
+    [SerializeField] private float minionsHealth=120f;
     
    
     // Boss phases
@@ -325,7 +327,7 @@ public class SkeletonBossEnemy : EnemyBase
         int minionsToSummon = maxMinions;
         float angleStep = 360f / minionsToSummon;
         float radius = 6f;
-        
+
         for (int i = 0; i < minionsToSummon; i++)
         {
             float angle = i * angleStep * Mathf.Deg2Rad; // converti in radianti
@@ -333,7 +335,8 @@ public class SkeletonBossEnemy : EnemyBase
             float y = player.position.y + Mathf.Sin(angle) * radius;
 
             Vector2 spawnPos = new Vector2(x, y);
-            Instantiate(minionPrefab, spawnPos, Quaternion.identity);
+            GameObject skeleton = Instantiate(minionPrefab, spawnPos, Quaternion.identity);
+            modifyMinion(skeleton);
         }
         
         // Pulizia dei minions morti
@@ -343,6 +346,11 @@ public class SkeletonBossEnemy : EnemyBase
         isPerformingSpecialAttack = false;
     }
 
+    private void modifyMinion(GameObject skeleton)
+    {
+        skeleton.GetComponent<SpriteRenderer>().color = Color.magenta;
+        skeleton.GetComponent<HealthSystem>().SetMaxHealth(minionsHealth);
+    }
     /// <summary>
     /// Gestisce il cooldown
     /// </summary>

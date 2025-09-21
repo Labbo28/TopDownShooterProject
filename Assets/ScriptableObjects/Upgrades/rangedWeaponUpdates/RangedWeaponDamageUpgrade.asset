@@ -15,5 +15,5 @@ MonoBehaviour:
   upgradeName: 
   description: damage up!
   icon: {fileID: -144335857, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}
-  maxLevel: 5
-  damageMultiplier: 1.2
+  maxLevel: 8
+  damageMultiplier: 1.4
