@@ -19,15 +19,23 @@ public class ThrowingWeaponUpgrade : PlayerUpgrade
 
     public override void ApplyUpgrade(Player player, int currentLevel)
     {
+        Debug.Log($"ThrowingWeaponUpgrade.ApplyUpgrade called - Level: {currentLevel}");
+        
         // Unlock ThrowingWeapon on first upgrade
         if (currentLevel == 0)
         {
+            Debug.Log("Unlocking ThrowingWeapon for the first time");
             WeaponUnlockManager unlockManager = player.GetComponent<WeaponUnlockManager>();
             if (unlockManager == null)
             {
+                Debug.Log("Creating new WeaponUnlockManager");
                 unlockManager = player.gameObject.AddComponent<WeaponUnlockManager>();
             }
             unlockManager.UnlockWeapon("ThrowingWeapon");
+        }
+        else
+        {
+            Debug.Log($"Upgrading ThrowingWeapon to level {currentLevel + 1}");
         }
 
         // Gestisce tutto tramite ThrowingWeaponStatsModifier per evitare conflitti

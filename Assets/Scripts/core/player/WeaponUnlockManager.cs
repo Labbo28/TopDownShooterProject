@@ -33,18 +33,31 @@ public class WeaponUnlockManager : MonoBehaviour
         if (!unlockedWeapons.Contains(weaponName))
         {
             unlockedWeapons.Add(weaponName);
-            UpdateWeaponStates();
             Debug.Log($"Weapon unlocked: {weaponName}");
+            UpdateWeaponStates();
+        }
+        else
+        {
+            Debug.Log($"Weapon {weaponName} was already unlocked");
         }
     }
     
     private void UpdateWeaponStates()
     {
-        // Find all weapon components in the Player's Weapons GameObject
+        // Find all weapon components in the Player - try Weapons folder first, then whole Player
         Transform weaponsParent = transform.Find("Weapons");
-        if (weaponsParent == null) return;
         
-        Weapon[] allWeapons = weaponsParent.GetComponentsInChildren<Weapon>(true);
+        Weapon[] allWeapons;
+        if (weaponsParent != null)
+        {
+            // Use Weapons folder if it exists
+            allWeapons = weaponsParent.GetComponentsInChildren<Weapon>(true);
+        }
+        else
+        {
+            // Fallback: search in entire Player hierarchy
+            allWeapons = GetComponentsInChildren<Weapon>(true);
+        }
         
         foreach (Weapon weapon in allWeapons)
         {
@@ -53,6 +66,9 @@ public class WeaponUnlockManager : MonoBehaviour
             
             // Enable/disable the weapon GameObject
             weapon.gameObject.SetActive(shouldBeActive);
+            
+            // Debug info
+            Debug.Log($"WeaponUnlockManager: {weaponType} - Unlocked: {shouldBeActive}");
         }
     }
     
