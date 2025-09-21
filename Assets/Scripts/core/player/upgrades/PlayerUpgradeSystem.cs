@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 
-public class PlayerUpgradeSystem : MonoBehaviour
+public class PlayerUpgradeSystem : PersistentObject
 {
     // Evento statico per segnalare la chiusura del pannello upgrade
     public static System.Action<int> OnUpgradePanelClosed;
@@ -160,5 +160,10 @@ public class PlayerUpgradeSystem : MonoBehaviour
     {
         var upgrade = GetRuntimeUpgrade(upgradeName);
         return upgrade?.CurrentLevel ?? 0;
+    }
+
+    protected override void Setup()
+    {
+        throw new System.NotImplementedException();
     }
 }

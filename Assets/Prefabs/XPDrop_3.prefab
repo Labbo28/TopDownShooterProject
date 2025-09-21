@@ -102,7 +102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeToLive: 180
-  xpValue: 9
+  xpValue: 12
 --- !u!58 &-6554578018598017897
 CircleCollider2D:
   m_ObjectHideFlags: 0
