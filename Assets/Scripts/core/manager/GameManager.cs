@@ -261,7 +261,7 @@ public class GameManager : MonoBehaviour
             PlayerLevel++;
             OnPlayerLevelUp?.Invoke(PlayerLevel);
             XP -= xpNeededToLevelUp;
-            xpNeededToLevelUp *= 1.1f;
+            xpNeededToLevelUp *= 1.15f;
         }
         OnXPChanged?.Invoke(XP);
     }
