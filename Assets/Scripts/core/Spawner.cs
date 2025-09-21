@@ -396,7 +396,7 @@ public class Spawner : MonoBehaviour
         // Passa alla wave successiva
         if (currentWaveIndex + 1 < waves.Count)
         {
-            StartCoroutine(DelayedWaveStart(currentWaveIndex + 1, 2f));
+            StartCoroutine(DelayedWaveStart(currentWaveIndex + 1, 10f));
         }
         else
         {
