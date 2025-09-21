@@ -20,4 +20,5 @@ MonoBehaviour:
   enemyDetectionRange: 8
   rotationSpeed: 540
   returnDelay: 0.2
-  throwingProjectilePrefab: {fileID: 0}
+  throwingProjectilePrefab: {fileID: 2659679718134261563, guid: 91552bc389a6757738caafb7adce1a1c,
+    type: 3}
