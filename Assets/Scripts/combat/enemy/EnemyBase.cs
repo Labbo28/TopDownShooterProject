@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using System.Collections;
 using System.Runtime.CompilerServices;
+using UnityEngine.SceneManagement;
 
 public class EnemyDeadEvent : UnityEvent<EnemyType, Vector3> { }
 
@@ -301,9 +302,12 @@ public abstract class EnemyBase : MonoBehaviour
     public virtual void Die()
     {
         GameManager.Instance?.EnemyKilled();
+        
         OnEnemyDead?.Invoke(GetEnemyType(), transform.position);
         StartCoroutine(HandleDeath());
         DisableHealthBar();
+        // se il enemy è skeleton boss alla sua morte cambia scena
+
 
     }
 

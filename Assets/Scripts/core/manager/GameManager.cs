@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     [Header("Wave System")]
     [SerializeField] private bool useTimeBasedWaves = true;
     [SerializeField] private float waveInterval = 60f; // secondi per wave se time-based
-    [SerializeField] private float timeToSaveTheCat = 10f; 
+    [SerializeField] private float timeToSaveTheCat = 0.1f; 
     private int spawnerManagedWave = 0; // wave gestita dallo spawner
     
     //attrtributi della classe MagnetDrop
@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
     
     private float previousGameTime = 0f;
     private string formattedTime = "00:00";
-    private bool hasSavedTheCat = true;
+    public bool hasSavedTheCat = true;
    
 
     public UnityEvent<int> OnWaveChanged;
@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour
     // Flag per sapere se dobbiamo reinizializzare
     private bool needsReinitialization = false;
 
-   private bool isCatSaved()
+   public bool isCatSaved()
 {
     float time = GetGameTime();
     if (time > 60f * timeToSaveTheCat)
@@ -281,6 +281,7 @@ public class GameManager : MonoBehaviour
     {
         OnGameOver?.Invoke();
         CurrentGameState = GameState.GameOver;
+
 
     }
 

@@ -161,6 +161,7 @@ MonoBehaviour:
   useTimeBasedWaves: 1
   waveInterval: 60
   timeToSaveTheCat: 10
+  hasSavedTheCat: 1
   OnWaveChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2699,16 +2700,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waves:
-  - {fileID: 11400000, guid: 0e3ec1a997d882def85097a60a01d1c8, type: 2}
-  - {fileID: 11400000, guid: 021e361f039f988539eda7afca9468e9, type: 2}
-  - {fileID: 11400000, guid: db1d20074f6e5576b8421fb40ffc697e, type: 2}
-  - {fileID: 11400000, guid: 6fe515c0d278616be8f5c68018996b08, type: 2}
-  - {fileID: 11400000, guid: f81c6960f910bb409aeb14e61785f0a5, type: 2}
-  - {fileID: 11400000, guid: c9dbcf0626e3732d49c0558aaa572b42, type: 2}
-  - {fileID: 11400000, guid: dfc3721a592c88accb04fbac4e3671d7, type: 2}
-  - {fileID: 11400000, guid: b188abc31b6ff601698443a7d77231ed, type: 2}
-  - {fileID: 11400000, guid: 4f691063bf434b953a3b81182b44776c, type: 2}
-  - {fileID: 11400000, guid: ebcdbfcf63c30140cb615d040489bfc3, type: 2}
+  - {fileID: 11400000, guid: 4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a, type: 2}
+  - {fileID: 11400000, guid: 5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b, type: 2}
+  - {fileID: 11400000, guid: 6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c, type: 2}
   spawnPoints:
   - {fileID: 1921689878}
   - {fileID: 2083543462}
@@ -4874,6 +4868,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1933800774}
   m_CullTransparentMesh: 1
+--- !u!1 &1941478517
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1941478519}
+  - component: {fileID: 1941478518}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1941478518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1941478517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2621e48a5bade578194a9fbfd2102637, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawner: {fileID: 861551370}
+  sceneToLoad: ForestToPlain
+--- !u!4 &1941478519
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1941478517}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -18.102556, y: 17.63263, z: -0.56274444}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2002168949
 GameObject:
   m_ObjectHideFlags: 0
@@ -5590,3 +5630,4 @@ SceneRoots:
   - {fileID: 1352909055}
   - {fileID: 733379219}
   - {fileID: 861551371}
+  - {fileID: 1941478519}

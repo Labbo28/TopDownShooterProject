@@ -27,6 +27,9 @@ EditorBuildSettings:
     path: Assets/Scenes/sceneVideoEnding/VideoStart.unity
     guid: adfcbffd788ae3f49ae6837f4305eb40
   - enabled: 1
+    path: Assets/Scenes/ForestToPlain.unity
+    guid: 226059505585447a8bb1b362f4da999f
+  - enabled: 1
     path: Assets/Scenes/SaveTheCatBlack.unity
     guid: 640c73c79c199094c81731ae3acb83df
   m_configObjects: {}

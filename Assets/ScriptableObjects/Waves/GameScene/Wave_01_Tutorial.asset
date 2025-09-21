@@ -16,8 +16,9 @@ MonoBehaviour:
   waveName: Tutorial - Prima Ondata
   waveDuration: 30
   spawnData:
-  - enemyPrefab: {fileID: 2372909403197453248, guid: fb4d4d81774a74e4a8fc129406bc1cc0, type: 3}
-    spawnCount: 3
+  - enemyPrefab: {fileID: 2372909403197453248, guid: fb4d4d81774a74e4a8fc129406bc1cc0,
+      type: 3}
+    spawnCount: 10
     spawnRate: 0
     startTime: 0
     duration: 30
@@ -37,5 +38,9 @@ MonoBehaviour:
   bossIntroText: 
   pauseRegularSpawningDuringBoss: 0
   dialogues:
-    dialogueLines: []
-  DialoguesAtEndWave: 0
+    dialogueLines:
+    - character:
+        name: 
+        icon: {fileID: 0}
+      line: gay
+  DialoguesAtEndWave: 1
