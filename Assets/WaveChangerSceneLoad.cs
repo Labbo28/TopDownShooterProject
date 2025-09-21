@@ -6,12 +6,11 @@ public class WaveChangerSceneLoad : MonoBehaviour
     [SerializeField] private Spawner spawner;
     [SerializeField] private string sceneToLoad="PlainToForest";
     
-    private bool isCatSaved;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         spawner.OnAllWavesCompleted += ChangeScene;
-        isCatSaved = GameManager.Instance.isCatSaved();
+        //isCatSaved = GameManager.Instance.isCatSaved();
     }
 
     private void ChangeScene()
@@ -20,17 +19,7 @@ public class WaveChangerSceneLoad : MonoBehaviour
             GameManager.Instance.GameOver();
         Debug.Log("Changing Scene to "+sceneToLoad);
 
-        if (isCatSaved)
-        {
-            Debug.Log("Cat is saved, loading the good ending");
-            sceneToLoad = "FirtEndingVideoHappy";
-
-        }
-        else
-        {
-            Debug.Log("Cat is not saved, loading the bad ending");
-            sceneToLoad = "SecondEndingVideoSad";
-        }
+        //TODO: Logica cambio scena gatto e collare 
         SceneManager.LoadScene(sceneToLoad);
     }
 
