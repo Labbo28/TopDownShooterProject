@@ -3,42 +3,43 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+// Gestisce lo spawn dei nemici e delle wave.
 public class Spawner : MonoBehaviour
 {
     [Header("Wave Configuration")]
-    [SerializeField] private List<Wave> waves = new List<Wave>();
-    [SerializeField] private Transform[] spawnPoints;
-    [SerializeField] private float spawnRadius = 1f;
-    
+    [SerializeField] private List<Wave> waves = new List<Wave>(); // Lista delle wave da gestire
+    [SerializeField] private Transform[] spawnPoints;             // Punti di spawn possibili
+    [SerializeField] private float spawnRadius = 1f;              // Raggio casuale attorno al punto di spawn
+
     [Header("Spawn Limits")]
-    [SerializeField] private int maxEnemiesAlive = 50;
-    
-    
-    [SerializeField] private float minDistanceFromPlayer = 5f;
-    
+    [SerializeField] private int maxEnemiesAlive = 50;            // Limite massimo di nemici vivi
+
+    [SerializeField] private float minDistanceFromPlayer = 5f;    // Distanza minima dal player per spawnare
+
     [Header("Debug")]
-    [SerializeField] private bool debugMode = false;
-    
-    // Current wave state
+    [SerializeField] private bool debugMode = false;              // Abilita log di debug
+
+    // Stato corrente della wave
     private int currentWaveIndex = 0;
     private Wave currentWave;
     private float waveStartTime;
     private bool waveActive = false;
-    
-    // Enemy tracking
-    private List<GameObject> aliveEnemies = new List<GameObject>();
-    private Dictionary<SpawnData, float> lastSpawnTimes = new Dictionary<SpawnData, float>();
-    private HashSet<SpawnData> spawnedBatches = new HashSet<SpawnData>();
+
+    // Tracciamento nemici
+    private List<GameObject> aliveEnemies = new List<GameObject>(); // Nemici vivi
+    private Dictionary<SpawnData, float> lastSpawnTimes = new Dictionary<SpawnData, float>(); // Ultimo spawn per tipo
+    private HashSet<SpawnData> spawnedBatches = new HashSet<SpawnData>(); // Batch già spawnati
+    private Dictionary<SpawnData, int> spawnedCountPerType = new Dictionary<SpawnData, int>(); // <--- AGGIUNTO
 
     // Boss tracking
     private GameObject currentBoss;
     private bool bossSpawned = false;
     private bool HasInvokedBossDefeated = false;
-    
+
     // Player reference
     private Transform playerTransform;
-    
-    // Events
+
+    // Eventi pubblici per comunicare con altri sistemi
     public System.Action<int> OnWaveStarted;
     public System.Action<int> OnWaveCompleted;
     public System.Action OnAllWavesCompleted;
@@ -46,7 +47,8 @@ public class Spawner : MonoBehaviour
     public System.Action OnBossWaveStarted;
     public System.Action OnBossDefeated;
     public System.Action<string> OnBossIntro;
-    
+
+    // Trova il player nella scena
     private void FindPlayer()
     {
         if (Player.Instance != null)
@@ -62,71 +64,62 @@ public class Spawner : MonoBehaviour
             }
             else
             {
-                Invoke(nameof(FindPlayer), 0.1f);
+                Invoke(nameof(FindPlayer), 0.1f); // Riprova dopo poco
             }
         }
     }
 
-    
+    // Inizializzazione
     private void Start()
     {
         playerTransform = FindObjectOfType<Player>()?.transform;
-        
-        if (playerTransform == null)
-        {
-            return;
-        }
-        
-        // Registra agli eventi del GameManager per sincronizzare le wave
+        if (playerTransform == null) return;
+
+        // Si collega agli eventi del GameManager per sincronizzare le wave
         if (GameManager.Instance != null)
         {
             GameManager.Instance.OnWaveChanged.AddListener(OnGameManagerWaveChanged);
         }
-        
-        // Inizializza il sistema
+
         InitializeSpawner();
     }
-    
+
+    // Avvia la prima wave se presente
     private void InitializeSpawner()
     {
         if (waves.Count > 0)
         {
             StartWave(0);
         }
-        else
-        {
-        }
     }
-    
+
+    // Aggiornamento ad ogni frame
     private void Update()
     {
         if (!waveActive || currentWave == null ||
-         GameManager.Instance.CurrentGameState == GameState.GameOver) return;
-        
-        // Pulisci la lista dei nemici morti
-        CleanupDeadEnemies();
-        
-        // Controlla se la wave è finita
+            GameManager.Instance.CurrentGameState == GameState.GameOver) return;
+
+        CleanupDeadEnemies(); // Rimuove i nemici morti dalla lista
+
         if (IsWaveComplete())
         {
             CompleteCurrentWave();
             return;
         }
-        
-        // Spawna nemici per la wave corrente
-        ProcessCurrentWaveSpawning();
+
+        ProcessCurrentWaveSpawning(); // Gestisce lo spawn dei nemici
     }
-    
+
+    // Gestisce il cambio wave richiesto dal GameManager
     private void OnGameManagerWaveChanged(int newWave)
     {
-        // Il GameManager potrebbe avere una numerazione diversa
-        // Adatta qui la logica se necessario
         if (newWave - 1 != currentWaveIndex && newWave - 1 < waves.Count)
         {
             StartWave(newWave - 1);
         }
     }
-    
+
+    // Avvia una wave specifica
     private void StartWave(int waveIndex)
     {
         if (waveIndex >= waves.Count)
@@ -140,49 +133,38 @@ public class Spawner : MonoBehaviour
         waveStartTime = Time.time;
         waveActive = true;
 
-        // Reset spawn timers and boss state
+        // Reset stato spawn
         lastSpawnTimes.Clear();
         spawnedBatches.Clear();
+        spawnedCountPerType.Clear(); // <--- AGGIUNTO
         bossSpawned = false;
         currentBoss = null;
         HasInvokedBossDefeated = false;
 
-        if (debugMode)
-        {
-            Debug.Log($"Starting Wave {currentWave.waveNumber}: {currentWave.waveName}");
-            Debug.Log($"Wave duration: {currentWave.waveDuration}s, Spawn data count: {currentWave.spawnData.Count}");
-        }
-
-        // Special handling for boss waves
         if (currentWave.isBossWave)
         {
             OnBossWaveStarted?.Invoke();
-
-            // Show boss intro if enabled
             if (currentWave.ShowBossIntro)
             {
                 StartCoroutine(ShowBossIntroAfterDelay(currentWave.BossIntroText, 1f));
-            }
-
-            if (debugMode)
-            {
             }
         }
 
         OnWaveStarted?.Invoke(currentWave.waveNumber);
     }
-    
+
+    // Gestisce lo spawn dei nemici della wave corrente
     private void ProcessCurrentWaveSpawning()
     {
         float waveTime = Time.time - waveStartTime;
 
-        // Handle boss spawning for boss waves
+        // Gestione boss
         if (currentWave.isBossWave && !bossSpawned && waveTime >= currentWave.BossSpawnDelay)
         {
             SpawnBoss();
         }
 
-        // Regular enemy spawning (pause if boss wave setting is enabled and boss is alive)
+        // Se il boss è vivo e la wave lo richiede, pausa lo spawn dei nemici normali
         bool shouldPauseRegularSpawning = currentWave.isBossWave &&
                                           currentWave.PauseRegularSpawningDuringBoss &&
                                           currentBoss != null &&
@@ -197,95 +179,105 @@ public class Spawner : MonoBehaviour
             }
         }
     }
-    
+
+    // Gestisce lo spawn di un singolo tipo di nemico
     private void ProcessSpawnData(SpawnData spawnData, float waveTime)
     {
-        // Controlla se abbiamo troppi nemici vivi
         if (aliveEnemies.Count >= Mathf.Min(maxEnemiesAlive, currentWave.maxEnemiesAlive))
         {
+            return; // Troppi nemici vivi
+        }
+
+        if (!spawnedCountPerType.ContainsKey(spawnData))
+            spawnedCountPerType[spawnData] = 0;
+
+        // --- Limite massimo per tipo ---
+        if (spawnData.maxEnemiesInWave > 0 && spawnedCountPerType[spawnData] >= spawnData.maxEnemiesInWave)
+        {
+            Debug.Log($"[SPAWN BLOCCATO] {spawnData.enemyPrefab.name}: raggiunto il limite ({spawnedCountPerType[spawnData]}/{spawnData.maxEnemiesInWave})");
             return;
         }
-        
-        // Controlla se è tempo di spawnare
+
         if (!lastSpawnTimes.ContainsKey(spawnData))
         {
             lastSpawnTimes[spawnData] = 0f;
         }
-        
+
         float timeSinceLastSpawn = waveTime - lastSpawnTimes[spawnData];
-        
+
         if (spawnData.spawnContinuously)
         {
-            // Spawning continuo basato su spawnRate
             float spawnInterval = 1f / spawnData.spawnRate;
-            
             if (timeSinceLastSpawn >= spawnInterval)
             {
+                if (spawnData.maxEnemiesInWave > 0 && spawnedCountPerType[spawnData] >= spawnData.maxEnemiesInWave)
+                {
+                    Debug.Log($"[SPAWN CONTINUO BLOCCATO] {spawnData.enemyPrefab.name}: raggiunto il limite ({spawnedCountPerType[spawnData]}/{spawnData.maxEnemiesInWave})");
+                    return;
+                }
+                Debug.Log($"[SPAWN CONTINUO] {spawnData.enemyPrefab.name}: spawn n° {spawnedCountPerType[spawnData]+1} (limite {spawnData.maxEnemiesInWave})");
                 SpawnEnemy(spawnData);
                 lastSpawnTimes[spawnData] = waveTime;
             }
         }
         else
         {
-            // Spawning a batch - spawn only once per wave
-            if (!HasSpawnedBatch(spawnData))
+            if (!HasSpawnedBatch(spawnData) && 
+                (spawnData.maxEnemiesInWave <= 0 || spawnedCountPerType[spawnData] < spawnData.maxEnemiesInWave))
             {
+                Debug.Log($"[BATCH SPAWN] {spawnData.enemyPrefab.name}: batch da {spawnData.spawnCount}, già spawnati {spawnedCountPerType[spawnData]} (limite {spawnData.maxEnemiesInWave})");
+                spawnedBatches.Add(spawnData);
                 StartCoroutine(SpawnBatch(spawnData));
             }
         }
     }
-    
+
+    // Controlla se un batch è già stato spawnato
     private bool HasSpawnedBatch(SpawnData spawnData)
     {
         return spawnedBatches.Contains(spawnData);
     }
-    
+
+    // Coroutine per spawnare un batch di nemici
     private IEnumerator SpawnBatch(SpawnData spawnData)
     {
-        // Marca il batch come spawnato PRIMA di iniziare
-        spawnedBatches.Add(spawnData);
-        
-        if (debugMode)
-        {
-            Debug.Log($"Spawning batch: {spawnData.spawnCount} enemies of type {spawnData.enemyPrefab.name}");
-        }
-        
         for (int i = 0; i < spawnData.spawnCount; i++)
         {
             if (aliveEnemies.Count >= maxEnemiesAlive) break;
-            
+
+            if (!spawnedCountPerType.ContainsKey(spawnData))
+                spawnedCountPerType[spawnData] = 0;
+            if (spawnData.maxEnemiesInWave > 0 && spawnedCountPerType[spawnData] >= spawnData.maxEnemiesInWave)
+            {
+                Debug.Log($"[BATCH BLOCCATO] {spawnData.enemyPrefab.name}: raggiunto il limite ({spawnedCountPerType[spawnData]}/{spawnData.maxEnemiesInWave})");
+                break;
+            }
+
+            Debug.Log($"[BATCH SPAWN] {spawnData.enemyPrefab.name}: spawn n° {spawnedCountPerType[spawnData]+1} (limite {spawnData.maxEnemiesInWave})");
             SpawnEnemy(spawnData);
-            
             if (spawnData.delayBetweenSpawns > 0 && i < spawnData.spawnCount - 1)
             {
                 yield return new WaitForSeconds(spawnData.delayBetweenSpawns);
             }
         }
-        
-        if (debugMode)
-        {
-            Debug.Log($"Batch spawn completed for {spawnData.enemyPrefab.name}");
-        }
     }
-    
+
+    // Spawna un singolo nemico
     private void SpawnEnemy(SpawnData spawnData)
     {
         Vector3 spawnPosition = GetValidSpawnPosition();
-        
-        if (spawnPosition == Vector3.zero)
-        {
-            return;
-        }
-        
+        if (spawnPosition == Vector3.zero) return;
+
         GameObject enemy = Instantiate(spawnData.enemyPrefab, spawnPosition, Quaternion.identity);
-        
-        // Applica i moltiplicatori di difficoltà
         ApplyDifficultyScaling(enemy, spawnData);
-        
-        // Registra il nemico spawned
         aliveEnemies.Add(enemy);
-        
-        // Registra il nemico al DropManager se disponibile
+
+        if (!spawnedCountPerType.ContainsKey(spawnData))
+            spawnedCountPerType[spawnData] = 0;
+        spawnedCountPerType[spawnData]++;
+
+        Debug.Log($"[SPAWN EFFETTUATO] {spawnData.enemyPrefab.name}: totale spawnati {spawnedCountPerType[spawnData]} (limite {spawnData.maxEnemiesInWave})");
+
         if (DropManager.Instance != null)
         {
             EnemyBase enemyBase = enemy.GetComponent<EnemyBase>();
@@ -294,12 +286,9 @@ public class Spawner : MonoBehaviour
                 DropManager.Instance.RegisterEnemy(enemyBase);
             }
         }
-        
-        if (debugMode)
-        {
-        }
     }
-    
+
+    // Trova una posizione valida per spawnare (lontana dal player)
     private Vector3 GetValidSpawnPosition()
     {
         for (int attempts = 0; attempts < 10; attempts++)
@@ -307,8 +296,6 @@ public class Spawner : MonoBehaviour
             Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
             Vector3 randomOffset = Random.insideUnitCircle * spawnRadius;
             Vector3 candidate = spawnPoint.position + randomOffset;
-            
-            // Controlla se la posizione è abbastanza lontana dal player
             if (playerTransform != null)
             {
                 float distanceToPlayer = Vector3.Distance(candidate, playerTransform.position);
@@ -322,85 +309,71 @@ public class Spawner : MonoBehaviour
                 return candidate;
             }
         }
-        
-        return Vector3.zero; // Fallback se non trova posizione valida
+        return Vector3.zero; // Nessuna posizione valida trovata
     }
-    
+
+    // Applica i moltiplicatori di difficoltà al nemico
     private void ApplyDifficultyScaling(GameObject enemy, SpawnData spawnData)
     {
-      
         EnemyBase enemyBase = enemy.GetComponent<EnemyBase>();
         if (enemyBase != null)
         {
-          enemyBase.ScaleDifficulty(spawnData.healthMultiplier, spawnData.damageMultiplier, spawnData.speedMultiplier);
-            if (debugMode)
-            {
-            }
+            enemyBase.ScaleDifficulty(spawnData.healthMultiplier, spawnData.damageMultiplier, spawnData.speedMultiplier);
         }
     }
-    
+
+    // Rimuove i nemici morti dalla lista
     private void CleanupDeadEnemies()
     {
         aliveEnemies.RemoveAll(enemy => enemy == null);
     }
-    
+
+    // Controlla se la wave è completa
     private bool IsWaveComplete()
     {
         float waveTime = Time.time - waveStartTime;
 
-        // Special handling for boss waves
+        // Boss wave: termina solo quando il boss è morto e non ci sono altri nemici
         if (currentWave.isBossWave)
         {
-            // Boss wave completes when boss is defeated
             if (bossSpawned && (currentBoss == null || currentBoss.GetComponent<HealthSystem>()?.IsAlive != true))
             {
                 if (!HasInvokedBossDefeated)
                 {
-                    // Spawn chest drops when boss is defeated
+                    // Drop chest quando il boss muore
                     if (currentBoss != null && DropManager.Instance != null)
                     {
-                        // Spawn 2-3 chest drops around the boss position
                         int chestCount = Random.Range(2, 4);
                         DropManager.Instance.SpawnChestDrops(currentBoss.transform.position, chestCount, 2f);
                     }
-
                     OnBossDefeated?.Invoke();
                     HasInvokedBossDefeated = true;
                 }
-                // Also check if all other enemies are dead for boss waves
                 return aliveEnemies.Count == 0;
             }
             return false;
         }
 
-        // Regular wave completion logic
+        // Wave normale: termina per tempo o per nemici morti (se richiesto)
         if (waveTime >= currentWave.waveDuration)
         {
             return true;
         }
 
-        if (currentWave.requireAllEnemiesDead)
-        {
-            return aliveEnemies.Count == 0 && !HasActiveSpawning(waveTime);
-        }
-
         return false;
     }
-    
+
+    // Controlla se ci sono ancora spawn attivi
     private bool HasActiveSpawning(float waveTime)
     {
         List<SpawnData> activeSpawnData = currentWave.GetActiveSpawnData(waveTime);
         return activeSpawnData.Count > 0;
     }
-    
+
+    // Termina la wave corrente e avvia la successiva dopo un delay
     private void CompleteCurrentWave()
     {
         waveActive = false;
-        
-        if (debugMode)
-        {
-        }
-        
         OnWaveCompleted?.Invoke(currentWave.waveNumber);
 
         if(currentWave.DialoguesAtEndWave && currentWave.dialogues != null)
@@ -408,7 +381,6 @@ public class Spawner : MonoBehaviour
             DialogueManager.Instance.StartDialogue(currentWave.dialogues);
         }
 
-        // Passa alla wave successiva
         if (currentWaveIndex + 1 < waves.Count)
         {
             StartCoroutine(DelayedWaveStart(currentWaveIndex + 1, 10f));
@@ -418,37 +390,25 @@ public class Spawner : MonoBehaviour
             OnAllWavesCompleted?.Invoke();
         }
     }
-    
+
+    // Avvia la wave dopo un certo delay
     private IEnumerator DelayedWaveStart(int waveIndex, float delay)
     {
         yield return new WaitForSeconds(delay);
         StartWave(waveIndex);
     }
 
-    /// <summary>
-    /// Spawns the boss for boss waves
-    /// </summary>
+    // Spawna il boss
     private void SpawnBoss()
     {
-        if (currentWave.bossPrefab == null)
-        {
-            return;
-        }
-
+        if (currentWave.bossPrefab == null) return;
         Vector3 bossSpawnPosition = GetBossSpawnPosition();
-
-        if (bossSpawnPosition == Vector3.zero)
-        {
-            return;
-        }
+        if (bossSpawnPosition == Vector3.zero) return;
 
         currentBoss = Instantiate(currentWave.bossPrefab, bossSpawnPosition, Quaternion.identity);
         bossSpawned = true;
-
-        // Register boss to alive enemies for tracking
         aliveEnemies.Add(currentBoss);
 
-        // Register boss to DropManager if available
         if (DropManager.Instance != null)
         {
             EnemyBase bossEnemyBase = currentBoss.GetComponent<EnemyBase>();
@@ -457,22 +417,14 @@ public class Spawner : MonoBehaviour
                 DropManager.Instance.RegisterEnemy(bossEnemyBase);
             }
         }
-
         OnBossSpawned?.Invoke(currentBoss);
-
-        if (debugMode)
-        {
-        }
     }
 
-    /// <summary>
-    /// Gets a suitable spawn position for the boss (center of player area)
-    /// </summary>
+    // Trova una posizione adatta per il boss
     private Vector3 GetBossSpawnPosition()
     {
         if (playerTransform == null)
         {
-            // Fallback to center of spawn points
             if (spawnPoints.Length > 0)
             {
                 Vector3 center = Vector3.zero;
@@ -484,28 +436,22 @@ public class Spawner : MonoBehaviour
             }
             return Vector3.zero;
         }
-
-        // Spawn boss at a good distance from player but not too far
         Vector2 direction = Random.insideUnitCircle.normalized;
         Vector3 bossSpawnPosition = playerTransform.position + (Vector3)(direction * 8f);
-
         return bossSpawnPosition;
     }
 
-    /// <summary>
-    /// Shows boss introduction text after a delay
-    /// </summary>
+    // Mostra l'intro del boss dopo un delay
     private IEnumerator ShowBossIntroAfterDelay(string introText, float delay)
     {
         yield return new WaitForSeconds(delay);
         OnBossIntro?.Invoke(introText);
     }
-    
-    // Metodi di utilità per debugging
+
+    // Gizmo per debug visuale in editor
     private void OnDrawGizmosSelected()
     {
         if (spawnPoints == null) return;
-        
         Gizmos.color = Color.blue;
         foreach (Transform spawnPoint in spawnPoints)
         {
@@ -514,15 +460,14 @@ public class Spawner : MonoBehaviour
                 Gizmos.DrawWireSphere(spawnPoint.position, spawnRadius);
             }
         }
-        
         if (playerTransform != null)
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(playerTransform.position, minDistanceFromPlayer);
         }
     }
-    
-    // Cleanup
+
+    // Cleanup eventi
     private void OnDestroy()
     {
         if (GameManager.Instance != null)

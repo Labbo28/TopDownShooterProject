@@ -20,6 +20,7 @@ MonoBehaviour:
       type: 3}
     spawnCount: 40
     spawnRate: 2.5
+    maxEnemiesInWave: 10
     startTime: 0
     duration: 35
     spawnContinuously: 0
@@ -31,6 +32,7 @@ MonoBehaviour:
       type: 3}
     spawnCount: 30
     spawnRate: 2
+    maxEnemiesInWave: 0
     startTime: 10
     duration: 45
     spawnContinuously: 0
@@ -42,6 +44,7 @@ MonoBehaviour:
       type: 3}
     spawnCount: 25
     spawnRate: 2.2
+    maxEnemiesInWave: 0
     startTime: 25
     duration: 40
     spawnContinuously: 0
@@ -53,6 +56,7 @@ MonoBehaviour:
       type: 3}
     spawnCount: 20
     spawnRate: 1.5
+    maxEnemiesInWave: 0
     startTime: 5
     duration: 60
     spawnContinuously: 1
