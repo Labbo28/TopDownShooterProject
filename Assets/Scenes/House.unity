@@ -2974,7 +2974,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -957.9689, y: -536.53235}
+  m_AnchoredPosition: {x: -587.47, y: -236.53}
   m_SizeDelta: {x: 1.3094, y: 0.5632}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &276130206
@@ -6748,6 +6748,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3076403028175883731, guid: d9cabd02f18ae7e4eaf8923cb63d4d62,
+        type: 3}
+      propertyPath: typingSpeed
+      value: 0.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 6790912970338609331, guid: d9cabd02f18ae7e4eaf8923cb63d4d62,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7312756793884894940, guid: d9cabd02f18ae7e4eaf8923cb63d4d62,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7312756793884894940, guid: d9cabd02f18ae7e4eaf8923cb63d4d62,
+        type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 649171970827058401, guid: 46fef7667d6f8bf42a25f2ba7b9f2909,
         type: 3}
       propertyPath: m_Name
@@ -6757,6 +6777,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.a
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916941776722586688, guid: 46fef7667d6f8bf42a25f2ba7b9f2909,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 6502046834153266618, guid: 46fef7667d6f8bf42a25f2ba7b9f2909,
         type: 3}
@@ -6877,26 +6902,6 @@ PrefabInstance:
         type: 3}
       propertyPath: _marks.Array.data[2].timeRatio
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3076403028175883731, guid: d9cabd02f18ae7e4eaf8923cb63d4d62,
-        type: 3}
-      propertyPath: typingSpeed
-      value: 0.09
-      objectReference: {fileID: 0}
-    - target: {fileID: 6790912970338609331, guid: d9cabd02f18ae7e4eaf8923cb63d4d62,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7312756793884894940, guid: d9cabd02f18ae7e4eaf8923cb63d4d62,
-        type: 3}
-      propertyPath: m_fontSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 7312756793884894940, guid: d9cabd02f18ae7e4eaf8923cb63d4d62,
-        type: 3}
-      propertyPath: m_enableAutoSizing
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 9099754924391525093, guid: d9cabd02f18ae7e4eaf8923cb63d4d62, type: 3}

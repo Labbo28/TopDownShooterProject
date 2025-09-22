@@ -277,17 +277,17 @@ MonoBehaviour:
   debugRepositioning: 0
   enemyDeathDialogue:
     dialogueLines: []
-  attackRange: 12
+  attackRange: 5
   meleeAttackRange: 2
   chargeAttackRange: 8
   boulderPrefab: {fileID: 4838925836734502132, guid: e5dfaedbd46792431867e913475b037e,
     type: 3}
   boulderSpawnPoint: {fileID: 116326494622767710}
-  boulderCooldown: 8
+  boulderCooldown: 12
   bouldersPerVolley: 3
-  boulderVolleyDelay: 0.5
-  boulderDamage: 40
-  chargeCooldown: 12
+  boulderVolleyDelay: 1.5
+  boulderDamage: 20
+  chargeCooldown: 7
   chargeSpeed: 15
   chargeDuration: 2
   chargeWindupTime: 1
