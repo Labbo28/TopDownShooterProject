@@ -285,7 +285,7 @@ MonoBehaviour:
   summonCooldown: 30
   chargeAttackCooldown: 8
   areaAttackCooldown: 5
-  minionsHealth: 500
+  minionsHealth: 600
 --- !u!1 &4815355251459302377
 GameObject:
   m_ObjectHideFlags: 0
