@@ -372,7 +372,8 @@ public class Spawner : MonoBehaviour
             }
             return false;
         }
-
+        // If wave requires all enemies dead to complete
+        
         // Regular wave completion logic
         if (waveTime >= currentWave.waveDuration)
         {

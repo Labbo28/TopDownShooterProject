@@ -92,7 +92,7 @@ public abstract class Weapon : MonoBehaviour
     {
         inputActions = new InputSystem_Actions();
 
-        if (this is SpinWeapon || this is AreaWeapon)
+        if (this is SpinWeapon || this is AreaWeapon || this is ThrowingWeapon)
         {
             return;
         }

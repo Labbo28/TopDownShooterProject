@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 8474913985606269954}
   - component: {fileID: 3920624654245343732}
   - component: {fileID: 2631864686551236983}
-  - component: {fileID: 5705151115049754061}
+  - component: {fileID: 4484753860100752438}
   m_Layer: 0
   m_Name: Boulder
-  m_TagString: EnemyProjectile
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -97,7 +97,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.0001
+  m_Radius: 4
 --- !u!212 &2631864686551236983
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -154,7 +154,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &5705151115049754061
+--- !u!114 &4484753860100752438
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -163,7 +163,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 4838925836734502132}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2093eb032ada5c1a2ad2b4d7f718059b, type: 3}
+  m_Script: {fileID: 11500000, guid: b614d3a079fed8a8586f5039285b266a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectileSO: {fileID: 11400000, guid: f0420310c9f69c74bbe6190f8dca6929, type: 2}
+  damage: 40
+  speed: 8
+  lifeTime: 5
+  fragmentPrefab: {fileID: 4838925836734502132, guid: 0e75fff326d8274a3828f549ed8d9dde,
+    type: 3}
+  fragmentCount: 6
+  fragmentSpread: 360
+  explosionRadius: 3
+  impactEffect: {fileID: 0}
+  impactSound: {fileID: 0}

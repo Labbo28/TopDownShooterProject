@@ -21,9 +21,9 @@ MonoBehaviour:
     spawnCount: 10
     spawnRate: 0
     startTime: 0
-    duration: 30
+    duration: 60
     spawnContinuously: 0
-    delayBetweenSpawns: 5
+    delayBetweenSpawns: 3
     healthMultiplier: 0.8
     damageMultiplier: 0.8
     speedMultiplier: 0.9

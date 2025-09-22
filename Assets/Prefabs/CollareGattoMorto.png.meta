@@ -186,7 +186,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      CollareGattoMorto_0: 3667909851431282875
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

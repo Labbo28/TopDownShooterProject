@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5322944323178317404}
   m_Layer: 0
   m_Name: Fragment
-  m_TagString: EnemyProjectile
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -163,7 +163,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 4838925836734502132}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e79c7e87d73d3c4fab0d7c0d4a8e1ade, type: 3}
+  m_Script: {fileID: 11500000, guid: c3e84b64a2020a3a58d5baf171536dca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectileSO: {fileID: 11400000, guid: f0420310c9f69c74bbe6190f8dca6929, type: 2}
+  damage: 10
+  speed: 15
+  lifeTime: 2
+  gravity: 5
+  destroyEffect: {fileID: 0}
+  hitSound: {fileID: 0}
