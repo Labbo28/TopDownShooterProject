@@ -2700,8 +2700,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waves:
-  - {fileID: 11400000, guid: 4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a, type: 2}
-  - {fileID: 11400000, guid: 5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b, type: 2}
   - {fileID: 11400000, guid: 6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c, type: 2}
   spawnPoints:
   - {fileID: 1921689878}
