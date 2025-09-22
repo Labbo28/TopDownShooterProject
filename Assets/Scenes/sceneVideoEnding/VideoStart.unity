@@ -176,7 +176,11 @@ MonoBehaviour:
           icon: {fileID: 0}
         line: ma che carino certo!
       - character:
-          name: "Pap\xE0"
+          name: Mr_Mark (gatto)
+          icon: {fileID: 0}
+        line: Miao Miaoo
+      - character:
+          name: Labbo (papa')
           icon: {fileID: 0}
         line: "Brava figliola l\u2019hai salvato\n ce ne occuperemo noi\ntutti insieme"
     nextSceneName: 
