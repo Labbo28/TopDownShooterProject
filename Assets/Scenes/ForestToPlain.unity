@@ -915,15 +915,19 @@ MonoBehaviour:
     - character:
         name: 
         icon: {fileID: 0}
-      line: gay
+      line: Miao Miao.. ma quanto ci hai messo!
   collarPrefab: {fileID: 2372909403197453248, guid: 2e20034703aad4e4f8c200fc2a07c9fb,
     type: 3}
   dialogueCollar:
     dialogueLines:
     - character:
-        name: 
+        name: Collare che era di mr Mark
         icon: {fileID: 0}
-      line: catCalling
+      line: '...
+
+        ...
+
+        ...'
 --- !u!1001 &374913072
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3659,7 +3663,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09edc42ec50ac2f46abf6084ddc2ecdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEndingScene: 0
+  isEndingScene: 1
   sceneToLoad: Credits
 --- !u!61 &1441679270
 BoxCollider2D:

@@ -433,7 +433,7 @@ MonoBehaviour:
   autoStart: 1
   forceCenterPivot: 1
   sceneToLoad: GameScene
-  sceneChangeDelay: 3
+  sceneChangeDelay: 0.1
   enableFadeIn: 1
   fadeInDuration: 1
   fadeStartAlpha: 0

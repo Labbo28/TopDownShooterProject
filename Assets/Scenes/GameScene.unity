@@ -2853,13 +2853,39 @@ MonoBehaviour:
     dialogues:
     - dialogueLines:
       - character:
-          name: GAtto
+          name: Labbo (papa')
           icon: {fileID: 0}
-        line: 'CAzzo dove vado '
+        line: "Oh bene... zombie al tramonto  \r\nQuasi romantico  "
+  - level: 4
+    dialogues:
+    - dialogueLines:
       - character:
-          name: ernesto
+          name: Labbo (papa')
           icon: {fileID: 0}
-        line: cazzo di gatto!!!!
+        line: "Dai piccolo  \r\ndimmi che non sei corso dietro a un topo  \r\nsarebbe
+          imbarazzante "
+  - level: 6
+    dialogues:
+    - dialogueLines:
+      - character:
+          name: Labbo (papa')
+          icon: {fileID: 0}
+        line: "\rCerto che tua madre ci avrebbe presi in giro  \r\n\r\nci sono io 
+          \r\n\r\nche rincorro il gatto  \r\n\r\nmentre fuori c'e l'apocalisse  "
+  - level: 8
+    dialogues:
+    - dialogueLines:
+      - character:
+          name: Labbo (papa')
+          icon: {fileID: 0}
+        line: "Non ti preoccupare piccola  \r\n\r\npapa' non molla  \r\n\r\nnon ancora  "
+  - level: 8
+    dialogues:
+    - dialogueLines:
+      - character:
+          name: Labbo (papa')
+          icon: {fileID: 0}
+        line: "papa'  \r\n\r\nche fa il supereroe  \r\n\r\ncon la pistola  \r"
 --- !u!4 &733379219
 Transform:
   m_ObjectHideFlags: 0
@@ -3966,16 +3992,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _marks:
   - timeRatio: 1
-    color: {r: 1, g: 1, b: 1, a: 0}
-    intensity: 1
-  - timeRatio: 0.5
-    color: {r: 0.19339623, g: 0.3015619, b: 0.7735849, a: 0}
+    color: {r: 0.05490196, g: 0.07450981, b: 0.78431374, a: 0}
     intensity: 0.5
-  - timeRatio: 0.6
-    color: {r: 0.05540227, g: 0.075651236, b: 0.7830189, a: 0}
+  - timeRatio: 0
+    color: {r: 0.9433962, g: 0.70560753, b: 0.4761481, a: 0.5803922}
     intensity: 0.5
   _light: {fileID: 1352909054}
-  _cycleLength: 24
+  _cycleLength: 300
 --- !u!114 &1225815140 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7124054703887630459, guid: 09f724a1baf4c704db76d277de087064,

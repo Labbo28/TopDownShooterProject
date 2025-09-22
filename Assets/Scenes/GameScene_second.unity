@@ -1544,10 +1544,6 @@ MonoBehaviour:
         icon: {fileID: -1413294825, guid: 99a24620d31e5ce4e823c32d11e17c2c, type: 3}
       line: appena ti trovo...
     - character:
-        name: Labbo
-        icon: {fileID: -1413294825, guid: 99a24620d31e5ce4e823c32d11e17c2c, type: 3}
-      line: ti inculo a sangue
-    - character:
         name: mr Mark
         icon: {fileID: 1741575186, guid: 43bfa2b184972d548a99ff0ee9ab7a9f, type: 3}
       line: miao :(
@@ -2574,7 +2570,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2116a3d0c57d2e9418cc2c800beb61ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelDialogues: []
+  levelDialogues:
+  - level: 12
+    dialogues:
+    - dialogueLines:
+      - character:
+          name: Labbo (papa')
+          icon: {fileID: 0}
+        line: "Non posso lasciarlo  \r\n\r\na questi mostri  \r\n\r\nnon dopo quello 
+          \r\n\r\nche hanno fatto a tua madre"
+  - level: 18
+    dialogues:
+    - dialogueLines:
+      - character:
+          name: Labbo (papa')
+          icon: {fileID: 0}
+        line: "Ogni passo che faccio  \r\n\r\nsento che sei qui  \r\n\r\nanche se
+          so  \r\n\r\nche non dovresti esserlo amore  "
 --- !u!4 &733379219
 Transform:
   m_ObjectHideFlags: 0
@@ -3326,7 +3338,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -1, y: -5}
+  m_AnchoredPosition: {x: -0.9999924, y: -5}
   m_SizeDelta: {x: -2, y: -1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1216164186
@@ -3431,16 +3443,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _marks:
   - timeRatio: 1
-    color: {r: 1, g: 1, b: 1, a: 0}
+    color: {r: 0.9622642, g: 0.34042364, b: 0.34042364, a: 0.6666667}
     intensity: 1
-  - timeRatio: 0.5
-    color: {r: 0.19339623, g: 0.3015619, b: 0.7735849, a: 0}
-    intensity: 0.5
   - timeRatio: 0.6
     color: {r: 0.05540227, g: 0.075651236, b: 0.7830189, a: 0}
     intensity: 0.5
   _light: {fileID: 1352909054}
-  _cycleLength: 24
+  _cycleLength: 480
 --- !u!114 &1225815140 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7124054703887630459, guid: 09f724a1baf4c704db76d277de087064,
