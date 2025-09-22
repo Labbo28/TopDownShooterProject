@@ -49,9 +49,5 @@ MonoBehaviour:
   bossIntroText: 
   pauseRegularSpawningDuringBoss: 0
   dialogues:
-    dialogueLines:
-    - character:
-        name: 
-        icon: {fileID: 0}
-      line: gay
-  DialoguesAtEndWave: 1
+    dialogueLines: []
+  DialoguesAtEndWave: 0

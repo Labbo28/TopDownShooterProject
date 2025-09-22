@@ -182,7 +182,8 @@ MonoBehaviour:
       - character:
           name: Labbo (papa')
           icon: {fileID: 0}
-        line: "Brava figliola l\u2019hai salvato\n ce ne occuperemo noi\ntutti insieme"
+        line: "Brava figliola l\u2019hai salvato\n ce ne occuperemo noi\ntutti insieme
+          !!"
     nextSceneName: 
     loopVideo: 1
     advanceOnDialogueEnd: 0
