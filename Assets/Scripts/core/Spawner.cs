@@ -18,12 +18,14 @@ public class Spawner : MonoBehaviour
     
     [Header("Debug")]
     [SerializeField] private bool debugMode = false;
+    [SerializeField] private bool primoBoss=true;
     
     // Current wave state
     private int currentWaveIndex = 0;
     private Wave currentWave;
     private float waveStartTime;
     private bool waveActive = false;
+    
     
     // Enemy tracking
     private List<GameObject> aliveEnemies = new List<GameObject>();
@@ -357,9 +359,9 @@ public class Spawner : MonoBehaviour
                 if (!HasInvokedBossDefeated)
                 {
                     // Spawn chest drops when boss is defeated
-                    if (currentBoss != null && DropManager.Instance != null)
+                    if (currentBoss != null && DropManager.Instance != null && primoBoss)
                     {
-                        // Spawn 2-3 chest drops around the boss position
+                        
                         int chestCount = Random.Range(2, 4);
                         DropManager.Instance.SpawnChestDrops(currentBoss.transform.position, chestCount, 2f);
                     }

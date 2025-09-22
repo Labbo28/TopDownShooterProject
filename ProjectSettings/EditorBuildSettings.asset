@@ -32,5 +32,14 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SaveTheCatBlack.unity
     guid: 640c73c79c199094c81731ae3acb83df
+  - enabled: 1
+    path: Assets/Scenes/sceneVideoEnding/HappyEnding.unity
+    guid: d76c42f9a7f94d9409593bb7f5a71595
+  - enabled: 1
+    path: Assets/Scenes/sceneVideoEnding/SadEnding.unity
+    guid: 8a87a411251f54546be9db8ba7489d56
+  - enabled: 1
+    path: Assets/Scenes/Credits.unity
+    guid: 58b4a084b31da414db88a7cc5c543172
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

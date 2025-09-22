@@ -16,8 +16,9 @@ MonoBehaviour:
   waveName: Prima Sfida - Nemici Misti
   waveDuration: 45
   spawnData:
-  - enemyPrefab: {fileID: 2372909403197453248, guid: fb4d4d81774a74e4a8fc129406bc1cc0, type: 3}
-    spawnCount: 6
+  - enemyPrefab: {fileID: 2372909403197453248, guid: fb4d4d81774a74e4a8fc129406bc1cc0,
+      type: 3}
+    spawnCount: 15
     spawnRate: 0
     startTime: 0
     duration: 45
@@ -26,8 +27,20 @@ MonoBehaviour:
     healthMultiplier: 1
     damageMultiplier: 1
     speedMultiplier: 1
-  - enemyPrefab: {fileID: 2372909403197453248, guid: ac3ced40651686dd3908d525794a369a, type: 3}
-    spawnCount: 4
+  - enemyPrefab: {fileID: 2372909403197453248, guid: ac3ced40651686dd3908d525794a369a,
+      type: 3}
+    spawnCount: 15
+    spawnRate: 0
+    startTime: 10
+    duration: 35
+    spawnContinuously: 0
+    delayBetweenSpawns: 5
+    healthMultiplier: 1
+    damageMultiplier: 1
+    speedMultiplier: 1
+  - enemyPrefab: {fileID: 2372909403197453248, guid: 87e7590eeee3d1bf6bc5699063a5ec67,
+      type: 3}
+    spawnCount: 10
     spawnRate: 0
     startTime: 10
     duration: 35

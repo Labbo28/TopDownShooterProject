@@ -262,8 +262,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   speed: 2
-  damage: 20
-  health: 20
+  damage: 50
+  health: 15000
   attackCooldown: 2
   actionRadius: 0.5
   HealthBar: {fileID: 5333312199946071443}
@@ -285,7 +285,7 @@ MonoBehaviour:
   summonCooldown: 30
   chargeAttackCooldown: 8
   areaAttackCooldown: 5
-  minionsHealth: 120
+  minionsHealth: 500
 --- !u!1 &4815355251459302377
 GameObject:
   m_ObjectHideFlags: 0

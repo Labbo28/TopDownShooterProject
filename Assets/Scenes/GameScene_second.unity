@@ -2590,112 +2590,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &836013275
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 836013277}
-  - component: {fileID: 836013276}
-  - component: {fileID: 836013278}
-  m_Layer: 0
-  m_Name: DropManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &836013276
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 836013275}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca2687b0bcad6c747b24b16b9f7fd0df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dropConfigs:
-  - dropType: 0
-    dropPrefabs:
-    - {fileID: 7511834963911293722, guid: a358dbc5e2d67d04e9b71e0fbdd4fcdc, type: 3}
-    - {fileID: 7511834963911293722, guid: a45cdde397ff0094a850872447bc4e5f, type: 3}
-    - {fileID: 7511834963911293722, guid: 4f0ab4d0151d53c4d822d661ab57f807, type: 3}
-  - dropType: 1
-    dropPrefabs:
-    - {fileID: 7511834963911293722, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5, type: 3}
-  - dropType: 2
-    dropPrefabs:
-    - {fileID: 7511834963911293722, guid: 2704bbc430750b94fbfa28b5f4d20b87, type: 3}
-  enemyDropConfigs:
-  - enemyType: 4
-    xpDropChance: 1
-    minXPDrops: 1
-    maxXPDrops: 3
-    specialDropChance: 0.1
-    medikitWeight: 0.5
-    magnetWeight: 0.5
-    chestWeight: 0.05
-  - enemyType: 5
-    xpDropChance: 1
-    minXPDrops: 1
-    maxXPDrops: 3
-    specialDropChance: 0.1
-    medikitWeight: 0.5
-    magnetWeight: 0.5
-    chestWeight: 0.05
-  - enemyType: 6
-    xpDropChance: 1
-    minXPDrops: 1
-    maxXPDrops: 3
-    specialDropChance: 0.1
-    medikitWeight: 0.5
-    magnetWeight: 0.5
-    chestWeight: 0.05
-  - enemyType: 7
-    xpDropChance: 1
-    minXPDrops: 15
-    maxXPDrops: 20
-    specialDropChance: 0.1
-    medikitWeight: 0.5
-    magnetWeight: 0.5
-    chestWeight: 0.05
---- !u!4 &836013277
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 836013275}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.258591, y: 0.18502367, z: 0.05161242}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &836013278
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 836013275}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4585302d865f64640886eaf79f661081, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerTransform: {fileID: 0}
-  chunkSize: 0
-  distanceThreshold: 1.5
-  repositionWholeObject: 0
 --- !u!1 &846283980
 GameObject:
   m_ObjectHideFlags: 0
@@ -2765,6 +2659,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waves:
+  - {fileID: 11400000, guid: 4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a, type: 2}
+  - {fileID: 11400000, guid: 5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b, type: 2}
   - {fileID: 11400000, guid: 6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c, type: 2}
   spawnPoints:
   - {fileID: 1921689878}
@@ -4144,6 +4040,131 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1623266033}
   m_CullTransparentMesh: 1
+--- !u!1 &1654648942
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1654648945}
+  - component: {fileID: 1654648944}
+  - component: {fileID: 1654648943}
+  m_Layer: 0
+  m_Name: DropManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1654648943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1654648942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4585302d865f64640886eaf79f661081, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerTransform: {fileID: 0}
+  chunkSize: 0
+  distanceThreshold: 1.5
+  repositionWholeObject: 0
+--- !u!114 &1654648944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1654648942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca2687b0bcad6c747b24b16b9f7fd0df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropConfigs:
+  - dropType: 0
+    dropPrefabs:
+    - {fileID: 7511834963911293722, guid: a358dbc5e2d67d04e9b71e0fbdd4fcdc, type: 3}
+    - {fileID: 7511834963911293722, guid: a45cdde397ff0094a850872447bc4e5f, type: 3}
+    - {fileID: 7511834963911293722, guid: 4f0ab4d0151d53c4d822d661ab57f807, type: 3}
+  - dropType: 1
+    dropPrefabs:
+    - {fileID: 7511834963911293722, guid: 05e6ed97f33afa7499cf7d6b6fc6bce5, type: 3}
+  - dropType: 2
+    dropPrefabs:
+    - {fileID: 7511834963911293722, guid: 2704bbc430750b94fbfa28b5f4d20b87, type: 3}
+  - dropType: 3
+    dropPrefabs:
+    - {fileID: 7511834963911293722, guid: 47e8c2368f638b8ad87468977715dc98, type: 3}
+  enemyDropConfigs:
+  - enemyType: 4
+    xpDropChance: 1
+    minXPDrops: 1
+    maxXPDrops: 4
+    specialDropChance: 0.1
+    medikitWeight: 0.5
+    magnetWeight: 0.5
+    chestWeight: 0.05
+  - enemyType: 8
+    xpDropChance: 1
+    minXPDrops: 1
+    maxXPDrops: 3
+    specialDropChance: 0.1
+    medikitWeight: 0.5
+    magnetWeight: 0.5
+    chestWeight: 0.05
+  - enemyType: 6
+    xpDropChance: 1
+    minXPDrops: 2
+    maxXPDrops: 3
+    specialDropChance: 0.1
+    medikitWeight: 0.5
+    magnetWeight: 0.5
+    chestWeight: 0.05
+  - enemyType: 7
+    xpDropChance: 1
+    minXPDrops: 15
+    maxXPDrops: 20
+    specialDropChance: 0.1
+    medikitWeight: 0.5
+    magnetWeight: 0.5
+    chestWeight: 0.05
+  - enemyType: 5
+    xpDropChance: 0
+    minXPDrops: 15
+    maxXPDrops: 20
+    specialDropChance: 1
+    medikitWeight: 0
+    magnetWeight: 0
+    chestWeight: 1
+  - enemyType: 7
+    xpDropChance: 1
+    minXPDrops: 2
+    maxXPDrops: 4
+    specialDropChance: 0.1
+    medikitWeight: 0.5
+    magnetWeight: 0.5
+    chestWeight: 0.05
+--- !u!4 &1654648945
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1654648942}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.258591, y: 0.18502367, z: 0.05161242}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1660151424
 GameObject:
   m_ObjectHideFlags: 0
@@ -5638,7 +5659,6 @@ SceneRoots:
   - {fileID: 519420032}
   - {fileID: 120904755}
   - {fileID: 22042734}
-  - {fileID: 836013277}
   - {fileID: 188218250}
   - {fileID: 1073642246}
   - {fileID: 1077813044}
@@ -5648,3 +5668,4 @@ SceneRoots:
   - {fileID: 733379219}
   - {fileID: 861551371}
   - {fileID: 442978713}
+  - {fileID: 1654648945}

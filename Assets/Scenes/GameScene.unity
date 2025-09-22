@@ -358,6 +358,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waves:
   - {fileID: 11400000, guid: 1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d, type: 2}
+  - {fileID: 11400000, guid: 2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e, type: 2}
+  - {fileID: 11400000, guid: 3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f, type: 2}
   spawnPoints:
   - {fileID: 578075862}
   - {fileID: 2045230101}
@@ -371,6 +373,7 @@ MonoBehaviour:
   maxEnemiesAlive: 50
   minDistanceFromPlayer: 5
   debugMode: 1
+  primoBoss: 1
 --- !u!1001 &120904755
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2921,7 +2924,7 @@ MonoBehaviour:
   - enemyType: 4
     xpDropChance: 1
     minXPDrops: 1
-    maxXPDrops: 3
+    maxXPDrops: 4
     specialDropChance: 0.1
     medikitWeight: 0.5
     magnetWeight: 0.5
@@ -2950,18 +2953,10 @@ MonoBehaviour:
     medikitWeight: 0.5
     magnetWeight: 0.5
     chestWeight: 0.05
-  - enemyType: 9
-    xpDropChance: 1
-    minXPDrops: 15
-    maxXPDrops: 20
-    specialDropChance: 1
-    medikitWeight: 0
-    magnetWeight: 0
-    chestWeight: 1
   - enemyType: 7
     xpDropChance: 1
-    minXPDrops: 15
-    maxXPDrops: 20
+    minXPDrops: 2
+    maxXPDrops: 4
     specialDropChance: 0.1
     medikitWeight: 0.5
     magnetWeight: 0.5
@@ -5872,74 +5867,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 846283981}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &2055251291
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1795882547226641079, guid: 191301f8d6a3de26189138b1c163cf82,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 4.382115
-      objectReference: {fileID: 0}
-    - target: {fileID: 1795882547226641079, guid: 191301f8d6a3de26189138b1c163cf82,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2.520194
-      objectReference: {fileID: 0}
-    - target: {fileID: 1795882547226641079, guid: 191301f8d6a3de26189138b1c163cf82,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1795882547226641079, guid: 191301f8d6a3de26189138b1c163cf82,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1795882547226641079, guid: 191301f8d6a3de26189138b1c163cf82,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1795882547226641079, guid: 191301f8d6a3de26189138b1c163cf82,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1795882547226641079, guid: 191301f8d6a3de26189138b1c163cf82,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1795882547226641079, guid: 191301f8d6a3de26189138b1c163cf82,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1795882547226641079, guid: 191301f8d6a3de26189138b1c163cf82,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1795882547226641079, guid: 191301f8d6a3de26189138b1c163cf82,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2372909403197453248, guid: 191301f8d6a3de26189138b1c163cf82,
-        type: 3}
-      propertyPath: m_Name
-      value: ZombieBoss
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 191301f8d6a3de26189138b1c163cf82, type: 3}
 --- !u!1 &2083543461
 GameObject:
   m_ObjectHideFlags: 0
@@ -6336,4 +6263,3 @@ SceneRoots:
   - {fileID: 733379219}
   - {fileID: 720124604}
   - {fileID: 1084577257}
-  - {fileID: 2055251291}
