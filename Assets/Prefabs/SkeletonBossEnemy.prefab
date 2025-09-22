@@ -263,7 +263,7 @@ MonoBehaviour:
       m_Calls: []
   speed: 2
   damage: 50
-  health: 15000
+  health: 20000
   attackCooldown: 2
   actionRadius: 0.5
   HealthBar: {fileID: 5333312199946071443}
