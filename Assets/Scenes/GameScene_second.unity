@@ -2675,6 +2675,7 @@ MonoBehaviour:
   maxEnemiesAlive: 50
   minDistanceFromPlayer: 5
   debugMode: 1
+  primoBoss: 0
 --- !u!4 &861551371
 Transform:
   m_ObjectHideFlags: 0
