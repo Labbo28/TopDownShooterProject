@@ -356,14 +356,6 @@ public class Spawner : MonoBehaviour
             {
                 if (!HasInvokedBossDefeated)
                 {
-                    // Spawn chest drops when boss is defeated
-                    if (currentBoss != null && DropManager.Instance != null)
-                    {
-                        // Spawn 2-3 chest drops around the boss position
-                        int chestCount = Random.Range(2, 4);
-                        DropManager.Instance.SpawnChestDrops(currentBoss.transform.position, chestCount, 2f);
-                    }
-
                     OnBossDefeated?.Invoke();
                     HasInvokedBossDefeated = true;
                 }

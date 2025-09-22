@@ -263,9 +263,9 @@ MonoBehaviour:
   OnEnemyhit:
     m_PersistentCalls:
       m_Calls: []
-  speed: 5
+  speed: 3
   damage: 20
-  health: 5000
+  health: 7000
   attackCooldown: 3
   actionRadius: 2
   HealthBar: {fileID: 5333312199946071443}
@@ -277,16 +277,16 @@ MonoBehaviour:
   debugRepositioning: 0
   enemyDeathDialogue:
     dialogueLines: []
-  attackRange: 12
+  attackRange: 7
   meleeAttackRange: 2
   chargeAttackRange: 8
   boulderPrefab: {fileID: 4838925836734502132, guid: e5dfaedbd46792431867e913475b037e,
     type: 3}
   boulderSpawnPoint: {fileID: 116326494622767710}
-  boulderCooldown: 8
+  boulderCooldown: 10
   bouldersPerVolley: 3
-  boulderVolleyDelay: 0.5
-  boulderDamage: 40
+  boulderVolleyDelay: 1
+  boulderDamage: 30
   chargeCooldown: 12
   chargeSpeed: 15
   chargeDuration: 2

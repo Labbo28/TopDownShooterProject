@@ -758,7 +758,8 @@ MonoBehaviour:
   XP: 0
   useTimeBasedWaves: 1
   waveInterval: 60
-  timeToSaveTheCat: 10
+  timeToSaveTheCat: 8
+  hasSavedTheCat: 1
   OnWaveChanged:
     m_PersistentCalls:
       m_Calls: []

@@ -18,7 +18,7 @@ MonoBehaviour:
   spawnData:
   - enemyPrefab: {fileID: 2372909403197453248, guid: fb4d4d81774a74e4a8fc129406bc1cc0,
       type: 3}
-    spawnCount: 10
+    spawnCount: 15
     spawnRate: 0
     startTime: 0
     duration: 60

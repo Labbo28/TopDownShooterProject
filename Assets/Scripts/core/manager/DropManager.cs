@@ -203,7 +203,7 @@ public class DropManager : MonoBehaviour
                 
             // Tipi specifici di scheletri
             case EnemyType.Skeleton:
-                return 1; // XP d'argento o oro
+                return UnityEngine.Random.Range(0,1); // XP d'argento o oro
             case EnemyType.SkeletonBoss:
                 return 2; // XP d'oro
 

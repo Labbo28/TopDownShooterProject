@@ -275,8 +275,14 @@ public class Player : MonoBehaviour
     {
         if (other.CompareTag("EnemyProjectile"))
         {
-            healthSystem?.TakeDamage(other.GetComponent<Projectile>().Damage);
-            Destroy(other.gameObject);
+            // Verifica che il trigger sia avvenuto sul collider principale del Player
+            // e non sui collider delle armi (che sono figli del Player)
+            Collider2D playerMainCollider = GetComponent<Collider2D>();
+            if (playerMainCollider != null && playerMainCollider.bounds.Intersects(other.bounds))
+            {
+                healthSystem?.TakeDamage(other.GetComponent<Projectile>().Damage);
+                Destroy(other.gameObject);
+            }
         }
     }
     // Metodo per resettare completamente il player

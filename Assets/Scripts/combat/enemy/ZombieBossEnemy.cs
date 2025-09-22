@@ -30,6 +30,10 @@ public class ZombieBossEnemy : EnemyBase
     [SerializeField] private float phase2HealthThreshold = 0.6f;
     [SerializeField] private float phase3HealthThreshold = 0.3f;
 
+    // Colori personalizzati - FIX per Color.orange
+    private static readonly Color Orange = new Color(1f, 0.5f, 0f, 1f); // RGB per arancione
+    private static readonly Color DarkOrange = new Color(1f, 0.4f, 0f, 1f); // Arancione scuro
+
     // Boss phases
     public enum BossPhase { Phase1, Phase2, Phase3 }
     private BossPhase currentPhase = BossPhase.Phase1;
@@ -160,7 +164,7 @@ public class ZombieBossEnemy : EnemyBase
                 damage = baseDamage * 1.3f;
                 boulderCooldown = baseBoulderCooldown * 0.8f;
                 bouldersPerVolley = 4; // Più boulder per volley
-                StartCoroutine(PhaseTransitionEffect(Color.orange));
+                StartCoroutine(PhaseTransitionEffect(Orange)); // FIX: Usa Orange personalizzato
                 break;
 
             case BossPhase.Phase3:
@@ -404,7 +408,7 @@ public class ZombieBossEnemy : EnemyBase
         if (spriteRenderer != null)
         {
             Color originalColor = spriteRenderer.color;
-            spriteRenderer.color = Color.orange;
+            spriteRenderer.color = Orange; // FIX: Usa Orange personalizzato
             yield return new WaitForSeconds(0.1f);
             spriteRenderer.color = originalColor;
         }
@@ -487,7 +491,7 @@ public class ZombieBossEnemy : EnemyBase
         // Boulder spawn point
         if (boulderSpawnPoint != null)
         {
-            Gizmos.color = Color.orange;
+            Gizmos.color = Orange; // FIX: Usa Orange personalizzato
             Gizmos.DrawSphere(boulderSpawnPoint.position, 0.3f);
         }
 

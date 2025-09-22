@@ -160,7 +160,7 @@ MonoBehaviour:
   XP: 0
   useTimeBasedWaves: 1
   waveInterval: 60
-  timeToSaveTheCat: 0.01
+  timeToSaveTheCat: 8
   hasSavedTheCat: 1
   OnWaveChanged:
     m_PersistentCalls:
@@ -358,6 +358,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waves:
   - {fileID: 11400000, guid: 1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d, type: 2}
+  - {fileID: 11400000, guid: 2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e, type: 2}
+  - {fileID: 11400000, guid: 3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f, type: 2}
   spawnPoints:
   - {fileID: 578075862}
   - {fileID: 2045230101}
@@ -2942,26 +2944,18 @@ MonoBehaviour:
     medikitWeight: 0.5
     magnetWeight: 0.5
     chestWeight: 0.05
-  - enemyType: 7
-    xpDropChance: 1
-    minXPDrops: 15
-    maxXPDrops: 20
-    specialDropChance: 0.1
-    medikitWeight: 0.5
-    magnetWeight: 0.5
-    chestWeight: 0.05
-  - enemyType: 9
-    xpDropChance: 1
-    minXPDrops: 15
-    maxXPDrops: 20
+  - enemyType: 5
+    xpDropChance: 0
+    minXPDrops: 0
+    maxXPDrops: 0
     specialDropChance: 1
     medikitWeight: 0
     magnetWeight: 0
     chestWeight: 1
   - enemyType: 7
     xpDropChance: 1
-    minXPDrops: 15
-    maxXPDrops: 20
+    minXPDrops: 2
+    maxXPDrops: 4
     specialDropChance: 0.1
     medikitWeight: 0.5
     magnetWeight: 0.5

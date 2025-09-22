@@ -262,7 +262,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   speed: 3
-  damage: 5
+  damage: 10
   health: 100
   attackCooldown: 1.5
   actionRadius: 0.5

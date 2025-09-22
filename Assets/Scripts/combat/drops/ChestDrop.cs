@@ -46,33 +46,36 @@ public class ChestDrop : Drop
     }
 
     private void OnTriggerEnter2D(Collider2D other)
+{
+    if (other.CompareTag("Player"))
     {
-        
-        if (other.CompareTag("Player"))
-        {// Prevent multiple collections
-          if (hasBeenCollected) return;
-            
-            animator.SetTrigger("open");
-            // Give player a level up
-            if (GameManager.Instance != null)
-            {
-                // Force level up by adding the exact XP needed
-                float currentXP = GameManager.Instance.GetXP();
-                float xpNeeded = GameManager.Instance.GetXPNeededToLevelUp();
-
-                // Add the remaining XP needed to level up
-                GameManager.Instance.AddXP(xpNeeded);
-
-                // Optional: Add some visual/audio feedback here
-                ShowLevelUpEffect();
-            }
-
-            // Destroy the chest
-            //wait for the animation to finish before destroying
-            
-            Destroy(gameObject,2f);
+        // Prevent multiple collections
+        if (hasBeenCollected)
+        {
+            return; // Exit early se già raccolto
         }
+    
+        hasBeenCollected = true;
+        GetComponent<Collider2D>().enabled = false;
+        animator.SetTrigger("open");
+        
+        // Give player a level up
+        if (GameManager.Instance != null)
+        {
+            // Force level up by adding the exact XP needed
+            float currentXP = GameManager.Instance.GetXP();
+            float xpNeeded = GameManager.Instance.GetXPNeededToLevelUp();
+            // Add the remaining XP needed to level up
+            GameManager.Instance.AddXP(xpNeeded);
+            // Optional: Add some visual/audio feedback here
+            ShowLevelUpEffect();
+        }
+        
+        // Destroy the chest
+        // Wait for the animation to finish before destroying
+        Destroy(gameObject, 2f);
     }
+}
 
     /// <summary>
     /// Shows visual effect when chest is collected (can be expanded with particles, sound, etc.)

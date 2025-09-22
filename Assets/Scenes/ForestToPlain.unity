@@ -3659,7 +3659,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09edc42ec50ac2f46abf6084ddc2ecdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEndingScene: 0
+  isEndingScene: 1
   sceneToLoad: Credits
 --- !u!61 &1441679270
 BoxCollider2D:
