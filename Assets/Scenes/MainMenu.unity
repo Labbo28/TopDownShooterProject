@@ -319,6 +319,7 @@ MonoBehaviour:
   buttonHoverSound: {fileID: 0}
   audioMixer: {fileID: 24100000, guid: f830cac480b7212cfa281f250a0db07e, type: 2}
   meleeSound: {fileID: 8300000, guid: 14f24de2a9a70154e96297de25e2184c, type: 3}
+  rockImpact: {fileID: 8300000, guid: a1b90facad30d1c38bac87daa0bcafcf, type: 3}
   rangedSound: {fileID: 8300000, guid: 6f0c572d865b4664db7a460972bc4768, type: 3}
   melee2Sound: {fileID: 8300000, guid: d1bef3102d08ba944ac7bcac65733a26, type: 3}
   looseSound: {fileID: 8300000, guid: c8a3fe17a6641ec48b38fb455a40a223, type: 3}

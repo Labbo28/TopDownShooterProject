@@ -18,6 +18,7 @@ public class AudioManager : MonoBehaviour
     [Header("Audio Mixer")]
     [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private AudioClip meleeSound;
+    [SerializeField] private AudioClip rockImpact;
     [SerializeField] private AudioClip rangedSound;
     [SerializeField] private AudioClip melee2Sound;
     [SerializeField] private AudioClip looseSound;
@@ -37,6 +38,7 @@ public class AudioManager : MonoBehaviour
     public void PlayHit2Sound() => PlaySFX(hit2Sound);
     public void PlayButtonClick() => PlaySFX(buttonClickSound);
     public void PlayButtonHover() => PlaySFX(buttonHoverSound);
+    public void PlayRockImpact() => PlaySFX(rockImpact);
 
     private const string MASTER_VOLUME = "MasterVolume";
     private const string SFX_VOLUME = "SFXVolume";

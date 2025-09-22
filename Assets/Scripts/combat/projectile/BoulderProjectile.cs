@@ -273,6 +273,7 @@ public class BoulderProjectile : MonoBehaviour
         // Impatto con ostacoli o player
         if (other.CompareTag("Player") || other.CompareTag("Obstacle"))
         {
+            AudioManager.Instance.PlayRockImpact();
             Impact();
         }
     }
