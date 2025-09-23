@@ -153,7 +153,7 @@ MonoBehaviour:
     dialogueLines:
     - character:
         name: Labbo
-        icon: {fileID: 0}
+        icon: {fileID: -1413294825, guid: 99a24620d31e5ce4e823c32d11e17c2c, type: 3}
       line: 'Che brutto Incubo! '
 --- !u!61 &14405034
 BoxCollider2D:
@@ -418,11 +418,11 @@ MonoBehaviour:
     dialogueLines:
     - character:
         name: Labbo
-        icon: {fileID: 0}
+        icon: {fileID: -1413294825, guid: 99a24620d31e5ce4e823c32d11e17c2c, type: 3}
       line: MrMark dove sei??!!
     - character:
-        name: FIGLIAAAA
-        icon: {fileID: 0}
+        name: figlia
+        icon: {fileID: -2088749509, guid: 57a1443e67528144aa07582927559650, type: 3}
       line: 'VALLO A SALVARE
 
         E'' PERICOLOSO FUORI!!!'
@@ -4173,11 +4173,11 @@ MonoBehaviour:
     dialogueLines:
     - character:
         name: Labbo
-        icon: {fileID: 0}
+        icon: {fileID: -1413294825, guid: 99a24620d31e5ce4e823c32d11e17c2c, type: 3}
       line: Che freddo, cos' e' questo vento!
     - character:
         name: Labbo
-        icon: {fileID: 0}
+        icon: {fileID: -1413294825, guid: 99a24620d31e5ce4e823c32d11e17c2c, type: 3}
       line: Diamo un occhio alla finestra.
 --- !u!61 &1122370579
 BoxCollider2D:
@@ -6748,26 +6748,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3076403028175883731, guid: d9cabd02f18ae7e4eaf8923cb63d4d62,
-        type: 3}
-      propertyPath: typingSpeed
-      value: 0.09
-      objectReference: {fileID: 0}
-    - target: {fileID: 6790912970338609331, guid: d9cabd02f18ae7e4eaf8923cb63d4d62,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7312756793884894940, guid: d9cabd02f18ae7e4eaf8923cb63d4d62,
-        type: 3}
-      propertyPath: m_fontSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 7312756793884894940, guid: d9cabd02f18ae7e4eaf8923cb63d4d62,
-        type: 3}
-      propertyPath: m_enableAutoSizing
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 649171970827058401, guid: 46fef7667d6f8bf42a25f2ba7b9f2909,
         type: 3}
       propertyPath: m_Name
@@ -6902,6 +6882,26 @@ PrefabInstance:
         type: 3}
       propertyPath: _marks.Array.data[2].timeRatio
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3076403028175883731, guid: d9cabd02f18ae7e4eaf8923cb63d4d62,
+        type: 3}
+      propertyPath: typingSpeed
+      value: 0.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 6790912970338609331, guid: d9cabd02f18ae7e4eaf8923cb63d4d62,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7312756793884894940, guid: d9cabd02f18ae7e4eaf8923cb63d4d62,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7312756793884894940, guid: d9cabd02f18ae7e4eaf8923cb63d4d62,
+        type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 9099754924391525093, guid: d9cabd02f18ae7e4eaf8923cb63d4d62, type: 3}
