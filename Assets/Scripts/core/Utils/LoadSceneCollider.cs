@@ -19,8 +19,8 @@ public class LoadSceneCollider : MonoBehaviour
             }
             else if (isEndingScene && !GameManager.Instance.isCatSaved())
             {
-                Debug.Log("Caricamento scena BadEnding");
-                UnityEngine.SceneManagement.SceneManager.LoadScene("BadEnding");
+                Debug.Log("Caricamento scena SadEnding");
+                UnityEngine.SceneManagement.SceneManager.LoadScene("SadEnding");
                 
             }
             else

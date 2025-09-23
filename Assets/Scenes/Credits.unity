@@ -2007,7 +2007,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fullText: "Riccardo Labonia\n\nMarco Miccich\xE8\n\nValerio Scipioni\n"
   typeSpeed: 0.09
-  holdTime: 3
+  holdTime: 0.5
   textRect: {fileID: 1004981404}
   tmpText: {fileID: 1492407659}
   nextSceneName: MainMenu

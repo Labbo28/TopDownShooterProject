@@ -573,7 +573,14 @@ MonoBehaviour:
     - character:
         name: Labbo
         icon: {fileID: -1413294825, guid: 99a24620d31e5ce4e823c32d11e17c2c, type: 3}
-      line: "aspettami mr Mark\n\nti salver\xF3\n\nfosse l'ultima cosa che faccio"
+      line: 'aspettami mr Mark
+
+
+        ti salvero''
+
+
+        fosse l''ultima cosa
+        che faccio'
   petToActivate: {fileID: 0}
   onlyOnce: 1
 --- !u!61 &85043114
