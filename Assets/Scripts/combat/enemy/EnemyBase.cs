@@ -379,7 +379,7 @@ public abstract class EnemyBase : MonoBehaviour
     {
         if (healthSystem != null)
         {
-            healthSystem.ScaleHealth(healthMultiplier);
+            healthSystem.ScaleHealthEnemy(healthMultiplier);
             if (HealthBar != null)
             {
                 HealthBar.fillAmount = healthSystem.GetHealthPercentage();

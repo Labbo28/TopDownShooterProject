@@ -16,13 +16,15 @@ public class CatOrCollar : MonoBehaviour
 
         if (isCatSaved)
         {
-            Instantiate(catPrefab, transform.position, Quaternion.identity);
+            GameObject catGameObject = Instantiate(catPrefab, transform.position, Quaternion.identity);
+            gameObject.GetComponent<DialogueTrigger>().SetPetToActivate(catGameObject.GetComponent<PetFollower>());
+            
             
         }
         else
         {
             Instantiate(collarPrefab, transform.position, Quaternion.identity);
-            
+
         }
             
     }

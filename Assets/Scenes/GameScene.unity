@@ -160,7 +160,7 @@ MonoBehaviour:
   XP: 0
   useTimeBasedWaves: 1
   waveInterval: 60
-  timeToSaveTheCat: 0.01
+  timeToSaveTheCat: 5
   hasSavedTheCat: 1
   OnWaveChanged:
     m_PersistentCalls:
@@ -5047,7 +5047,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1442467264476482086, guid: bb88b1d6cf60a28d7b13c9f58fff1ed9,
+  m_Sprite: {fileID: -1442467264476482086, guid: 1e55720dbcf636f5d9a4a1916c32f096,
     type: 3}
   m_Type: 0
   m_PreserveAspect: 0

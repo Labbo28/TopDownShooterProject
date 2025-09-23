@@ -73,12 +73,18 @@ public class HealthSystem : MonoBehaviour, IDamageable
         float healthPercentage = GetHealthPercentage();
         currentHealth = maxHealth * healthPercentage;
     }
+    
+    public void ScaleHealthEnemy(float scaleFactor)
+    {
+        maxHealth *= scaleFactor;
+        currentHealth = maxHealth; // Reset current health to new max
+    }
 
     // Metodo per resettare completamente la salute
     public void ResetHealth()
     {
-    maxHealth = baseMaxHealth;
-    currentHealth = maxHealth;
+        maxHealth = baseMaxHealth;
+        currentHealth = maxHealth;
     }
 
     // Metodo per resettare la salute con un nuovo valore massimo

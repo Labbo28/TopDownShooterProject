@@ -70,6 +70,7 @@ public class Player : MonoBehaviour
     {
         if (scene.name == "GameScene")
         {
+
             ResetPlayer();
         }
         if (scene.name == "GameScene_second" || "PlainToForest" == scene.name || scene.name == "ForestToPlain")
@@ -271,14 +272,18 @@ public class Player : MonoBehaviour
             }
         }
     }
-    private void OnTriggerEnter2D(Collider2D other)
+  private void OnTriggerEnter2D(Collider2D other)
+{
+    if (other.CompareTag("EnemyProjectile"))
     {
-        if (other.CompareTag("EnemyProjectile"))
+        // Controlla che il trigger sia sul collider del player, non sui figli
+        if (other.bounds.Intersects(GetComponent<Collider2D>().bounds))
         {
             healthSystem?.TakeDamage(other.GetComponent<Projectile>().Damage);
             Destroy(other.gameObject);
         }
     }
+}
     // Metodo per resettare completamente il player
     public void ResetPlayer()
     {
@@ -328,6 +333,7 @@ public class Player : MonoBehaviour
 
         // Reset dei componenti di upgrade personalizzati
         ResetUpgradeComponents();
+        gameObject.AddComponent<WeaponUnlockManager>();
 
     }
 

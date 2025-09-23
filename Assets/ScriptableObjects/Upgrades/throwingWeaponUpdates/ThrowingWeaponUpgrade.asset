@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72f5b082d4b8e6d599a3721b91fdc91e, type: 3}
   m_Name: ThrowingWeaponUpgrade
   m_EditorClassIdentifier: 
-  upgradeName: Zappa Lanciata
-  description: Sblocca e potenzia l'arma da lancio automatica
+  upgradeName: throw scythe
+  description: upgrade stats/unlocks weapon
   icon: {fileID: 1349035616, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}
   maxLevel: 7
   damageMultiplier: 1.25

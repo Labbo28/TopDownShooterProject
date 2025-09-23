@@ -30,41 +30,77 @@ public class DialogueTrigger : MonoBehaviour
     ============================================
 
     Questo script permette di avviare un dialogo quando il player entra in un trigger.
+    NUOVO: Può anche attivare un gatto per seguire il player!
 
     COME COLLEGARE E USARE:
     ------------------------------------------------------------
     1. Aggiungi questo script a un GameObject con Collider2D (es. NPC, oggetto interattivo).
     2. Imposta il campo "dialogue" nell'Inspector con le linee e i personaggi desiderati.
-       - Puoi creare Dialogue e DialogueLine direttamente nell'Inspector.
-       - Ogni DialogueLine ha un personaggio (nome, icona) e una frase.
-    3. Assicurati che il Collider2D abbia "Is Trigger" attivo.
-    4. Quando il player (tag "Player") entra nel trigger, viene avviato il dialogo tramite DialogueManager.
+    3. OPZIONALE: Trascina il gatto nel campo "petToActivate" se vuoi attivarlo.
+    4. Assicurati che il Collider2D abbia "Is Trigger" attivo.
+    5. Quando il player entra nel trigger: dialogo + gatto attivato!
 
     LOGICA DI FUNZIONAMENTO:
     ------------------------------------------------------------
-    • DialogueCharacter: contiene nome e icona del personaggio che parla.
-    • DialogueLine: contiene il personaggio e la frase da mostrare.
-    • Dialogue: contiene una lista di DialogueLine che compongono il dialogo.
-    • DialogueTrigger: gestisce l'attivazione del dialogo quando il player entra nel trigger.
-
-    • Puoi chiamare TriggerDialogue() anche da altri script per avviare il dialogo manualmente.
-
-    NOTE:
-    • Puoi avere più DialogueTrigger nella scena per NPC diversi.
-    • Personalizza le linee e i personaggi per ogni trigger.
+    • Dialogo: come prima
+    • PetToActivate: se assegnato, il gatto inizia a seguire il player
+    • OnlyOnce: se true, il trigger funziona solo la prima volta
     */
+
+    [Header("Dialogue")]
     public Dialogue dialogue;
+
+    [Header("Pet Activation (Opzionale)")]
+    [SerializeField] private PetFollower petToActivate; // Trascina qui il gatto
+
+    [Header("Trigger Settings")]
+    [SerializeField] private bool onlyOnce = true; // Trigger solo una volta?
+
+    private bool hasBeenTriggered = false;
 
     public void TriggerDialogue()
     {
+        // Se deve funzionare solo una volta e è già stato attivato, esci
+        if (onlyOnce && hasBeenTriggered)
+        {
+            return;
+        }
+
+        // Avvia il dialogo
         DialogueManager.Instance.StartDialogue(dialogue);
+
+        // Attiva il gatto se assegnato
+        if (petToActivate != null)
+        {
+            petToActivate.StartFollowing();
+            Debug.Log("Dialogo avviato e gatto attivato!");
+        }
+        else
+        {
+            Debug.Log("Dialogo avviato!");
+        }
+
+        // Segna come già attivato
+        hasBeenTriggered = true;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "Player")
+        if (collision.tag == "Player")
         {
             TriggerDialogue();
         }
+    }
+
+    // Metodo per resettare il trigger (utile per testing)
+    public void ResetTrigger()
+    {
+        hasBeenTriggered = false;
+        Debug.Log("Trigger resettato");
+    }
+    
+    public void SetPetToActivate(PetFollower pet)
+    {
+        petToActivate = pet;
     }
 }

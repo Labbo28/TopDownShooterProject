@@ -21,37 +21,12 @@ public class WeaponUnlockManager : MonoBehaviour
     
     private void Start()
     {
-        SceneManager.sceneLoaded+= OnSceneLoaded;
+   
         // Apply initial weapon states
         UpdateWeaponStates();
     }
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        if (scene.name == "GameScene" || scene.name == "GameScene_second")
-        {
-            UpdateWeaponStates();
-        }
-        else
-        {
-            // Optionally disable all weapons in non-game scenes
-            Transform weaponsParent = transform.Find("Weapons");
-            Weapon[] allWeapons;
-            if (weaponsParent != null)
-            {
-                allWeapons = weaponsParent.GetComponentsInChildren<Weapon>(true);
-            }
-            else
-            {
-                allWeapons = GetComponentsInChildren<Weapon>(true);
-            }
-
-            foreach (Weapon weapon in allWeapons)
-            {
-                weapon.gameObject.SetActive(false);
-            }
-        }
-    }
+   
 
     public bool IsWeaponUnlocked(string weaponName)
     {

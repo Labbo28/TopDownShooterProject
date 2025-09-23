@@ -2005,65 +2005,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc4206c00414ec4488f0c2e2ad71a30c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fullText: 'Un silenzio innaturale avvolge la terra
-
-
-    Cio che un tempo era vita
-
-
-    ora
-    e'' solo rovina
-
-
-    Le citta'' sono ridotte a scheletri di pietra
-
-
-    le
-    strade inghiottite dall''erba selvatica
-
-
-    Il vento porta con se''
-
-
-    l''eco
-    di un mondo dimenticato
-
-
-    Al calare del sole
-
-
-    le ombre si allungano
-
-
-    qualcosa
-    si muove nel buio
-
-
-    La notte si popola di minacce
-
-
-    che non lasciano
-    tregua
-
-
-    In questo paesaggio desolato
-
-
-    la memoria di cio che era
-
-
-    rimane
-    come un illusione fragile
-
-
-    Un ricordo che si mescola al presente
-
-
-    dove
-    ogni passo
-
-
-    diventa una lotta per resistere'
+  fullText: "Il mondo \xE8 finito.\r\n\r\nLe citt\xE0 giacciono in rovina,\r\n\r\ninvase
+    dalla vegetazione selvaggia.\r\n\r\nZombie vagano tra i relitti della civilt\xE0,\r\n\r\ncreature
+    mostruose cacciano nell'ombra.\r\n\r\nQuando cala la notte,\r\n\r\ni pericoli
+    si moltiplicano.\r\n\r\nSopravvivere \xE8 tutto ci\xF2 che resta.\r\n\r\nOgni
+    passo potrebbe essere l'ultimo."
   typeSpeed: 0.07
   holdTime: 0.6
   textRect: {fileID: 1004981404}

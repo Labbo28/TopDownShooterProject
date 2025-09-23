@@ -11,11 +11,17 @@ public class test_scene2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.T)){
+        if (Input.GetKeyDown(KeyCode.T))
+        {
             UnityEngine.SceneManagement.SceneManager.LoadScene("GameScene_second");
         }
-        else if(Input.GetKeyDown(KeyCode.Y)){
+        else if (Input.GetKeyDown(KeyCode.Y))
+        {
             UnityEngine.SceneManagement.SceneManager.LoadScene("PlainToForest");
+        }
+        else if (Input.GetKeyDown(KeyCode.U))
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("ForestToPlain");
         }
     }
 }

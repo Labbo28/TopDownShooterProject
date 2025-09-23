@@ -102,11 +102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e830b92086edba34e844877c55f55acc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
-  stopDistance: 1.6
-  resumeDistance: 5.6
-  catchUpDistance: 4
-  followOffset: {x: 0.8, y: -0.6}
+  moveSpeed: 2
 --- !u!114 &35770973873962397
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -129,7 +125,7 @@ Animator:
   m_GameObject: {fileID: 5229415474943331675}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 2af5a40b193861f11af0ea2f94a34b3f, type: 2}
+  m_Controller: {fileID: 9100000, guid: 3a46cce706a211742b84e1912794aa45, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

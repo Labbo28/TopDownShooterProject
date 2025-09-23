@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5dd2e82f9a7eb5efbb338689e665d8a, type: 3}
   m_Name: DashDistanceUpgrade
   m_EditorClassIdentifier: 
-  upgradeName: dash distance
+  upgradeName: speed
   description: try not to fly off the screen
   icon: {fileID: -966295699, guid: d71a3dc7aa20fad4f9a99fc76a9254ba, type: 3}
   maxLevel: 5

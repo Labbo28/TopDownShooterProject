@@ -50,8 +50,10 @@ public class ChestDrop : Drop
         
         if (other.CompareTag("Player"))
         {// Prevent multiple collections
-          if (hasBeenCollected) return;
+          if (hasBeenCollected)
+                return;
             
+            hasBeenCollected = true;
             animator.SetTrigger("open");
             // Give player a level up
             if (GameManager.Instance != null)

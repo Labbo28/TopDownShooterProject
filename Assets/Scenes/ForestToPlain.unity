@@ -881,6 +881,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogue:
     dialogueLines: []
+  petToActivate: {fileID: 0}
+  onlyOnce: 1
 --- !u!4 &287026268
 Transform:
   m_ObjectHideFlags: 0
@@ -913,21 +915,24 @@ MonoBehaviour:
   dialogueCat:
     dialogueLines:
     - character:
-        name: 
-        icon: {fileID: 0}
+        name: mr Mark
+        icon: {fileID: 1741575186, guid: 97bc28dab11e5e341abb1aceea3a65c7, type: 3}
       line: Miao Miao.. ma quanto ci hai messo!
   collarPrefab: {fileID: 2372909403197453248, guid: 2e20034703aad4e4f8c200fc2a07c9fb,
     type: 3}
   dialogueCollar:
     dialogueLines:
     - character:
-        name: Collare che era di mr Mark
-        icon: {fileID: 0}
+        name: Labbo
+        icon: {fileID: -1413294825, guid: 99a24620d31e5ce4e823c32d11e17c2c, type: 3}
       line: '...
 
         ...
 
-        ...'
+        perdonami mr Mark
+
+        non sono riuscito
+        a salvarti'
 --- !u!1001 &374913072
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2040,6 +2045,8 @@ MonoBehaviour:
         name: placeholder
         icon: {fileID: 0}
       line: BENVENUTO NELLA FORESTA INCANTATA!
+  petToActivate: {fileID: 0}
+  onlyOnce: 1
 --- !u!61 &809031007
 BoxCollider2D:
   m_ObjectHideFlags: 0

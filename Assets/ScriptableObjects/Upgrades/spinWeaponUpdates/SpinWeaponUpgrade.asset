@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9ba1c0abe6d80f22bf8adc0061bfc00, type: 3}
   m_Name: SpinWeaponUpgrade
   m_EditorClassIdentifier: 
-  upgradeName: spin spin spin
-  description: i am speed
+  upgradeName: 'shovel '
+  description: upgrade stats/unlocks weapon
   icon: {fileID: 143021600, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}
   maxLevel: 5
   additionalBlades: 1

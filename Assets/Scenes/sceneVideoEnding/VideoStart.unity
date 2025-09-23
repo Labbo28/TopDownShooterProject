@@ -119,135 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &59436056
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 59436058}
-  - component: {fileID: 59436057}
-  m_Layer: 0
-  m_Name: Audio Source
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!82 &59436057
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 59436056}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: caf9f2f8efe7b7f4cbd9c68386241e8e, type: 3}
-  m_Resource: {fileID: 8300000, guid: caf9f2f8efe7b7f4cbd9c68386241e8e, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!4 &59436058
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 59436056}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 544.8868, y: 242.15524, z: -12.406203}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &698282566 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1985953294887850358, guid: bdb4d35c51dd62e94833560a860c3159,
@@ -298,7 +169,7 @@ MonoBehaviour:
       dialogueLines:
       - character:
           name: Figlia
-          icon: {fileID: 0}
+          icon: {fileID: -2088749509, guid: 57a1443e67528144aa07582927559650, type: 3}
         line: "guarda mamma, l\u2019ho trovato nel bosco! \nPossiamo tenerlo?!"
       - character:
           name: Mamma
@@ -306,11 +177,11 @@ MonoBehaviour:
         line: ma che carino certo!
       - character:
           name: Mr_Mark (gatto)
-          icon: {fileID: 0}
+          icon: {fileID: 1741575186, guid: 97bc28dab11e5e341abb1aceea3a65c7, type: 3}
         line: Miao Miaoo
       - character:
           name: Labbo (papa')
-          icon: {fileID: 0}
+          icon: {fileID: -1413294825, guid: 99a24620d31e5ce4e823c32d11e17c2c, type: 3}
         line: "Brava figliola l\u2019hai salvato\n ce ne occuperemo noi\ntutti insieme
           !!"
     nextSceneName: 
@@ -639,26 +510,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3076403028175883731, guid: d9cabd02f18ae7e4eaf8923cb63d4d62,
-        type: 3}
-      propertyPath: typingSpeed
-      value: 0.09
-      objectReference: {fileID: 0}
-    - target: {fileID: 6790912970338609331, guid: d9cabd02f18ae7e4eaf8923cb63d4d62,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7312756793884894940, guid: d9cabd02f18ae7e4eaf8923cb63d4d62,
-        type: 3}
-      propertyPath: m_fontSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 7312756793884894940, guid: d9cabd02f18ae7e4eaf8923cb63d4d62,
-        type: 3}
-      propertyPath: m_enableAutoSizing
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 649171970827058401, guid: 46fef7667d6f8bf42a25f2ba7b9f2909,
         type: 3}
       propertyPath: m_Name
@@ -788,6 +639,26 @@ PrefabInstance:
         type: 3}
       propertyPath: _marks.Array.data[2].timeRatio
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3076403028175883731, guid: d9cabd02f18ae7e4eaf8923cb63d4d62,
+        type: 3}
+      propertyPath: typingSpeed
+      value: 0.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 6790912970338609331, guid: d9cabd02f18ae7e4eaf8923cb63d4d62,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7312756793884894940, guid: d9cabd02f18ae7e4eaf8923cb63d4d62,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7312756793884894940, guid: d9cabd02f18ae7e4eaf8923cb63d4d62,
+        type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 9099754924391525093, guid: d9cabd02f18ae7e4eaf8923cb63d4d62, type: 3}
@@ -973,7 +844,7 @@ MonoBehaviour:
   XP: 0
   useTimeBasedWaves: 1
   waveInterval: 60
-  timeToSaveTheCat: 10
+  timeToSaveTheCat: 5
   hasSavedTheCat: 1
   OnWaveChanged:
     m_PersistentCalls:
@@ -1208,4 +1079,3 @@ SceneRoots:
   - {fileID: 1193751371}
   - {fileID: 916489701}
   - {fileID: 1286719805}
-  - {fileID: 59436058}
