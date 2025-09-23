@@ -123,10 +123,9 @@ Assets/
 - **Component-based**: Modular Unity architecture
 
 ### Performance Features
-- Object pooling for projectiles and enemies
 - Optimized infinite map system
 - Dynamic object repositioning
-- Efficient rendering management
+
 
 ---
 **Built with Unity 2022.3 LTS**
