@@ -75,10 +75,12 @@ Multiple game areas with smooth transitions:
 The game's **ending** draws inspiration from the tradition of **melancholy in French cinema**, creating a contemplative and emotionally resonant conclusion that contrasts with typical action game finales.
 
 ### Screenplay References
-The narrative structure references classical screenplay manual techniques:
+Screenplay References
+The narrative structure draws on classical screenplay techniques, with a strong influence from the Save the Cat methodology, adapted to the language of interactive media.
+Key references include:
 * **La Black Vet** - Character development through environmental storytelling
 * **Il Giuramento dell'Arco** - Tension building and narrative pacing
-* **Salva il Gatto** (Save the Cat) - Story beats and emotional engagement
+* **Salva il Gatto (Save the Cat)** - Story beats and emotional engagement.
 
 These influences shape the game's approach to storytelling, emphasizing emotional depth and character-driven narrative alongside the action gameplay.
 
