@@ -77,6 +77,22 @@ public class Player : MonoBehaviour
         {
             FindSpawnPosition();
         }
+
+        // Manage weapons based on scene
+        WeaponUnlockManager weaponManager = GetComponent<WeaponUnlockManager>();
+        if (weaponManager != null)
+        {
+            if (scene.name == "PlainToForest" || scene.name == "ForestToPlain")
+            {
+                // Disable all weapons in transition scenes
+                weaponManager.DisableAllWeapons();
+            }
+            else if (scene.name == "GameScene" || scene.name == "GameScene_second")
+            {
+                // Re-enable unlocked weapons in game scenes
+                weaponManager.EnableUnlockedWeapons();
+            }
+        }
     }
 
     private void InitializePlayer()
