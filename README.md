@@ -1,5 +1,4 @@
 # Save the Cat 
-
 A 2D top-down shooter game developed in Unity featuring infinite map generation, weapon progression, and narrative storytelling.
 
 ## 🚀 Core Features
@@ -12,7 +11,6 @@ A 2D top-down shooter game developed in Unity featuring infinite map generation,
 
 ### ⚔️ Weapon & Combat System
 Multiple weapon types with distinct mechanics:
-
 - **Ranged Weapons**: Assault Rifle, Shotgun, Hand Cannon
 - **Throwing Weapons**: Projectiles with ballistic trajectories
 - **Spin Weapons**: Rotating weapons around the player
@@ -22,7 +20,6 @@ Multiple weapon types with distinct mechanics:
 
 ### 📈 Upgrade & Progression System
 Comprehensive character improvement system:
-
 - **Player Upgrades**: Health, mobility, regeneration improvements
 - **Weapon Upgrades**: Damage, fire rate, range, and weapon-specific enhancements
 - **RuntimeUpgrade System**: Dynamic upgrade tracking during gameplay
@@ -72,8 +69,22 @@ Multiple game areas with smooth transitions:
 - **Camera System**: Smooth player following
 - **Pet System**: Companion mechanics
 
-## 📁 Project Structure
+## 🎭 Narrative Design & Inspirations
 
+### Story Structure
+The game's **ending** draws inspiration from the tradition of **melancholy in French cinema**, creating a contemplative and emotionally resonant conclusion that contrasts with typical action game finales.
+
+### Screenplay References
+Screenplay References
+The narrative structure draws on classical screenplay techniques, with a strong influence from the Save the Cat methodology, adapted to the language of interactive media.
+Key references include:
+* **La Black Vet** - Character development through environmental storytelling
+* **Il Giuramento dell'Arco** - Tension building and narrative pacing
+* **Salva il Gatto (Save the Cat)** - Story beats and emotional engagement.
+
+These influences shape the game's approach to storytelling, emphasizing emotional depth and character-driven narrative alongside the action gameplay.
+
+## 📁 Project Structure
 ```
 Assets/
 ├── Scripts/
@@ -101,6 +112,7 @@ Assets/
 - Unlock new weapons
 - Follow the storyline to save the cat
 - Explore different game areas
+- Experience multiple narrative endings
 
 ## 🛠️ Technical Details
 
@@ -111,11 +123,9 @@ Assets/
 - **Component-based**: Modular Unity architecture
 
 ### Performance Features
-- Object pooling for projectiles and enemies
 - Optimized infinite map system
 - Dynamic object repositioning
-- Efficient rendering management
+
 
 ---
-
 **Built with Unity 2022.3 LTS**
