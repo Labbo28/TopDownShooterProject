@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LoadSceneCollider : MonoBehaviour
 {
@@ -8,10 +9,11 @@ public class LoadSceneCollider : MonoBehaviour
     [SerializeField] private string sceneToLoad = "GameScene_second";
 
    
-    private void OnTriggerEnter2D(Collider2D collision)
+   private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
-        {
+        { SceneManager.LoadScene("SadEnding"); } /* 
+          
             if (isEndingScene && GameManager.Instance.isCatSaved())
             {
                 Debug.Log("Caricamento scena HappyEnding");
@@ -21,10 +23,10 @@ public class LoadSceneCollider : MonoBehaviour
             {
                 Debug.Log("Caricamento scena BadEnding");
                 UnityEngine.SceneManagement.SceneManager.LoadScene("BadEnding");
-                
-            }
-            else
-                UnityEngine.SceneManagement.SceneManager.LoadScene(sceneToLoad);
+
+            }*/
+        else
+            SceneManager.LoadScene(sceneToLoad);
         }
     }
-}
+
