@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
+using System;
 
 public class WeaponUnlockManager : MonoBehaviour
 {
@@ -19,10 +21,38 @@ public class WeaponUnlockManager : MonoBehaviour
     
     private void Start()
     {
+        SceneManager.sceneLoaded+= OnSceneLoaded;
         // Apply initial weapon states
         UpdateWeaponStates();
     }
-    
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "GameScene" || scene.name == "GameScene_second")
+        {
+            UpdateWeaponStates();
+        }
+        else
+        {
+            // Optionally disable all weapons in non-game scenes
+            Transform weaponsParent = transform.Find("Weapons");
+            Weapon[] allWeapons;
+            if (weaponsParent != null)
+            {
+                allWeapons = weaponsParent.GetComponentsInChildren<Weapon>(true);
+            }
+            else
+            {
+                allWeapons = GetComponentsInChildren<Weapon>(true);
+            }
+
+            foreach (Weapon weapon in allWeapons)
+            {
+                weapon.gameObject.SetActive(false);
+            }
+        }
+    }
+
     public bool IsWeaponUnlocked(string weaponName)
     {
         return unlockedWeapons.Contains(weaponName);
@@ -42,11 +72,13 @@ public class WeaponUnlockManager : MonoBehaviour
         }
     }
     
+
+    
     private void UpdateWeaponStates()
     {
         // Find all weapon components in the Player - try Weapons folder first, then whole Player
         Transform weaponsParent = transform.Find("Weapons");
-        
+
         Weapon[] allWeapons;
         if (weaponsParent != null)
         {
@@ -58,15 +90,15 @@ public class WeaponUnlockManager : MonoBehaviour
             // Fallback: search in entire Player hierarchy
             allWeapons = GetComponentsInChildren<Weapon>(true);
         }
-        
+
         foreach (Weapon weapon in allWeapons)
         {
             string weaponType = weapon.GetType().Name;
             bool shouldBeActive = IsWeaponUnlocked(weaponType);
-            
+
             // Enable/disable the weapon GameObject
             weapon.gameObject.SetActive(shouldBeActive);
-            
+
             // Debug info
             Debug.Log($"WeaponUnlockManager: {weaponType} - Unlocked: {shouldBeActive}");
         }
