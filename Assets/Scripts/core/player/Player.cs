@@ -12,6 +12,12 @@ public class Player : MonoBehaviour
     public UnityEvent OnPlayerStopMoving;
     public UnityEvent OnPlayerDead;
 
+    // Aggiungi queste variabili
+    [Header("Mobile Support")]
+    private Vector2 externalMovementInput = Vector2.zero;
+    private bool useExternalInput = false;
+    private bool dashTriggered = false;
+
     // Singleton
     public static Player Instance { get; private set; }
 
@@ -94,6 +100,16 @@ public class Player : MonoBehaviour
             }
         }
     }
+    public void SetMovementInput(Vector2 input)
+    {
+        externalMovementInput = input;
+        useExternalInput = true;
+    }
+
+    public void TriggerDash()
+    {
+        dashTriggered = true;
+    }
 
     private void InitializePlayer()
     {
@@ -125,8 +141,36 @@ public class Player : MonoBehaviour
         {
             dashTimer.OnTimerStop += ResetDashTimer;
         }
+        DetectPlatform();
     }
 
+     private void DetectPlatform()
+    {
+        bool isMobile = Application.platform == RuntimePlatform.Android || 
+                       Application.platform == RuntimePlatform.IPhonePlayer;
+        
+        if (isMobile)
+        {
+            // Disabilita il cursor su mobile
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.None;
+            
+            // Setup mobile-specific settings
+            SetupMobileSettings();
+        }
+    }
+      private void SetupMobileSettings()
+    {
+        // Imposta impostazioni ottimizzate per mobile
+        Application.targetFrameRate = 60;
+        
+        // Disabilita LookAtCursor su mobile se presente
+        LookAtCursor lookAtCursor = GetComponentInChildren<LookAtCursor>();
+        if (lookAtCursor != null)
+        {
+            lookAtCursor.enabled = false;
+        }
+    }
     private void OnEnable()
     {
         inputActions?.Enable();
@@ -201,9 +245,19 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void HandleMovement()
+      private void HandleMovement()
     {
-        movementDirection = inputActions.Player.Move.ReadValue<Vector2>();
+        // Determina la sorgente di input
+        if (useExternalInput)
+        {
+            movementDirection = externalMovementInput;
+        }
+        else
+        {
+            movementDirection = inputActions.Player.Move.ReadValue<Vector2>();
+        }
+
+        // Logica di movimento esistente
         if (movementDirection.magnitude > 0)
         {
             OnPlayerMoving?.Invoke();
@@ -214,11 +268,27 @@ public class Player : MonoBehaviour
         }
 
         transform.Translate(movementDirection * (Time.deltaTime * movementSpeed));
+        
+        // Reset external input flag
+        useExternalInput = false;
     }
 
-    private void HandleDash()
+
+     private void HandleDash()
     {
-        if (inputActions.Player.Sprint.WasPressedThisFrame())
+        bool shouldDash = false;
+        
+        if (useExternalInput)
+        {
+            shouldDash = dashTriggered;
+            dashTriggered = false; // Reset flag
+        }
+        else
+        {
+            shouldDash = inputActions.Player.Sprint.WasPressedThisFrame();
+        }
+
+        if (shouldDash)
         {
             Vector3 dashDirection = new Vector3(movementDirection.x, movementDirection.y).normalized;
             Vector3 dashTarget = transform.position + dashDirection * DashDistance;

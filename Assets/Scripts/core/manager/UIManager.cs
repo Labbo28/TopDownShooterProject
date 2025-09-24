@@ -35,9 +35,23 @@ public class UIManager : PersistentObject
 
     [SerializeField] GameObject TextHealth;
 
+    [Header("Mobile UI Elements")]
+    [SerializeField] private GameObject mobileUIPanel;
+    [SerializeField] private RectTransform safeAreaPanel; // Per gestire notch/safe area
+    [SerializeField] private GameObject desktopOnlyElements; // Elementi da nascondere su mobile
+    [SerializeField] private CanvasScaler canvasScaler;
+    
+    // Riferimenti mobile specifici
+    [Header("Mobile Controls References")]
+    [SerializeField] private GameObject virtualJoystick;
+    [SerializeField] private Button mobilePauseButton;
+    [SerializeField] private Button mobileShootButton;
+    [SerializeField] private Button mobileDashButton;
+
     // Gestione stato UI
     private UIState currentUIState = UIState.GamePlaying;
     private bool wasGamePausedBeforeSettings = false;
+    private bool isMobilePlatform;
 
     // Riferimenti principali
     private GameManager gameManager;
@@ -50,14 +64,24 @@ public class UIManager : PersistentObject
 
     protected override void Setup()
     {
-        // Implementazione vuota, non necessaria per UIManager
+        // Rileva piattaforma mobile
+        isMobilePlatform = Application.platform == RuntimePlatform.Android || 
+                          Application.platform == RuntimePlatform.IPhonePlayer;
+        
+        SetupMobileUI();
+        SetupSafeArea();
+        ConfigureCanvasForPlatform();
     }
+
     private void Awake()
     {
         // Assicurati che l'UI di game over sia nascosta all'inizio
         if (TextDead != null) TextDead.SetActive(false);
         if (RetryButton != null) RetryButton.SetActive(false);
         if (QuitButton != null) QuitButton.SetActive(false);
+
+        // Setup piattaforma-specifico
+        Setup();
     }
 
     private void Start()
@@ -66,14 +90,144 @@ public class UIManager : PersistentObject
         PlayerUpgradeSystem.OnUpgradePanelOpened += OnUpgradePanelOpened;
         InitializeUI();
         InitializeInput();
+        SetupMobileButtons();
     }
+
+    #region Mobile Setup Methods
+
+    private void SetupMobileUI()
+    {
+        if (mobileUIPanel != null)
+        {
+            mobileUIPanel.SetActive(isMobilePlatform);
+        }
+
+        if (isMobilePlatform)
+        {
+            HideDesktopElements();
+            ShowMobileElements();
+            SetupMobileOrientation();
+        }
+        else
+        {
+            HideMobileElements();
+        }
+    }
+
+    private void HideDesktopElements()
+    {
+        if (desktopOnlyElements != null)
+        {
+            desktopOnlyElements.SetActive(false);
+        }
+
+        // Nascondi cursor su mobile
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.None;
+    }
+
+    private void ShowMobileElements()
+    {
+        if (virtualJoystick != null)
+        {
+            virtualJoystick.SetActive(true);
+        }
+    }
+
+    private void HideMobileElements()
+    {
+        if (mobileUIPanel != null)
+        {
+            mobileUIPanel.SetActive(false);
+        }
+    }
+
+    private void SetupMobileOrientation()
+    {
+        // Forza orientamento landscape
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
+        Screen.autorotateToLandscapeLeft = true;
+        Screen.autorotateToLandscapeRight = true;
+        Screen.autorotateToPortrait = false;
+        Screen.autorotateToPortraitUpsideDown = false;
+    }
+
+    private void SetupSafeArea()
+    {
+        if (safeAreaPanel == null || !isMobilePlatform) return;
+
+        Rect safeArea = Screen.safeArea;
+        Vector2 anchorMin = safeArea.position;
+        Vector2 anchorMax = safeArea.position + safeArea.size;
+        
+        anchorMin.x /= Screen.width;
+        anchorMin.y /= Screen.height;
+        anchorMax.x /= Screen.width;
+        anchorMax.y /= Screen.height;
+
+        safeAreaPanel.anchorMin = anchorMin;
+        safeAreaPanel.anchorMax = anchorMax;
+
+        Debug.Log($"Safe Area applied: {anchorMin} - {anchorMax}");
+    }
+
+    private void ConfigureCanvasForPlatform()
+    {
+        if (canvasScaler == null)
+            canvasScaler = canvas?.GetComponent<CanvasScaler>();
+
+        if (canvasScaler != null)
+        {
+            if (isMobilePlatform)
+            {
+                // Configurazione ottimizzata per mobile
+                canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+                canvasScaler.referenceResolution = new Vector2(1920, 1080);
+                canvasScaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
+                canvasScaler.matchWidthOrHeight = 0.5f; // Bilanciato tra width e height
+            }
+            else
+            {
+                // Configurazione desktop
+                canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+                canvasScaler.referenceResolution = new Vector2(1920, 1080);
+                canvasScaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
+                canvasScaler.matchWidthOrHeight = 0f; // Priorità alla width
+            }
+        }
+    }
+
+    private void SetupMobileButtons()
+    {
+        if (!isMobilePlatform) return;
+
+        // Setup mobile pause button
+        if (mobilePauseButton != null)
+        {
+            mobilePauseButton.onClick.RemoveAllListeners();
+            mobilePauseButton.onClick.AddListener(ToggleSettingsPanel);
+        }
+
+        // Setup mobile shoot button - handled by MobileInputManager
+        // Setup mobile dash button - handled by MobileInputManager
+    }
+
+    #endregion
+
+    #region Input Initialization
 
     private void InitializeInput()
     {
-        inputActions = new InputSystem_Actions();
-        inputActions.UI.Cancel.performed += OpenSettingsPanel;
-        inputActions.UI.Enable();
+        if (!isMobilePlatform)
+        {
+            // Solo su desktop, mobile usa touch
+            inputActions = new InputSystem_Actions();
+            inputActions.UI.Cancel.performed += OpenSettingsPanel;
+            inputActions.UI.Enable();
+        }
     }
+
+    #endregion
 
     #region Gestione Stati UI
 
@@ -97,6 +251,15 @@ public class UIManager : PersistentObject
     #region Gestione Pannello Settings
 
     private void OpenSettingsPanel(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    {
+        // Su mobile, questo è gestito dal pulsante UI
+        if (isMobilePlatform) return;
+        
+        ToggleSettingsPanel();
+    }
+
+    // Metodo pubblico per chiamate da mobile UI e desktop
+    public void ToggleSettingsPanel()
     {
         if (!CanOpenSettings())
         {
@@ -613,6 +776,12 @@ public class UIManager : PersistentObject
         if (TextHealth != null) TextHealth.SetActive(false);
         if (ammoText != null) ammoText.SetActive(false);
         if (ammoImage != null) ammoImage.SetActive(false);
+
+        // Nascondi anche mobile UI durante game over
+        if (isMobilePlatform && mobileUIPanel != null)
+        {
+            mobileUIPanel.SetActive(false);
+        }
     }
 
     private void OnGameOver()
@@ -691,7 +860,6 @@ public class UIManager : PersistentObject
         Time.timeScale = 1f;
         UnityEngine.SceneManagement.SceneManager.LoadScene("GameScene");
         
-        // Rimuovi la linea problematica che accedeva a Player.Instance dopo scene reload
         Debug.Log("Scene reloaded for retry");
     }
 
@@ -710,6 +878,46 @@ public class UIManager : PersistentObject
 
     #endregion
 
+    #region Mobile-Specific Updates
+
+    private void Update()
+    {
+        if (isMobilePlatform)
+        {
+            HandleOrientationChange();
+            HandleMobileInput();
+        }
+    }
+
+    private void HandleOrientationChange()
+    {
+        // Mantieni sempre landscape su mobile
+        if (Screen.orientation != ScreenOrientation.LandscapeLeft && 
+            Screen.orientation != ScreenOrientation.LandscapeRight)
+        {
+            Screen.orientation = ScreenOrientation.LandscapeLeft;
+        }
+    }
+
+    private void HandleMobileInput()
+    {
+        // Gestione input mobile specifici se necessari
+        // Ad esempio, back button su Android
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (currentUIState == UIState.GamePlaying)
+            {
+                ToggleSettingsPanel();
+            }
+            else if (currentUIState == UIState.SettingsOpen)
+            {
+                CloseSettingsPanel();
+            }
+        }
+    }
+
+    #endregion
+
     #region Debug e Validazione
 
     [ContextMenu("Validate UI State")]
@@ -720,12 +928,15 @@ public class UIManager : PersistentObject
         bool gameOver = gameManager?.CurrentGameState == GameState.GameOver;
 
         Debug.Log($"=== UI State Validation ===");
+        Debug.Log($"Platform: {(isMobilePlatform ? "Mobile" : "Desktop")}");
         Debug.Log($"Current State: {currentUIState}");
         Debug.Log($"Settings Active: {settingsActive}");
         Debug.Log($"Upgrade Active: {upgradeActive}");
         Debug.Log($"Game Over: {gameOver}");
         Debug.Log($"Time Scale: {Time.timeScale}");
         Debug.Log($"Events Registered: {eventsRegistered}");
+        Debug.Log($"Screen Size: {Screen.width}x{Screen.height}");
+        Debug.Log($"Safe Area: {Screen.safeArea}");
         
         // Controlla consistenza
         if (currentUIState == UIState.SettingsOpen && !settingsActive)
@@ -744,49 +955,18 @@ public class UIManager : PersistentObject
         }
     }
 
-    [ContextMenu("Debug Settings Panel")]
-    private void DebugSettingsPanel()
-    {
-        Debug.Log($"=== Settings Panel Debug ===");
-        Debug.Log($"Settings Panel assigned: {settingsPanel != null}");
-        
-        if (settingsPanel != null)
-        {
-            Debug.Log($"Panel active: {settingsPanel.activeSelf}");
-            Debug.Log($"Panel activeInHierarchy: {settingsPanel.activeInHierarchy}");
-            Debug.Log($"Panel name: {settingsPanel.name}");
-            
-            // Controlla la gerarchia dei parent
-            Transform parent = settingsPanel.transform.parent;
-            int level = 0;
-            while (parent != null && level < 5)
-            {
-                Debug.Log($"Parent {level}: {parent.name} (active: {parent.gameObject.activeInHierarchy})");
-                parent = parent.parent;
-                level++;
-            }
-            
-            // Controlla Canvas
-            Canvas parentCanvas = settingsPanel.GetComponentInParent<Canvas>();
-            if (parentCanvas != null)
-            {
-                Debug.Log($"Parent Canvas: {parentCanvas.name} (enabled: {parentCanvas.enabled})");
-            }
-            else
-            {
-                Debug.LogWarning("No Canvas found in parents!");
-            }
-        }
-        
-        Debug.Log($"Can open settings: {CanOpenSettings()}");
-        Debug.Log($"Is settings open: {IsSettingsOpen()}");
-    }
-
     [ContextMenu("Force UI Refresh")]
     private void ForceUIRefresh()
     {
         UpdateAllUI();
         Debug.Log("UI manually refreshed");
+    }
+
+    [ContextMenu("Reconfigure for Current Platform")]
+    private void ReconfigureForPlatform()
+    {
+        Setup();
+        Debug.Log($"UI reconfigured for {(isMobilePlatform ? "Mobile" : "Desktop")}");
     }
 
     #endregion
@@ -813,6 +993,12 @@ public class UIManager : PersistentObject
         if (pauseStatus)
         {
             UnregisterEvents();
+            
+            // Auto-pausa su mobile quando l'app va in background
+            if (isMobilePlatform && currentUIState == UIState.GamePlaying)
+            {
+                ShowSettingsPanel();
+            }
         }
         else
         {
@@ -827,6 +1013,26 @@ public class UIManager : PersistentObject
             // Auto-pausa quando l'app perde il focus
             ShowSettingsPanel();
         }
+    }
+
+    #endregion
+
+    #region Public Mobile API
+
+    // Metodi pubblici per l'integrazione con MobileInputManager
+    public bool IsMobilePlatform() => isMobilePlatform;
+    
+    public void ShowMobileControls(bool show)
+    {
+        if (mobileUIPanel != null)
+        {
+            mobileUIPanel.SetActive(show && isMobilePlatform);
+        }
+    }
+
+    public void OnMobilePauseButtonPressed()
+    {
+        ToggleSettingsPanel();
     }
 
     #endregion
